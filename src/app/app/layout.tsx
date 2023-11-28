@@ -8,7 +8,7 @@ export default function Layout({
 }) {
   return (
     <AppContextProvider>
-      <div className="mx-auto container p-4">
+      <div className="mx-auto container p-4 max-w-screen-lg">
         <Navigation />
         {children}
       </div>
