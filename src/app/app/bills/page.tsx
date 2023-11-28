@@ -10,6 +10,7 @@ import { SplitType, SplitTypeLabel } from "../type";
 import { SplitEqualForm } from "./split-equals-form";
 import { SplitExactForm } from "./split-exact-form";
 import { SplitPercentForm } from "./split-percent-form";
+import { TrxCard } from "./trx-card";
 
 export default function Page() {
   const { people, addTransaction, transactions } = useAppContext();
@@ -110,11 +111,11 @@ export default function Page() {
       </button>
 
       {transactions.map((trx) => (
-        <div key={trx.id} className="card bg-base-200">
-          <div className="card-body">
-            <div className="card-title">{trx.name}</div>
-          </div>
-        </div>
+        <TrxCard
+          person={people.find((p) => p.id === trx.paidBy)!}
+          trx={trx}
+          key={trx.id}
+        />
       ))}
 
       <dialog ref={newTrxModal} className="modal modal-bottom sm:modal-middle">
