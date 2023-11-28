@@ -1,6 +1,7 @@
 "use client";
 
-import useFormState, { required, validate } from "@/hooks/useFormState";
+import useFormState from "@/hooks/useFormState";
+import { required, validate } from "@/utils/forms";
 import { FC } from "react";
 
 export const PeopleContainer: FC = () => {
