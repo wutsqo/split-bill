@@ -1,7 +1,7 @@
 "use client";
 
-import { createContext, FC, useContext } from "react";
-import { AppContextProviderProps, AppContextValue } from "./type";
+import { createContext, FC, useContext, useState } from "react";
+import { AppContextProviderProps, AppContextValue, Person } from "./type";
 
 export const AppContext = createContext<AppContextValue>({} as AppContextValue);
 
@@ -10,7 +10,25 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
 }: {
   readonly children: React.ReactNode;
 }) => {
-  const value: AppContextValue = {};
+  const [people, setPeople] = useState<Person[]>([]);
+
+  const addPerson = (name: string) => {
+    const newPerson: Person = {
+      id: new Date().getTime().toString(),
+      name,
+    };
+    setPeople([...people, newPerson]);
+  };
+
+  const removePerson = (id: string) => {
+    setPeople(people.filter((person) => person.id !== id));
+  };
+
+  const value: AppContextValue = {
+    people,
+    addPerson,
+    removePerson,
+  };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
