@@ -88,6 +88,7 @@ export default function Page() {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isValid || !isSplitValid()) return;
     addTransaction({
       id: Date.now().toString(),
       ...data,

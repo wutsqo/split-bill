@@ -25,6 +25,13 @@ export default function useFormState<T extends Object>(
 
   const resetData = () => {
     setData(initialData);
+    setErrors(
+      Object.keys(validators).reduce((acc, key) => {
+        acc[key as keyof T] =
+          validators[key as keyof T]!(initialData[key as keyof T]) ?? "";
+        return acc;
+      }, {} as Record<keyof T, string>)
+    );
   };
 
   const isValid = Object.values(errors).every((error) => error === "");
