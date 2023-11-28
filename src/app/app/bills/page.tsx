@@ -12,7 +12,7 @@ import { SplitExactForm } from "./split-exact-form";
 import { SplitPercentForm } from "./split-percent-form";
 
 export default function Page() {
-  const { people, addTransaction } = useAppContext();
+  const { people, addTransaction, transactions } = useAppContext();
   const newTrxModal = useRef<HTMLDialogElement>(null);
 
   const { data, updateData, isValid, resetData } = useFormState(
@@ -107,6 +107,14 @@ export default function Page() {
         <PlusIcon className="h-5 w-5 mr-2" />
         Add Transaction
       </button>
+
+      {transactions.map((trx) => (
+        <div key={trx.id} className="card bg-base-200">
+          <div className="card-body">
+            <div className="card-title">{trx.name}</div>
+          </div>
+        </div>
+      ))}
 
       <dialog ref={newTrxModal} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
