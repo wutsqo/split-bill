@@ -1,28 +1,14 @@
 "use client";
 
-import useFormState from "@/hooks/useFormState";
-import { required, validate } from "@/utils/forms";
-import { useAppContext } from "../context";
 import { TrashIcon, LightBulbIcon } from "@heroicons/react/24/outline";
 import { createAvatar } from "@dicebear/core";
 import { funEmoji } from "@dicebear/collection";
 import Link from "next/link";
+import useLogic from "./logic";
 
 export default function Page() {
-  const { data, updateData, isValid, resetData } = useFormState(
-    {
-      name: "",
-    },
-    {
-      name: validate([required]),
-    }
-  );
-  const { people, addPerson, removePerson } = useAppContext();
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    addPerson(data.name);
-    resetData();
-  };
+  const { data, isValid, onSubmit, people, removePerson, updateData } =
+    useLogic();
 
   return (
     <div className="py-4 flex flex-col gap-4">
