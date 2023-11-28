@@ -20,3 +20,8 @@ export const TABS: ITab[] = [
     label: "Summary",
   },
 ];
+
+export const LOCALSTORAGE_KEYS = {
+  PEOPLE: "people",
+  TRANSACTIONS: "transactions",
+};

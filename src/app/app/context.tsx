@@ -7,6 +7,8 @@ import {
   Person,
   Transaction,
 } from "./type";
+import { useLocalStorageState } from "@/hooks/useLocalStorageState";
+import { LOCALSTORAGE_KEYS } from "./constant";
 
 export const AppContext = createContext<AppContextValue>({} as AppContextValue);
 
@@ -15,8 +17,14 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
 }: {
   readonly children: React.ReactNode;
 }) => {
-  const [people, setPeople] = useState<Person[]>([]);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [people, setPeople] = useLocalStorageState<Person[]>(
+    LOCALSTORAGE_KEYS.PEOPLE,
+    []
+  );
+  const [transactions, setTransactions] = useLocalStorageState<Transaction[]>(
+    LOCALSTORAGE_KEYS.TRANSACTIONS,
+    []
+  );
 
   const addPerson = (name: string) => {
     const newPerson: Person = {
