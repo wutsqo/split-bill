@@ -1,9 +1,4 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useState as useStateReact,
-  useEffect,
-} from "react";
+import { Dispatch, SetStateAction, useState as useStateReact } from "react";
 
 interface Option<T> {
   useState?: (initialState: T | (() => T)) => [T, Dispatch<SetStateAction<T>>];
@@ -42,12 +37,18 @@ export default function useFormState<T extends Object>(
       return acc;
     }, {} as Record<keyof T, string>);
   });
+  const [touched, setTouched] = useStateReact<Record<keyof T, boolean>>(() => {
+    return Object.keys(validators).reduce((acc, key) => {
+      acc[key as keyof T] = false;
+      return acc;
+    }, {} as Record<keyof T, boolean>);
+  });
 
   const updateData = <K extends keyof T>(key: K, value: T[K]) => {
     if (validators[key]) {
       setErrors((prev) => ({ ...prev, [key]: validators[key]!(value) }));
     }
-
+    setTouched((prev) => ({ ...prev, [key]: true }));
     setData((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -55,15 +56,9 @@ export default function useFormState<T extends Object>(
     setData(initialData);
   };
 
-  useEffect(() => {
-    for (const key in validators) {
-      const error = validators[key as keyof T]!(data[key as keyof T]);
-      setErrors((prev) => ({ ...prev, [key]: error }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const isValid = Object.values(errors).every((error) => !error);
+  const isValid =
+    Object.values(errors).every((error) => !error) &&
+    Object.values(touched).every((touched) => touched);
 
   return {
     data,
