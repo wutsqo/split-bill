@@ -30,6 +30,12 @@ export default function useFormState<T extends Object>(
 
   const resetData = () => {
     setData(initialData);
+    setTouched((prev) => {
+      return Object.keys(prev).reduce((acc, key) => {
+        acc[key as keyof T] = false;
+        return acc;
+      }, {} as Record<keyof T, boolean>);
+    });
   };
 
   const isValid =
