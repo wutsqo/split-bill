@@ -3,9 +3,10 @@
 import useFormState from "@/hooks/useFormState";
 import { required, validate } from "@/utils/forms";
 import { useAppContext } from "../context";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { TrashIcon, LightBulbIcon } from "@heroicons/react/24/outline";
 import { createAvatar } from "@dicebear/core";
 import { funEmoji } from "@dicebear/collection";
+import Link from "next/link";
 
 export default function Page() {
   const { data, updateData, isValid, resetData } = useFormState(
@@ -74,13 +75,21 @@ export default function Page() {
               </div>
             ))}
           </div>
-          {people.length === 0 && (
-            <div className="text-center text-sm text-gray-500">
-              No people added yet
+          {people.length === 0 ? (
+            <div className="flex flex-col items-center">
+              <LightBulbIcon className="w-12 h-12 text-gray-500" />
+              <div className="text-center text-sm text-gray-500">
+                Add people to start adding transactions
+              </div>
             </div>
-          )}
+          ) : null}
         </div>
       </div>
+      {people.length > 0 ? (
+        <Link href="/app/bills" className="btn">
+          Next
+        </Link>
+      ) : null}
     </div>
   );
 }

@@ -13,7 +13,7 @@ export const TABS: ITab[] = [
   },
   {
     id: TAB_IDS.BILLS,
-    label: "Bills",
+    label: "Transactions",
   },
   {
     id: TAB_IDS.SUMMARY,
