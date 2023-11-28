@@ -1,8 +1,7 @@
 "use client";
 
-import { createContext, FC, useState, useContext } from "react";
+import { createContext, FC, useContext } from "react";
 import { AppContextProviderProps, AppContextValue } from "./type";
-import { TAB_IDS } from "./constant";
 
 export const AppContext = createContext<AppContextValue>({} as AppContextValue);
 
@@ -11,12 +10,7 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
 }: {
   readonly children: React.ReactNode;
 }) => {
-  const [activeTab, setActiveTab] = useState<TAB_IDS>(TAB_IDS.PEOPLE);
-
-  const value: AppContextValue = {
-    activeTab,
-    setActiveTab,
-  };
+  const value: AppContextValue = {};
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

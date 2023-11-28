@@ -1,9 +1,9 @@
 import { ITab } from "@/components/tabs/type";
 
 export enum TAB_IDS {
-  PEOPLE = "tab-people",
-  BILLS = "tab-bills",
-  SUMMARY = "tab-summary",
+  PEOPLE = "people",
+  BILLS = "bills",
+  SUMMARY = "summary",
 }
 
 export const TABS: ITab[] = [

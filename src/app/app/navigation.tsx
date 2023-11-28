@@ -1,16 +1,28 @@
 "use client";
 
-import React, { FC } from "react";
-import Tabs from "../../components/tabs";
+import { usePathname } from "next/navigation";
 import { TABS } from "./constant";
-import { useAppContext } from "./context";
+import { mergeClassname } from "@/utils/common";
+import Link from "next/link";
 
-export const Navigation: FC = () => {
-  const { activeTab, setActiveTab } = useAppContext();
+export default function Navigation() {
+  const pathName = usePathname();
 
   return (
-    <div>
-      <Tabs tabs={TABS} activeTabId={activeTab} setActiveTab={setActiveTab} />
+    <div role="tablist" className="tabs tabs-boxed">
+      {TABS.map((tab) => (
+        <Link
+          role="tab"
+          className={mergeClassname(
+            "tab",
+            pathName.split("/").pop() === tab.id && "tab-active"
+          )}
+          key={tab.id}
+          href={`/app/${tab.id}`}
+        >
+          {tab.label}
+        </Link>
+      ))}
     </div>
   );
-};
+}

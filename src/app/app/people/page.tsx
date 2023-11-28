@@ -2,9 +2,8 @@
 
 import useFormState from "@/hooks/useFormState";
 import { required, validate } from "@/utils/forms";
-import { FC } from "react";
 
-export const PeopleContainer: FC = () => {
+export default function Page() {
   const { data, updateData, isValid } = useFormState(
     {
       name: "",
@@ -39,4 +38,4 @@ export const PeopleContainer: FC = () => {
       </div>
     </div>
   );
-};
+}

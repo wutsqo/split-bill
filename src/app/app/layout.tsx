@@ -1,5 +1,5 @@
 import { AppContextProvider } from "./context";
-import { Navigation } from "./navigation";
+import Navigation from "./navigation";
 
 export default function Layout({
   children,
