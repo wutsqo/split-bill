@@ -1,6 +1,8 @@
+import { TAB_IDS } from "./constant";
+
 export interface AppContextValue {
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
+  activeTab: TAB_IDS;
+  setActiveTab: (tab: TAB_IDS) => void;
 }
 
 export interface AppContextProviderProps {

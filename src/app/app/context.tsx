@@ -2,7 +2,7 @@
 
 import { createContext, FC, useState, useContext } from "react";
 import { AppContextProviderProps, AppContextValue } from "./type";
-import { TABS } from "./constant";
+import { TAB_IDS } from "./constant";
 
 export const AppContext = createContext<AppContextValue>({} as AppContextValue);
 
@@ -11,9 +11,7 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
 }: {
   readonly children: React.ReactNode;
 }) => {
-  const [activeTab, setActiveTab] = useState<(typeof TABS)[number]["id"]>(
-    TABS[0].id
-  );
+  const [activeTab, setActiveTab] = useState<TAB_IDS>(TAB_IDS.PEOPLE);
 
   const value: AppContextValue = {
     activeTab,
