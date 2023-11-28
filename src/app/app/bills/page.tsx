@@ -12,7 +12,7 @@ import { SplitExactForm } from "./split-exact-form";
 import { SplitPercentForm } from "./split-percent-form";
 
 export default function Page() {
-  const { people } = useAppContext();
+  const { people, addTransaction } = useAppContext();
   const newTrxModal = useRef<HTMLDialogElement>(null);
 
   const { data, updateData, isValid, resetData } = useFormState(
@@ -33,6 +33,19 @@ export default function Page() {
       date: validate([required]),
     }
   );
+
+  const isSplitValid = () => {
+    switch (data.splitType) {
+      case SplitType.EQUAL:
+        return Object.values(data.split).includes(1);
+      case SplitType.PERCENT:
+        return Object.values(data.split).reduce((a, b) => a + b, 0) === 100;
+      case SplitType.EXACT:
+        return (
+          Object.values(data.split).reduce((a, b) => a + b, 0) === data.amount
+        );
+    }
+  };
 
   const onChangeSplitType = (splitType: SplitType) => {
     updateData(
@@ -73,7 +86,16 @@ export default function Page() {
     }
   };
 
-  console.log(data);
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    addTransaction({
+      id: Date.now().toString(),
+      ...data,
+      date: new Date(data.date),
+    });
+    newTrxModal.current?.close();
+    resetData();
+  };
 
   return (
     <div className="py-4 flex flex-col gap-4">
@@ -89,7 +111,7 @@ export default function Page() {
       <dialog ref={newTrxModal} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="font-bold text-lg mb-4">New Transaction</h3>
-          <form className="flex flex-col gap-2" onSubmit={() => {}}>
+          <form className="flex flex-col gap-2" onSubmit={onSubmit}>
             <div className="form-control w-full">
               <label className="label">
                 <span className="label-text">Title</span>
@@ -173,21 +195,26 @@ export default function Page() {
             <div className="divider">Split Between</div>
 
             {renderSplitForm()}
+
+            <div className="modal-action">
+              <button
+                className="btn"
+                onClick={() => {
+                  newTrxModal.current?.close();
+                  resetData();
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn btn-primary"
+                disabled={!isValid || !isSplitValid()}
+                type="submit"
+              >
+                Add
+              </button>
+            </div>
           </form>
-          <div className="modal-action">
-            <button
-              className="btn"
-              onClick={() => {
-                newTrxModal.current?.close();
-                resetData();
-              }}
-            >
-              Cancel
-            </button>
-            <button className="btn btn-primary" disabled={!isValid}>
-              Add
-            </button>
-          </div>
         </div>
       </dialog>
     </div>
