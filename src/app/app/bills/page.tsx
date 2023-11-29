@@ -212,6 +212,7 @@ export default function Page() {
                   newTrxModal.current?.close();
                   resetData();
                 }}
+                type="button"
               >
                 Cancel
               </button>
