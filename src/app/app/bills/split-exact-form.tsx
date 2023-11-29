@@ -35,6 +35,9 @@ export const SplitExactForm: FC<SplitFormProps> = ({
                 {person.name}
               </span>
             </label>
+            <span className="join-item flex items-center px-4 border border-base-300">
+              Rp
+            </span>
             <input
               type="number"
               placeholder="What's the amount?"
