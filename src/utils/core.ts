@@ -11,3 +11,28 @@ export const calculatePortion = (trx: Transaction, personId: string) => {
       return trx.split[personId];
   }
 };
+
+export const getTotalDebtOfAPerson = (trxs: Transaction[], personId: string) =>
+  trxs.reduce((acc, trx) => {
+    if (trx.paidBy === personId) {
+      return acc - calculatePortion(trx, personId);
+    } else if (trx.split[personId]) {
+      return acc + calculatePortion(trx, personId);
+    }
+    return acc;
+  }, 0);
+
+export const getTotalDebtOfAPersonToAnother = (
+  trxs: Transaction[],
+  lenderId: string,
+  borrowerId: string
+) =>
+  trxs.reduce((acc, trx) => {
+    if (lenderId === borrowerId) return acc;
+    if (trx.paidBy === lenderId && trx.split[borrowerId]) {
+      return acc - calculatePortion(trx, borrowerId);
+    } else if (trx.paidBy === borrowerId && trx.split[lenderId]) {
+      return acc + calculatePortion(trx, borrowerId);
+    }
+    return acc;
+  }, 0);

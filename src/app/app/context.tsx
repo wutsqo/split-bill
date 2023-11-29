@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, FC, useContext, useState } from "react";
+import { createContext, FC, useContext, useState, useMemo } from "react";
 import {
   AppContextProviderProps,
   AppContextValue,
@@ -25,6 +25,7 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
     LOCALSTORAGE_KEYS.TRANSACTIONS,
     []
   );
+  const [simplifyDebts, setSimplifyDebts] = useState<boolean>(false);
 
   const addPerson = (name: string) => {
     const newPerson: Person = {
@@ -53,6 +54,8 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
     transactions,
     addTransaction,
     removeTransaction,
+    simplifyDebts,
+    setSimplifyDebts,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

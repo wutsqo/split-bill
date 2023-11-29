@@ -34,6 +34,8 @@ export interface AppContextValue {
   transactions: Transaction[];
   addTransaction: (transaction: Transaction) => void;
   removeTransaction: (id: string) => void;
+  simplifyDebts: boolean;
+  setSimplifyDebts: (simplifyDebts: boolean) => void;
 }
 
 export interface AppContextProviderProps {
