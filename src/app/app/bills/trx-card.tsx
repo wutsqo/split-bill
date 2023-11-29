@@ -2,13 +2,14 @@ import { FC } from "react";
 import { Person, Transaction } from "../type";
 import { createAvatar } from "@dicebear/core";
 import { funEmoji } from "@dicebear/collection";
+import { DELETED_USER } from "../constant";
 
 interface TrxCardProps {
   trx: Transaction;
   person: Person;
 }
 
-export const TrxCard: FC<TrxCardProps> = ({ trx, person }) => {
+export const TrxCard: FC<TrxCardProps> = ({ trx, person = DELETED_USER }) => {
   return (
     <div className="card card-compact bg-base-200">
       <div className="card-body">

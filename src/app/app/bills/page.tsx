@@ -4,8 +4,7 @@ import { useAppContext } from "../context";
 import { useRef } from "react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import useFormState from "@/hooks/useFormState";
-import { required, validate } from "@/utils/forms";
-
+import { isNumber, required, validate } from "@/utils/forms";
 import { SplitType, SplitTypeLabel } from "../type";
 import { SplitEqualForm } from "./split-equals-form";
 import { SplitExactForm } from "./split-exact-form";
@@ -29,7 +28,7 @@ export default function Page() {
     },
     {
       name: validate([required]),
-      amount: validate([required]),
+      amount: validate([required, isNumber]),
       paidBy: validate([required]),
       date: validate([required]),
     }

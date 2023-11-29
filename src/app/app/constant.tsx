@@ -1,12 +1,15 @@
-import { ITab } from "@/components/tabs/type";
-
 export enum TAB_IDS {
   PEOPLE = "people",
   BILLS = "bills",
   SUMMARY = "summary",
 }
 
-export const TABS: ITab[] = [
+export interface Tab {
+  id: TAB_IDS;
+  label: string;
+}
+
+export const TABS: Tab[] = [
   {
     id: TAB_IDS.PEOPLE,
     label: "People",
@@ -24,4 +27,8 @@ export const TABS: ITab[] = [
 export const LOCALSTORAGE_KEYS = {
   PEOPLE: "people",
   TRANSACTIONS: "transactions",
+};
+
+export const DELETED_USER = {
+  name: "Deleted Person",
 };

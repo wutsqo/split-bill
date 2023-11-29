@@ -16,3 +16,8 @@ export function required(value: any) {
   if (value === "" || value === null) return "This field is required";
   return "";
 }
+
+export function isNumber(value: any) {
+  if (isNaN(value)) return "This field must be a number";
+  return "";
+}
