@@ -1,26 +1,16 @@
 import { FC } from "react";
-import { Person, SplitType, Transaction } from "../type";
+import { Person, Transaction } from "../type";
 import { DELETED_USER } from "../constant";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useAppContext } from "../context";
 import { PersonLabel } from "../person";
 import { formatMoney } from "@/utils/common";
+import { calculatePortion } from "@/utils/core";
 
 interface TrxCardProps {
   trx: Transaction;
   person: Person;
 }
-
-const calculateOwed = (trx: Transaction, personId: string) => {
-  switch (trx.splitType) {
-    case SplitType.EQUAL:
-      return trx.amount / Object.keys(trx.split).length;
-    case SplitType.PERCENT:
-      return (trx.amount * trx.split[personId]) / 100;
-    case SplitType.EXACT:
-      return trx.split[personId];
-  }
-};
 
 export const TrxCard: FC<TrxCardProps> = ({ trx, person = DELETED_USER }) => {
   const { people, removeTransaction } = useAppContext();
@@ -46,6 +36,7 @@ export const TrxCard: FC<TrxCardProps> = ({ trx, person = DELETED_USER }) => {
           <div className="card-body">
             {Object.keys(trx.split)
               .filter((personId) => personId !== person.id)
+              .filter((personId) => trx.split[personId] > 0)
               .map((personId) => (
                 <div key={personId} className="flex justify-between">
                   <PersonLabel
@@ -54,7 +45,7 @@ export const TrxCard: FC<TrxCardProps> = ({ trx, person = DELETED_USER }) => {
                     size="sm"
                   />
 
-                  <div>{formatMoney(calculateOwed(trx, personId))}</div>
+                  <div>{formatMoney(calculatePortion(trx, personId))}</div>
                 </div>
               ))}
           </div>
