@@ -23,7 +23,7 @@ const calculateOwed = (trx: Transaction, personId: string) => {
 };
 
 export const TrxCard: FC<TrxCardProps> = ({ trx, person = DELETED_USER }) => {
-  const { people } = useAppContext();
+  const { people, removeTransaction } = useAppContext();
 
   return (
     <div className="card card-compact bg-base-200">
@@ -61,7 +61,11 @@ export const TrxCard: FC<TrxCardProps> = ({ trx, person = DELETED_USER }) => {
         </div>
 
         <div className="card-actions justify-end join">
-          <button className="btn btn-ghost btn-sm join-item text-error">
+          <button
+            className="btn btn-ghost btn-sm join-item text-error"
+            type="button"
+            onClick={() => removeTransaction(trx.id)}
+          >
             <TrashIcon className="w-4 h-4" />
             Delete
           </button>
