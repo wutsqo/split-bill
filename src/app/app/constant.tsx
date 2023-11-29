@@ -30,5 +30,6 @@ export const LOCALSTORAGE_KEYS = {
 };
 
 export const DELETED_USER = {
+  id: "deleted",
   name: "Deleted Person",
 };
