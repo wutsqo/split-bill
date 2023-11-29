@@ -4,11 +4,13 @@ import { createContext, FC, useContext, useState, useMemo } from "react";
 import {
   AppContextProviderProps,
   AppContextValue,
+  Debt,
   Person,
   Transaction,
 } from "./type";
 import { useLocalStorageState } from "@/hooks/useLocalStorageState";
 import { LOCALSTORAGE_KEYS } from "./constant";
+import { generateDebtFromTransaction } from "@/utils/core";
 
 export const AppContext = createContext<AppContextValue>({} as AppContextValue);
 
@@ -23,6 +25,10 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
   );
   const [transactions, setTransactions] = useLocalStorageState<Transaction[]>(
     LOCALSTORAGE_KEYS.TRANSACTIONS,
+    []
+  );
+  const [debts, setDebts] = useLocalStorageState<Debt[]>(
+    LOCALSTORAGE_KEYS.DEBTS,
     []
   );
   const [simplifyDebts, setSimplifyDebts] = useState<boolean>(false);
@@ -41,10 +47,12 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
 
   const addTransaction = (trx: Transaction) => {
     setTransactions([...transactions, trx]);
+    setDebts((prev) => [...prev, ...generateDebtFromTransaction(trx)]);
   };
 
   const removeTransaction = (id: string) => {
     setTransactions(transactions.filter((trx) => trx.id !== id));
+    setDebts((prev) => prev.filter((debt) => debt.transactionId !== id));
   };
 
   const value: AppContextValue = {
@@ -56,6 +64,7 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
     removeTransaction,
     simplifyDebts,
     setSimplifyDebts,
+    debts,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

@@ -27,6 +27,13 @@ export interface Transaction {
   };
 }
 
+export interface Debt {
+  lenderId: string;
+  borrowerId: string;
+  amount: number;
+  transactionId: string;
+}
+
 export interface AppContextValue {
   people: Person[];
   addPerson: (name: string) => void;
@@ -34,6 +41,7 @@ export interface AppContextValue {
   transactions: Transaction[];
   addTransaction: (transaction: Transaction) => void;
   removeTransaction: (id: string) => void;
+  debts: Debt[];
   simplifyDebts: boolean;
   setSimplifyDebts: (simplifyDebts: boolean) => void;
 }

@@ -27,6 +27,7 @@ export const TABS: Tab[] = [
 export const LOCALSTORAGE_KEYS = {
   PEOPLE: "people",
   TRANSACTIONS: "transactions",
+  DEBTS: "debts",
 };
 
 export const DELETED_USER = {
