@@ -55,6 +55,12 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
     setDebts((prev) => prev.filter((debt) => debt.transactionId !== id));
   };
 
+  const reset = () => {
+    setPeople([]);
+    setTransactions([]);
+    setDebts([]);
+  };
+
   const value: AppContextValue = {
     people,
     addPerson,
@@ -65,6 +71,7 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
     simplifyDebts,
     setSimplifyDebts,
     debts,
+    reset,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

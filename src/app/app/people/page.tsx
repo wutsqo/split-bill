@@ -5,10 +5,12 @@ import { createAvatar } from "@dicebear/core";
 import { funEmoji } from "@dicebear/collection";
 import Link from "next/link";
 import useLogic from "./logic";
+import { useAppContext } from "../context";
 
 export default function Page() {
   const { data, isValid, onSubmit, people, removePerson, updateData } =
     useLogic();
+  const { reset } = useAppContext();
 
   return (
     <div className="py-4 flex flex-col gap-4">
@@ -34,7 +36,19 @@ export default function Page() {
       </div>
       <div className="card bg-base-200">
         <div className="card-body">
-          <div className="card-title">People</div>
+          <div className="flex justify-between items-center">
+            <div className="card-title">People</div>
+            <div className="">
+              <button
+                className="btn btn-ghost btn-sm text-error"
+                onClick={reset}
+              >
+                <TrashIcon className="w-4 h-4" />
+                Reset All
+              </button>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
             {people.map((person) => (
               <div key={person.id} className="card card-compact bg-base-100">
@@ -48,7 +62,7 @@ export default function Page() {
                     className="mask mask-squircle w-12 h-12"
                   />
                   <div className="w-full">{person.name}</div>
-                  <div className="join shrink-0">
+                  <div className="join shrink-0 hidden">
                     <button
                       className="btn btn-ghost join-item"
                       type="button"

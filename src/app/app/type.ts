@@ -44,6 +44,7 @@ export interface AppContextValue {
   debts: Debt[];
   simplifyDebts: boolean;
   setSimplifyDebts: (simplifyDebts: boolean) => void;
+  reset: () => void;
 }
 
 export interface AppContextProviderProps {
