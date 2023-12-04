@@ -46,21 +46,6 @@ export const calculateNewBalances = (
   debts: Debt[]
 ): Person[] => people.map((person) => getBalanceOfAPerson(person, debts));
 
-export const getTotalDebtOfAPersonToAnother = (
-  debts: Debt[],
-  lenderId: string,
-  borrowerId: string
-) =>
-  debts.reduce((acc, debt) => {
-    if (lenderId === borrowerId) return acc;
-    if (debt.lenderId === lenderId && debt.borrowerId === borrowerId) {
-      return acc - debt.amount;
-    } else if (debt.lenderId === borrowerId && debt.borrowerId === lenderId) {
-      return acc + debt.amount;
-    }
-    return acc;
-  }, 0);
-
 export const generateDebtFromTransaction = (trx: Transaction) => {
   return Object.keys(trx.split).reduce((acc, personId) => {
     const lenderId = trx.paidBy;
