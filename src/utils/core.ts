@@ -18,22 +18,17 @@ export const calculatePortion = (
 export const getBalanceOfAPerson = (person: Person, debts: Debt[]): Person =>
   debts.reduce(
     (acc, debt) => {
-      if (debt.lenderId === person.id) {
+      const isLender = debt.lenderId === person.id;
+      const isBorrower = debt.borrowerId === person.id;
+      if (isLender || isBorrower) {
+        const amount = isLender ? debt.amount : -debt.amount;
+        const counterPartyId = isLender ? debt.borrowerId : debt.lenderId;
         return {
           ...acc,
-          balance: acc.balance + debt.amount,
+          balance: acc.balance + amount,
           paysTo: {
             ...acc.paysTo,
-            [debt.borrowerId]: (acc.paysTo[debt.borrowerId] || 0) - debt.amount,
-          },
-        };
-      } else if (debt.borrowerId === person.id) {
-        return {
-          ...acc,
-          balance: acc.balance - debt.amount,
-          paysTo: {
-            ...acc.paysTo,
-            [debt.lenderId]: (acc.paysTo[debt.lenderId] || 0) + debt.amount,
+            [counterPartyId]: (acc.paysTo[counterPartyId] || 0) - amount,
           },
         };
       }
