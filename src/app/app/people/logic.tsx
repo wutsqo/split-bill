@@ -13,7 +13,7 @@ export default function useLogic() {
       name: validate([required]),
     }
   );
-  const { people, addPerson, removePerson } = useAppContext();
+  const { addPerson } = useAppContext();
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     addPerson(data.name);
@@ -25,9 +25,7 @@ export default function useLogic() {
     updateData,
     isValid,
     resetData,
-    people,
     addPerson,
-    removePerson,
     onSubmit,
   };
 }

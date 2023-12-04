@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, FC, useContext, useState, useMemo } from "react";
+import { createContext, FC, useContext, useState, useEffect } from "react";
 import {
   AppContextProviderProps,
   AppContextValue,
@@ -10,7 +10,10 @@ import {
 } from "./type";
 import { useLocalStorageState } from "@/hooks/useLocalStorageState";
 import { LOCALSTORAGE_KEYS } from "./constant";
-import { generateDebtFromTransaction } from "@/utils/core";
+import {
+  calculateNewBalances,
+  generateDebtFromTransaction,
+} from "@/utils/core";
 
 export const AppContext = createContext<AppContextValue>({} as AppContextValue);
 
@@ -37,12 +40,10 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
     const newPerson: Person = {
       id: new Date().getTime().toString(),
       name,
+      balance: 0,
+      paysTo: {},
     };
     setPeople([...people, newPerson]);
-  };
-
-  const removePerson = (id: string) => {
-    setPeople(people.filter((person) => person.id !== id));
   };
 
   const addTransaction = (trx: Transaction) => {
@@ -61,10 +62,14 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
     setDebts([]);
   };
 
+  useEffect(() => {
+    setPeople((prev) => calculateNewBalances(prev, debts));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debts]);
+
   const value: AppContextValue = {
     people,
     addPerson,
-    removePerson,
     transactions,
     addTransaction,
     removeTransaction,

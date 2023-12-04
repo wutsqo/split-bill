@@ -8,9 +8,8 @@ import useLogic from "./logic";
 import { useAppContext } from "../context";
 
 export default function Page() {
-  const { data, isValid, onSubmit, people, removePerson, updateData } =
-    useLogic();
-  const { reset } = useAppContext();
+  const { data, isValid, onSubmit, updateData } = useLogic();
+  const { reset, people } = useAppContext();
 
   return (
     <div className="py-4 flex flex-col gap-4">
@@ -62,15 +61,6 @@ export default function Page() {
                     className="mask mask-squircle w-12 h-12"
                   />
                   <div className="w-full">{person.name}</div>
-                  <div className="join shrink-0 hidden">
-                    <button
-                      className="btn btn-ghost join-item"
-                      type="button"
-                      onClick={() => removePerson(person.id)}
-                    >
-                      <TrashIcon className="w-4 h-4 text-red-500" />
-                    </button>
-                  </div>
                 </div>
               </div>
             ))}

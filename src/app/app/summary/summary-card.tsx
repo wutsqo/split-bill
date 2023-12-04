@@ -1,37 +1,24 @@
 import { FC } from "react";
 import { useAppContext } from "../context";
-import { DELETED_USER } from "../constant";
 import { PersonLabel } from "../person";
 import { formatMoney } from "@/utils/common";
-import {
-  getTotalDebtOfAPerson,
-  getTotalDebtOfAPersonToAnother,
-} from "@/utils/core";
 
 interface SummaryCardProps {
   personId: string;
 }
 
 export const SummaryCard: FC<SummaryCardProps> = ({ personId }) => {
-  const { people, debts } = useAppContext();
+  const { people } = useAppContext();
 
-  const person =
-    people.find((person) => person.id === personId) ?? DELETED_USER;
-
-  const totalDebt = getTotalDebtOfAPerson(debts, personId);
-  const totalOwedTo = totalDebt > 0 ? totalDebt : 0;
-
-  const debtSeparatedByPerson = people.reduce((acc, personTheyOwed) => {
-    const amount = getTotalDebtOfAPersonToAnother(
-      debts,
-      personId,
-      personTheyOwed.id
-    );
-
-    return [...acc, { name: personTheyOwed.name, amount }];
-  }, [] as { name: string; amount: number }[]);
-
-  const owesTo = debtSeparatedByPerson.filter((person) => person.amount > 0);
+  const person = people.find((person) => person.id === personId)!;
+  const debtsByPerson = Object.keys(person.paysTo).map((personId) => ({
+    id: personId,
+    amount: person.paysTo[personId],
+  }));
+  const givesTo = debtsByPerson.filter((debt) => debt.amount > 0);
+  const receivesFrom = debtsByPerson.filter((debt) => debt.amount < 0);
+  const givesToTotal = givesTo.reduce((a, b) => a + b.amount, 0);
+  const receivesFromTotal = receivesFrom.reduce((a, b) => a - b.amount, 0);
 
   return (
     <div className="card card-compact bg-base-200" key={person.id}>
@@ -40,16 +27,43 @@ export const SummaryCard: FC<SummaryCardProps> = ({ personId }) => {
           <PersonLabel name={person.name} />
         </div>
         <div className="flex justify-between mt-2 items-center">
-          <div>Owes in total</div>
-          <div>{totalOwedTo ? formatMoney(totalOwedTo) : "Nothing"}</div>
+          <div>Gives in total</div>
+          <div>{givesToTotal ? formatMoney(givesToTotal) : "Nothing"}</div>
         </div>
-        {owesTo.length === 0 ? null : (
+        {givesToTotal === 0 ? null : (
           <div className="card card-compact bg-base-100">
             <div className="card-body">
-              {owesTo.map((person) => (
-                <div key={person.name} className="flex justify-between">
-                  <PersonLabel name={person.name} prefix="To" size="sm" />
-                  <div>{formatMoney(person.amount)}</div>
+              {givesTo.map((debt) => (
+                <div key={debt.id} className="flex justify-between">
+                  <PersonLabel
+                    name={people.find((person) => person.id === debt.id)!.name}
+                    prefix="To"
+                    size="sm"
+                  />
+                  <div>{formatMoney(debt.amount)}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="flex justify-between mt-2 items-center">
+          <div>Receives in total</div>
+          <div>
+            {receivesFromTotal ? formatMoney(receivesFromTotal) : "Nothing"}
+          </div>
+        </div>
+        {receivesFromTotal === 0 ? null : (
+          <div className="card card-compact bg-base-100">
+            <div className="card-body">
+              {receivesFrom.map((debt) => (
+                <div key={debt.id} className="flex justify-between">
+                  <PersonLabel
+                    name={people.find((person) => person.id === debt.id)!.name}
+                    prefix="From"
+                    size="sm"
+                  />
+                  <div>{formatMoney(-debt.amount)}</div>
                 </div>
               ))}
             </div>

@@ -1,4 +1,4 @@
-import { Debt, SplitType, Transaction } from "@/app/app/type";
+import { Debt, Person, SplitType, Transaction } from "@/app/app/type";
 
 export const calculatePortion = (
   trx: Transaction,
@@ -15,15 +15,41 @@ export const calculatePortion = (
   }
 };
 
-export const getTotalDebtOfAPerson = (debts: Debt[], personId: string) =>
-  debts.reduce((acc, debt) => {
-    if (debt.lenderId === personId) {
-      return acc - debt.amount;
-    } else if (debt.borrowerId === personId) {
-      return acc + debt.amount;
+export const getBalanceOfAPerson = (person: Person, debts: Debt[]): Person =>
+  debts.reduce(
+    (acc, debt) => {
+      if (debt.lenderId === person.id) {
+        return {
+          ...acc,
+          balance: acc.balance + debt.amount,
+          paysTo: {
+            ...acc.paysTo,
+            [debt.borrowerId]: (acc.paysTo[debt.borrowerId] || 0) - debt.amount,
+          },
+        };
+      } else if (debt.borrowerId === person.id) {
+        return {
+          ...acc,
+          balance: acc.balance - debt.amount,
+          paysTo: {
+            ...acc.paysTo,
+            [debt.lenderId]: (acc.paysTo[debt.lenderId] || 0) + debt.amount,
+          },
+        };
+      }
+      return acc;
+    },
+    {
+      ...person,
+      balance: 0,
+      paysTo: {} as Record<string, number>,
     }
-    return acc;
-  }, 0);
+  );
+
+export const calculateNewBalances = (
+  people: Person[],
+  debts: Debt[]
+): Person[] => people.map((person) => getBalanceOfAPerson(person, debts));
 
 export const getTotalDebtOfAPersonToAnother = (
   debts: Debt[],
