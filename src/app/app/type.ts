@@ -42,8 +42,8 @@ export interface AppContextValue {
   addTransaction: (transaction: Transaction) => void;
   removeTransaction: (id: string) => void;
   debts: Debt[];
-  simplifyDebts: boolean;
-  setSimplifyDebts: (simplifyDebts: boolean) => void;
+  preferSimplified: boolean;
+  setPreferSimplified: (preferSimplified: boolean) => void;
   reset: () => void;
 }
 

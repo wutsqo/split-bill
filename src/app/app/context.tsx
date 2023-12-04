@@ -31,7 +31,7 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
     LOCALSTORAGE_KEYS.DEBTS,
     []
   );
-  const [simplifyDebts, setSimplifyDebts] = useState<boolean>(false);
+  const [preferSimplified, setPreferSimplified] = useState<boolean>(false);
 
   const addPerson = (name: string) => {
     const newPerson: Person = {
@@ -68,8 +68,8 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
     transactions,
     addTransaction,
     removeTransaction,
-    simplifyDebts,
-    setSimplifyDebts,
+    preferSimplified,
+    setPreferSimplified,
     debts,
     reset,
   };
