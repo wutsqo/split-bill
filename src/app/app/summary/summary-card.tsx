@@ -2,28 +2,28 @@ import { FC } from "react";
 import { useAppContext } from "../context";
 import { DELETED_USER } from "../constant";
 import { PersonLabel } from "../person";
+import { formatMoney } from "@/utils/common";
 import {
   getTotalDebtOfAPerson,
   getTotalDebtOfAPersonToAnother,
 } from "@/utils/core";
-import { formatMoney } from "@/utils/common";
 
 interface SummaryCardProps {
   personId: string;
 }
 
 export const SummaryCard: FC<SummaryCardProps> = ({ personId }) => {
-  const { people, transactions, simplifyDebts } = useAppContext();
+  const { people, debts } = useAppContext();
 
   const person =
     people.find((person) => person.id === personId) ?? DELETED_USER;
 
-  const totalDebt = getTotalDebtOfAPerson(transactions, personId);
+  const totalDebt = getTotalDebtOfAPerson(debts, personId);
   const totalOwedTo = totalDebt > 0 ? totalDebt : 0;
 
   const debtSeparatedByPerson = people.reduce((acc, personTheyOwed) => {
     const amount = getTotalDebtOfAPersonToAnother(
-      transactions,
+      debts,
       personId,
       personTheyOwed.id
     );

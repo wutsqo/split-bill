@@ -15,27 +15,27 @@ export const calculatePortion = (
   }
 };
 
-export const getTotalDebtOfAPerson = (trxs: Transaction[], personId: string) =>
-  trxs.reduce((acc, trx) => {
-    if (trx.paidBy === personId) {
-      return acc - calculatePortion(trx, personId);
-    } else if (trx.split[personId]) {
-      return acc + calculatePortion(trx, personId);
+export const getTotalDebtOfAPerson = (debts: Debt[], personId: string) =>
+  debts.reduce((acc, debt) => {
+    if (debt.lenderId === personId) {
+      return acc - debt.amount;
+    } else if (debt.borrowerId === personId) {
+      return acc + debt.amount;
     }
     return acc;
   }, 0);
 
 export const getTotalDebtOfAPersonToAnother = (
-  trxs: Transaction[],
+  debts: Debt[],
   lenderId: string,
   borrowerId: string
 ) =>
-  trxs.reduce((acc, trx) => {
+  debts.reduce((acc, debt) => {
     if (lenderId === borrowerId) return acc;
-    if (trx.paidBy === lenderId && trx.split[borrowerId]) {
-      return acc - calculatePortion(trx, borrowerId);
-    } else if (trx.paidBy === borrowerId && trx.split[lenderId]) {
-      return acc + calculatePortion(trx, borrowerId);
+    if (debt.lenderId === lenderId && debt.borrowerId === borrowerId) {
+      return acc - debt.amount;
+    } else if (debt.lenderId === borrowerId && debt.borrowerId === lenderId) {
+      return acc + debt.amount;
     }
     return acc;
   }, 0);
