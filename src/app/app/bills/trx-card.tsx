@@ -5,7 +5,6 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 import { useAppContext } from "../context";
 import { PersonLabel } from "../person";
 import { formatMoney } from "@/utils/common";
-import { calculatePortion } from "@/utils/core";
 
 interface TrxCardProps {
   trx: Transaction;
@@ -13,7 +12,7 @@ interface TrxCardProps {
 }
 
 export const TrxCard: FC<TrxCardProps> = ({ trx, person = DELETED_USER }) => {
-  const { people, removeTransaction } = useAppContext();
+  const { people, removeTransaction, debts } = useAppContext();
 
   return (
     <div className="card card-compact bg-base-200">
@@ -34,18 +33,23 @@ export const TrxCard: FC<TrxCardProps> = ({ trx, person = DELETED_USER }) => {
 
         <div className="card card-compact bg-base-100 mt-1">
           <div className="card-body">
-            {Object.keys(trx.split)
-              .filter((personId) => personId !== person.id)
-              .filter((personId) => trx.split[personId] > 0)
-              .map((personId) => (
-                <div key={personId} className="flex justify-between">
+            {debts
+              .filter((debt) => debt.transactionId === trx.id)
+              .map((debt) => (
+                <div
+                  key={`${debt.transactionId}-${debt.borrowerId}-${debt.lenderId}`}
+                  className="flex justify-between"
+                >
                   <PersonLabel
-                    name={people.find((person) => person.id === personId)?.name}
+                    name={
+                      people.find((person) => person.id === debt.borrowerId)
+                        ?.name
+                    }
                     suffix="owes"
                     size="sm"
                   />
 
-                  <div>{formatMoney(calculatePortion(trx, personId))}</div>
+                  <div>{formatMoney(debt.amount)}</div>
                 </div>
               ))}
           </div>
