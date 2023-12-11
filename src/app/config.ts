@@ -1,1 +1,1 @@
-export const appName = "SplitBill";
+export const appName = "Debt Simplifier";
