@@ -7,7 +7,9 @@ export const calculatePortion = (
   if (!trx.split[personId]) return 0;
   switch (trx.splitType) {
     case SplitType.EQUAL:
-      return trx.amount / Object.values(trx.split).filter((v) => v).length;
+      return (
+        trx.amount / Object.values(trx.split).filter((v) => v.amount).length
+      );
     case SplitType.PERCENT:
       return (trx.amount * trx.split[personId].amount) / 100;
     case SplitType.EXACT:
