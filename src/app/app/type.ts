@@ -22,10 +22,17 @@ export interface Transaction {
   name: string;
   amount: number;
   date: Date;
-  paidBy: string;
+  paidBy: {
+    id: string;
+    name: string;
+  };
   splitType: SplitType;
   split: {
-    [key: string]: number;
+    [key: string]: {
+      id: string;
+      name: string;
+      amount: number;
+    };
   };
 }
 

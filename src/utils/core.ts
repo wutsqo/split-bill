@@ -9,9 +9,9 @@ export const calculatePortion = (
     case SplitType.EQUAL:
       return trx.amount / Object.values(trx.split).filter((v) => v).length;
     case SplitType.PERCENT:
-      return (trx.amount * trx.split[personId]) / 100;
+      return (trx.amount * trx.split[personId].amount) / 100;
     case SplitType.EXACT:
-      return trx.split[personId];
+      return trx.split[personId].amount;
   }
 };
 
@@ -48,7 +48,7 @@ export const calculateNewBalances = (
 
 export const generateDebtFromTransaction = (trx: Transaction) => {
   return Object.keys(trx.split).reduce((acc, personId) => {
-    const lenderId = trx.paidBy;
+    const lenderId = trx.paidBy.id;
     const borrowerId = personId;
     if (lenderId === borrowerId) return acc;
     const amount = calculatePortion(trx, personId);
