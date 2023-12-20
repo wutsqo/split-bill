@@ -10,6 +10,7 @@ import { SplitEqualForm } from "./split-equals-form";
 import { SplitExactForm } from "./split-exact-form";
 import { SplitPercentForm } from "./split-percent-form";
 import { TrxCard } from "./trx-card";
+import axios from "axios";
 
 export default function Page() {
   const { people, addTransaction, transactions } = useAppContext();
@@ -124,6 +125,22 @@ export default function Page() {
     resetData();
   };
 
+  const onExport = () => {
+    axios
+      .post("/api/trx/csv", {
+        transactions,
+        people,
+      })
+      .then((res) => {
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "transactions.csv");
+        document.body.appendChild(link);
+        link.click();
+      });
+  };
+
   return (
     <div className="py-4 flex flex-col gap-4">
       <div className="join w-full">
@@ -138,7 +155,8 @@ export default function Page() {
         <button
           type="button"
           className="btn join-item w-1/2 "
-          onClick={() => {}}
+          onClick={onExport}
+          disabled={transactions.length === 0}
         >
           <ArrowDownTrayIcon className="h-5 w-5 mr-2" />
           Export CSV
