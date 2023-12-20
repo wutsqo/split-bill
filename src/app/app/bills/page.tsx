@@ -2,7 +2,7 @@
 
 import { useAppContext } from "../context";
 import { useRef } from "react";
-import { PlusIcon } from "@heroicons/react/24/outline";
+import { PlusIcon, ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import useFormState from "@/hooks/useFormState";
 import { isNumber, required, validate } from "@/utils/forms";
 import { SplitType, SplitTypeLabel } from "../type";
@@ -89,10 +89,36 @@ export default function Page() {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isValid || !isSplitValid()) return;
+    const split = Object.keys(data.split).reduce(
+      (acc, key) => ({
+        ...acc,
+        [key]: {
+          amount: data.split[key],
+          id: key,
+          name: people.find((p) => p.id === key)?.name ?? "",
+        },
+      }),
+      {} as Record<
+        string,
+        {
+          amount: number;
+          id: string;
+          name: string;
+        }
+      >
+    );
+
     addTransaction({
       id: Date.now().toString(),
-      ...data,
       date: new Date(data.date),
+      amount: data.amount,
+      name: data.name,
+      paidBy: {
+        id: data.paidBy,
+        name: people.find((p) => p.id === data.paidBy)?.name ?? "",
+      },
+      splitType: data.splitType,
+      split,
     });
     newTrxModal.current?.close();
     resetData();
@@ -100,18 +126,28 @@ export default function Page() {
 
   return (
     <div className="py-4 flex flex-col gap-4">
-      <button
-        type="button"
-        className="btn"
-        onClick={() => newTrxModal.current?.showModal()}
-      >
-        <PlusIcon className="h-5 w-5 mr-2" />
-        Add Transaction
-      </button>
+      <div className="join w-full">
+        <button
+          type="button"
+          className="btn join-item w-1/2 "
+          onClick={() => newTrxModal.current?.showModal()}
+        >
+          <PlusIcon className="h-5 w-5 mr-2" />
+          Add Transaction
+        </button>
+        <button
+          type="button"
+          className="btn join-item w-1/2 "
+          onClick={() => {}}
+        >
+          <ArrowDownTrayIcon className="h-5 w-5 mr-2" />
+          Export CSV
+        </button>
+      </div>
 
       {transactions.map((trx) => (
         <TrxCard
-          person={people.find((p) => p.id === trx.paidBy)!}
+          person={people.find((p) => p.id === trx.paidBy.id)!}
           trx={trx}
           key={trx.id}
         />
