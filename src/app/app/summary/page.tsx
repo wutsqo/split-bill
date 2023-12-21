@@ -16,7 +16,7 @@ export default function Page() {
 
   return (
     <div className="py-4 flex flex-col gap-4">
-      <div className="card card-compact bg-base-200">
+      <div className="card card-compact bg-base-200 hidden">
         <div className="card-body">
           <div className="form-control">
             <label className="label cursor-pointer">
