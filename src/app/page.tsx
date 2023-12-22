@@ -12,7 +12,7 @@ export default function Home() {
               <div className="artboard artboard-demo phone-1 bg-white">
                 <iframe
                   className="w-full h-full iframehero pt-4"
-                  src={SITE_URL}
+                  src={`${SITE_URL}/app`}
                   loading="lazy"
                 ></iframe>
               </div>
