@@ -146,7 +146,7 @@ export default function Page() {
       <div className="join w-full">
         <button
           type="button"
-          className="btn join-item w-1/2 "
+          className="btn text-xs join-item w-1/2 "
           onClick={() => newTrxModal.current?.showModal()}
         >
           <PlusIcon className="h-5 w-5 mr-2" />
@@ -154,7 +154,7 @@ export default function Page() {
         </button>
         <button
           type="button"
-          className="btn join-item w-1/2 "
+          className="btn text-xs join-item w-1/2 "
           onClick={onExport}
           disabled={transactions.length === 0}
         >
