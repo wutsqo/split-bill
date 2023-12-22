@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { appName } from "./config";
-import Image from "next/image";
-import HeroImage from "@images/hero.png";
+import { SITE_URL, appName } from "./config";
 
 export default function Home() {
   return (
@@ -14,7 +12,7 @@ export default function Home() {
               <div className="artboard artboard-demo phone-1 bg-white">
                 <iframe
                   className="w-full h-full iframehero pt-4"
-                  src="http://localhost:3000/app"
+                  src={SITE_URL}
                   loading="lazy"
                 ></iframe>
               </div>
