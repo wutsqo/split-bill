@@ -6,10 +6,13 @@ import { funEmoji } from "@dicebear/collection";
 import Link from "next/link";
 import useLogic from "./logic";
 import { useAppContext } from "../context";
+import { useRouter } from "next/navigation";
+import { isInIframe } from "@/utils/common";
 
 export default function Page() {
   const { data, isValid, onSubmit, updateData } = useLogic();
   const { reset, people } = useAppContext();
+  const router = useRouter();
 
   return (
     <div className="py-4 flex flex-col gap-4">
@@ -76,9 +79,22 @@ export default function Page() {
         </div>
       </div>
       {people.length > 0 ? (
-        <Link href="/app/bills" className="btn">
+        <button
+          className="btn"
+          onClick={() => {
+            if (isInIframe()) {
+              if (window.top) {
+                window.top.location.href = "/app/bills";
+              } else {
+                router.push("/app/bills");
+              }
+            } else {
+              router.push("/app/bills");
+            }
+          }}
+        >
           Next
-        </Link>
+        </button>
       ) : null}
     </div>
   );
