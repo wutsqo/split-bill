@@ -11,7 +11,7 @@ export default function Home() {
           <div className="mockup-phone hidden lg:block">
             <div className="camera"></div>
             <div className="display">
-              <div className="artboard artboard-demo phone-2 bg-white">
+              <div className="artboard artboard-demo phone-1 bg-white">
                 <iframe
                   className="w-full h-full iframehero pt-4"
                   src="http://localhost:3000/app"
