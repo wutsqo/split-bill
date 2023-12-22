@@ -14,3 +14,12 @@ export function formatMoney(value: number) {
     maximumFractionDigits: 0,
   });
 }
+
+export function isInIframe() {
+  if (!isRunningInBrowser()) return false;
+  try {
+    return window.self !== window.top;
+  } catch (e) {
+    return true;
+  }
+}
