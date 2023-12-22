@@ -1,17 +1,38 @@
 import Link from "next/link";
 import { appName } from "./config";
-import { redirect } from "next/navigation";
+import Image from "next/image";
+import HeroImage from "@images/hero.png";
 
 export default function Home() {
-  return redirect("/app");
-
   return (
-    <main className="container mx-auto px-4 py-16">
-      <h1>{appName}</h1>
-      <p>Split your bills hassle-free</p>
-      <Link href="/app" className="btn mt-8">
-        Try Now
-      </Link>
+    <main className="container mx-auto">
+      <div className="hero min-h-screen">
+        <div className="hero-content flex-col gap-16 lg:flex-row-reverse">
+          <div className="mockup-phone hidden lg:block">
+            <div className="camera"></div>
+            <div className="display">
+              <div className="artboard artboard-demo phone-2 bg-white">
+                <iframe
+                  className="w-full h-full iframehero pt-4"
+                  src="http://localhost:3000/app"
+                  loading="lazy"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+          <div className="max-w-xl">
+            <h1 className="text-5xl font-bold">{appName}</h1>
+            <p className="py-6">
+              A free tool for friends and roommates to effortlessly track shared
+              expenses and simplify debt calculations, ensuring everyone gets
+              paid back accurately.
+            </p>
+            <Link href="/app">
+              <button className="btn btn-primary">TRY NOW</button>
+            </Link>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
