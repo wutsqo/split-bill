@@ -8,14 +8,20 @@ import EmptyState from "./empty-state";
 import NextButton from "./next-button";
 import { useRef, useState } from "react";
 import RemoveModal from "./remove-modal";
+import ResetModal from "./reset-modal";
 
 export default function Page() {
   const { reset, people, removePerson } = useAppContext();
-  const modalRef = useRef<HTMLDialogElement>(null);
+  const removeModalRef = useRef<HTMLDialogElement>(null);
+  const resetModalRef = useRef<HTMLDialogElement>(null);
   const [toRemove, setToRemove] = useState<string | null>(null);
   const onRemove = (id: string) => {
     removePerson(id);
-    modalRef.current?.close();
+    removeModalRef.current?.close();
+  };
+  const onReset = () => {
+    reset();
+    resetModalRef.current?.close();
   };
 
   return (
@@ -28,7 +34,7 @@ export default function Page() {
             <div className="">
               <button
                 className="btn btn-ghost btn-sm text-error"
-                onClick={reset}
+                onClick={() => resetModalRef.current?.showModal()}
               >
                 <TrashIcon className="w-4 h-4" />
                 Reset All
@@ -43,7 +49,7 @@ export default function Page() {
                 person={person}
                 onRemove={() => {
                   setToRemove(person.id);
-                  modalRef.current?.showModal();
+                  removeModalRef.current?.showModal();
                 }}
               />
             ))}
@@ -52,7 +58,12 @@ export default function Page() {
           {people.length === 0 ? <EmptyState /> : null}
         </div>
       </div>
-      <RemoveModal toRemove={toRemove} ref={modalRef} onRemove={onRemove} />
+      <RemoveModal
+        toRemove={toRemove}
+        ref={removeModalRef}
+        onRemove={onRemove}
+      />
+      <ResetModal ref={resetModalRef} onReset={onReset} />
       <NextButton />
     </div>
   );
