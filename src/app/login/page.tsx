@@ -53,7 +53,9 @@ export default function Login() {
         <div className="max-w-md text-center flex flex-col gap-8">
           <h2>Great! Now check your inbox</h2>
           <p>
-            Please check your inbox at <strong>{data.email}</strong>.
+            <span>
+              Please check your inbox at <strong>{data.email}</strong>.
+            </span>
             <span className="block mt-1">
               We&apos;ve sent the magic link for you to login.
             </span>
