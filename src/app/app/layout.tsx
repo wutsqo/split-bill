@@ -1,3 +1,4 @@
+import AccountModal from "./account-modal";
 import { AppContextProvider } from "./context";
 import Navigation from "./navigation";
 
@@ -12,6 +13,7 @@ export default function Layout({
         <Navigation />
         {children}
       </div>
+      <AccountModal />
     </AppContextProvider>
   );
 }
