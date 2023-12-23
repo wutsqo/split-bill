@@ -35,3 +35,10 @@ export function isEmail(value: any) {
 
   return "";
 }
+
+export function isGreaterThan(data: any) {
+  return (value: any) => {
+    if (value <= data) return "This field must be greater than " + data;
+    return "";
+  };
+}
