@@ -52,7 +52,7 @@ const PersonCard: FC<PersonCardProps> = ({ person, onRemove }) => {
         alt={person.name}
         className="mask mask-squircle w-10 h-10 ml-2"
       />
-      <div className="w-full">
+      <div className="w-full truncate shrink-1">
         {editMode ? (
           <form className="w-full join" onSubmit={onSubmit}>
             <input
@@ -81,7 +81,7 @@ const PersonCard: FC<PersonCardProps> = ({ person, onRemove }) => {
           person.name
         )}
       </div>
-      <div className="join">
+      <div className="join shrink-0">
         {editMode ? null : (
           <>
             <button
