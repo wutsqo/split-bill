@@ -7,7 +7,7 @@ interface OtpSentProps {
 
 const OtpSent: FC<OtpSentProps> = ({ email, onChangeEmail }) => {
   return (
-    <div className="max-w-md text-center flex flex-col gap-8">
+    <div className="max-w-md flex flex-col gap-8">
       <h2>Great! Now check your inbox</h2>
       <p>
         <span>

@@ -67,9 +67,5 @@ export default function Login() {
     }
   };
 
-  return (
-    <div className="mx-auto container px-4 min-h-screen flex items-center justify-center">
-      {renderStep()}
-    </div>
-  );
+  return <div>{renderStep()}</div>;
 }

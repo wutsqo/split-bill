@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { appName } from "../config";
-import Link from "next/link";
 
 interface LoginFormProps {
   email: string;
@@ -19,10 +18,10 @@ const LoginForm: FC<LoginFormProps> = ({
 }) => {
   return (
     <div>
-      <h1>Welcome to {appName}</h1>
-      <form className="mt-8 card" onSubmit={onSubmit}>
+      <h2>Welcome to {appName}</h2>
+      <form className="mt-4 card" onSubmit={onSubmit}>
         <label className="block mb-2" htmlFor="email">
-          Enter your email address
+          Login to sync your data
         </label>
         <input
           className="input input-bordered w-full"
@@ -46,10 +45,18 @@ const LoginForm: FC<LoginFormProps> = ({
       </form>
       {/* <div className="divider">or</div>
       <button className="btn btn-primary w-full">Login with Google</button> */}
-      <div className="mt-4 text-center w-full text-sm">
-        <Link href="/app" className="link">
+      <div className="my-4 text-center w-full text-sm">
+        <button
+          className="link w-full"
+          onClick={() => {
+            const modal = document.getElementById(
+              "account_modal"
+            ) as HTMLDialogElement;
+            modal.close();
+          }}
+        >
           I&apos;ll login later
-        </Link>
+        </button>
       </div>
     </div>
   );
