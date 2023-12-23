@@ -97,7 +97,7 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
         setPeople([
           {
             id: user.id,
-            name: user.user_metadata?.name || user.email,
+            name: user.user_metadata?.name || user.email?.split("@")[0],
             balance: 0,
             paysTo: {},
           },
