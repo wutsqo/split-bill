@@ -45,7 +45,7 @@ export const SplitEqualForm: FC<SplitFormProps> = ({
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={createAvatar(funEmoji, {
-                  seed: person.name,
+                  seed: person.id,
                 }).toDataUriSync()}
                 alt={person.name}
                 className="mask mask-squircle w-8 h-8"

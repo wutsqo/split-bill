@@ -43,6 +43,31 @@ export const getBalanceOfAPerson = (person: Person, debts: Debt[]): Person =>
     }
   );
 
+export const checkIfPersonRemovable = (
+  transactions: Transaction[],
+  id: string
+): {
+  removable: boolean;
+  reason: string;
+  transactions: Transaction[];
+} => {
+  const transactionsInvolvingThePerson = transactions.filter((trx) => {
+    return Object.keys(trx.split).includes(id) || trx.paidBy.id === id;
+  });
+  if (transactionsInvolvingThePerson.length === 0) {
+    return {
+      removable: true,
+      reason: "No transaction involving this person",
+      transactions: [],
+    };
+  }
+  return {
+    removable: false,
+    reason: "This person is involved in some transactions",
+    transactions: transactionsInvolvingThePerson,
+  };
+};
+
 export const calculateNewBalances = (
   people: Person[],
   debts: Debt[]

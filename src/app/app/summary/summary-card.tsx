@@ -24,7 +24,7 @@ export const SummaryCard: FC<SummaryCardProps> = ({ personId }) => {
     <div className="card card-compact bg-base-200" key={person.id}>
       <div className="card-body">
         <div className="text-lg">
-          <PersonLabel name={person.name} />
+          <PersonLabel person={person} />
         </div>
         <div className="flex justify-between mt-2 items-center">
           <div>Gives in total</div>
@@ -36,7 +36,7 @@ export const SummaryCard: FC<SummaryCardProps> = ({ personId }) => {
               {givesTo.map((debt) => (
                 <div key={debt.id} className="flex justify-between">
                   <PersonLabel
-                    name={people.find((person) => person.id === debt.id)!.name}
+                    person={people.find((person) => person.id === debt.id)!}
                     prefix="To"
                     size="sm"
                   />
@@ -59,7 +59,7 @@ export const SummaryCard: FC<SummaryCardProps> = ({ personId }) => {
               {receivesFrom.map((debt) => (
                 <div key={debt.id} className="flex justify-between">
                   <PersonLabel
-                    name={people.find((person) => person.id === debt.id)!.name}
+                    person={people.find((person) => person.id === debt.id)!}
                     prefix="From"
                     size="sm"
                   />

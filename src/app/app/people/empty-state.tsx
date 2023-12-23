@@ -2,11 +2,9 @@ import { LightBulbIcon } from "@heroicons/react/24/outline";
 
 export default function EmptyState() {
   return (
-    <div className="flex flex-col items-center">
-      <LightBulbIcon className="w-12 h-12 text-gray-500" />
-      <div className="text-center text-sm text-gray-500">
-        Add people to start adding transactions
-      </div>
+    <div role="alert" className="alert">
+      <LightBulbIcon className="w-5 h-5 mr-2" />
+      <span>Start by adding at least two people.</span>
     </div>
   );
 }

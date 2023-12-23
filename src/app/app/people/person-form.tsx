@@ -8,7 +8,7 @@ export default function PersonForm() {
   return (
     <div className="card-compact sm:card-normal card bg-base-200">
       <div className="card-body">
-        <h2 className="card-title">Add New Person</h2>
+        <h2 className="card-title text-base">Add New Person</h2>
         <form className="join" onSubmit={onSubmit}>
           <input
             className="input w-full input-bordered join-item"

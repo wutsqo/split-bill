@@ -14,6 +14,8 @@ import {
   calculateNewBalances,
   generateDebtFromTransaction,
 } from "@/utils/core";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { v4 as uuidv4 } from "uuid";
 
 export const AppContext = createContext<AppContextValue>({} as AppContextValue);
 
@@ -22,6 +24,8 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
 }: {
   readonly children: React.ReactNode;
 }) => {
+  const supabase = createClientComponentClient();
+
   const [people, setPeople] = useLocalStorageState<Person[]>(
     LOCALSTORAGE_KEYS.PEOPLE,
     []
@@ -38,12 +42,30 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
 
   const addPerson = (name: string) => {
     const newPerson: Person = {
-      id: new Date().getTime().toString(),
+      id: uuidv4(),
       name,
       balance: 0,
       paysTo: {},
     };
     setPeople([...people, newPerson]);
+  };
+
+  const editPerson = (id: string, name: string) => {
+    setPeople(
+      people.map((person) => {
+        if (person.id === id) {
+          return {
+            ...person,
+            name,
+          };
+        }
+        return person;
+      })
+    );
+  };
+
+  const removePerson = (id: string) => {
+    setPeople(people.filter((person) => person.id !== id));
   };
 
   const addTransaction = (trx: Transaction) => {
@@ -67,9 +89,29 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debts]);
 
+  useEffect(() => {
+    if (people.length !== 0) return;
+    supabase.auth.getSession().then((res) => {
+      if (res.data.session !== null) {
+        const user = res.data.session.user;
+        setPeople([
+          {
+            id: user.id,
+            name: user.user_metadata?.name || user.email?.split("@")[0],
+            balance: 0,
+            paysTo: {},
+          },
+        ]);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [people]);
+
   const value: AppContextValue = {
     people,
     addPerson,
+    editPerson,
+    removePerson,
     transactions,
     addTransaction,
     removeTransaction,
