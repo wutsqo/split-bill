@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SITE_URL, appName } from "./config";
+import { appName } from "./config";
 
 export default function Home() {
   return (
@@ -9,13 +9,7 @@ export default function Home() {
           <div className="mockup-phone hidden lg:block">
             <div className="camera"></div>
             <div className="display">
-              <div className="artboard artboard-demo phone-1 bg-white">
-                <iframe
-                  className="w-full h-full iframehero pt-4"
-                  src={`${SITE_URL}/app`}
-                  loading="lazy"
-                ></iframe>
-              </div>
+              <div className="artboard artboard-demo phone-1 bg-white"></div>
             </div>
           </div>
           <div className="max-w-xl">
@@ -28,12 +22,6 @@ export default function Home() {
             <Link href="/app">
               <button className="btn btn-primary">TRY NOW</button>
             </Link>
-            <p className="mt-16">
-              Already have an account?{" "}
-              <Link href="/login" className="link">
-                Login
-              </Link>
-            </p>
           </div>
         </div>
       </div>
