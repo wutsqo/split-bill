@@ -27,37 +27,41 @@ export default function Page() {
   return (
     <div className="py-4 flex flex-col gap-4">
       <PersonForm />
-      <div className="card card-compact sm:card-normal bg-base-200">
-        <div className="card-body">
-          <div className="flex justify-between items-center">
-            <div className="card-title text-base">People</div>
-            <div className="">
-              <button
-                className="btn btn-ghost btn-sm text-error"
-                onClick={() => resetModalRef.current?.showModal()}
-              >
-                <TrashIcon className="w-4 h-4" />
-                Reset All
-              </button>
+
+      {people.length > 0 ? (
+        <div className="card card-compact sm:card-normal bg-base-200">
+          <div className="card-body">
+            <div className="flex justify-between items-center">
+              <div className="card-title text-base">People</div>
+              <div className="">
+                <button
+                  className="btn btn-ghost btn-sm text-error"
+                  onClick={() => resetModalRef.current?.showModal()}
+                >
+                  <TrashIcon className="w-4 h-4" />
+                  Reset All
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 divide-y">
+              {people.map((person) => (
+                <PersonCard
+                  key={person.id}
+                  person={person}
+                  onRemove={() => {
+                    setToRemove(person.id);
+                    removeModalRef.current?.showModal();
+                  }}
+                />
+              ))}
             </div>
           </div>
-
-          <div className="grid grid-cols-1 divide-y">
-            {people.map((person) => (
-              <PersonCard
-                key={person.id}
-                person={person}
-                onRemove={() => {
-                  setToRemove(person.id);
-                  removeModalRef.current?.showModal();
-                }}
-              />
-            ))}
-          </div>
-
-          {people.length === 0 ? <EmptyState /> : null}
         </div>
-      </div>
+      ) : null}
+
+      {people.length <= 1 ? <EmptyState /> : null}
+
       <RemoveModal
         toRemove={toRemove}
         ref={removeModalRef}

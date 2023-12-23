@@ -7,7 +7,7 @@ export default function NextButton() {
   const router = useRouter();
   const { people } = useAppContext();
 
-  if (people.length === 0) return null;
+  if (people.length <= 1) return null;
 
   return (
     <button className="btn" onClick={() => router.push("/app/bills")}>
