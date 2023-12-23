@@ -25,10 +25,6 @@ export async function middleware(req: NextRequest) {
   return res;
 }
 
-const MATCHER_PATHS = REDIRECT_LOGGED_IN_PATHS.concat(
-  REDIRECT_LOGGED_OUT_PATHS
-);
-
 export const config = {
-  matcher: MATCHER_PATHS,
+  matcher: ["/", "/login", "/account"],
 };
