@@ -60,6 +60,10 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
     );
   };
 
+  const removePerson = (id: string) => {
+    setPeople(people.filter((person) => person.id !== id));
+  };
+
   const addTransaction = (trx: Transaction) => {
     setTransactions([...transactions, trx]);
     setDebts((prev) => [...prev, ...generateDebtFromTransaction(trx)]);
@@ -85,6 +89,7 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
     people,
     addPerson,
     editPerson,
+    removePerson,
     transactions,
     addTransaction,
     removeTransaction,

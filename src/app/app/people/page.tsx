@@ -6,9 +6,17 @@ import PersonForm from "./person-form";
 import PersonCard from "./person-card";
 import EmptyState from "./empty-state";
 import NextButton from "./next-button";
+import { useRef, useState } from "react";
+import RemoveModal from "./remove-modal";
 
 export default function Page() {
-  const { reset, people } = useAppContext();
+  const { reset, people, removePerson } = useAppContext();
+  const modalRef = useRef<HTMLDialogElement>(null);
+  const [toRemove, setToRemove] = useState<string | null>(null);
+  const onRemove = (id: string) => {
+    removePerson(id);
+    modalRef.current?.close();
+  };
 
   return (
     <div className="py-4 flex flex-col gap-4">
@@ -30,14 +38,21 @@ export default function Page() {
 
           <div className="grid grid-cols-1 divide-y">
             {people.map((person) => (
-              <PersonCard key={person.id} person={person} />
+              <PersonCard
+                key={person.id}
+                person={person}
+                onRemove={() => {
+                  setToRemove(person.id);
+                  modalRef.current?.showModal();
+                }}
+              />
             ))}
           </div>
 
           {people.length === 0 ? <EmptyState /> : null}
         </div>
       </div>
-
+      <RemoveModal toRemove={toRemove} ref={modalRef} onRemove={onRemove} />
       <NextButton />
     </div>
   );

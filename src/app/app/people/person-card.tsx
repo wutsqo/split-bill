@@ -16,9 +16,10 @@ import { useAppContext } from "../context";
 
 interface PersonCardProps {
   person: Person;
+  onRemove: (id: string) => void;
 }
 
-const PersonCard: FC<PersonCardProps> = ({ person }) => {
+const PersonCard: FC<PersonCardProps> = ({ person, onRemove }) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const { data, updateData, isValid } = useFormState(
     {
@@ -92,7 +93,10 @@ const PersonCard: FC<PersonCardProps> = ({ person }) => {
             >
               <PencilIcon className="w-4 h-4" />
             </button>
-            <button className="btn btn-sm btn-ghost join-item text-error">
+            <button
+              className="btn btn-sm btn-ghost join-item text-error"
+              onClick={() => onRemove(person.id)}
+            >
               <TrashIcon className="w-4 h-4" />
             </button>
           </>
