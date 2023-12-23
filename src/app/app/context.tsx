@@ -14,6 +14,7 @@ import {
   calculateNewBalances,
   generateDebtFromTransaction,
 } from "@/utils/core";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export const AppContext = createContext<AppContextValue>({} as AppContextValue);
 
@@ -22,6 +23,8 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
 }: {
   readonly children: React.ReactNode;
 }) => {
+  const supabase = createClientComponentClient();
+
   const [people, setPeople] = useLocalStorageState<Person[]>(
     LOCALSTORAGE_KEYS.PEOPLE,
     []
@@ -84,6 +87,24 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
     setPeople((prev) => calculateNewBalances(prev, debts));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debts]);
+
+  useEffect(() => {
+    if (people.length !== 0) return;
+    supabase.auth.getSession().then((res) => {
+      if (res.data.session !== null) {
+        const user = res.data.session.user;
+        setPeople([
+          {
+            id: user.id,
+            name: user.user_metadata?.name || user.email,
+            balance: 0,
+            paysTo: {},
+          },
+        ]);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [people]);
 
   const value: AppContextValue = {
     people,
