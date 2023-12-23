@@ -63,14 +63,14 @@ export default function Navigation() {
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={createAvatar(funEmoji, {
-              seed: email,
+              seed: session.user.id,
             }).toDataUriSync()}
             alt={email}
-            className={"mask mask-squircle h-5 w-5"}
+            className={"mask mask-squircle h-6 w-6"}
           />
         ) : null}
 
-        {!loading && !email ? <UserCircleIcon className="w-5 h-5" /> : null}
+        {!loading && !email ? <UserCircleIcon className="w-6 h-6" /> : null}
       </button>
     </div>
   );

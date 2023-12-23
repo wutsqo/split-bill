@@ -47,7 +47,7 @@ const PersonCard: FC<PersonCardProps> = ({ person, onRemove }) => {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={createAvatar(funEmoji, {
-          seed: person.name,
+          seed: person.id,
         }).toDataUriSync()}
         alt={person.name}
         className="mask mask-squircle w-10 h-10 ml-2"

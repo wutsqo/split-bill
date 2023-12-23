@@ -2,9 +2,10 @@ import { FC } from "react";
 import { createAvatar } from "@dicebear/core";
 import { funEmoji } from "@dicebear/collection";
 import { mergeClassname } from "@/utils/common";
+import { Person } from "./type";
 
 interface PersonLabelProps {
-  name?: string;
+  person: Person;
   size?: "sm" | "md" | "lg";
   suffix?: string;
   prefix?: string;
@@ -17,7 +18,7 @@ const sizeMap = {
 };
 
 export const PersonLabel: FC<PersonLabelProps> = ({
-  name = "Deleted Person",
+  person,
   size = "md",
   suffix = "",
   prefix = "",
@@ -27,12 +28,12 @@ export const PersonLabel: FC<PersonLabelProps> = ({
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={createAvatar(funEmoji, {
-          seed: name,
+          seed: person.id,
         }).toDataUriSync()}
-        alt={name}
+        alt={person.name}
         className={mergeClassname("mask mask-squircle", sizeMap[size])}
       />
-      {prefix} {name} {suffix}
+      {prefix} {person.name} {suffix}
     </div>
   );
 };

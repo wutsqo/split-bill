@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { Person, Transaction } from "../type";
-import { DELETED_USER } from "../constant";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useAppContext } from "../context";
 import { PersonLabel } from "../person";
@@ -11,7 +10,7 @@ interface TrxCardProps {
   person: Person;
 }
 
-export const TrxCard: FC<TrxCardProps> = ({ trx, person = DELETED_USER }) => {
+export const TrxCard: FC<TrxCardProps> = ({ trx, person }) => {
   const { people, removeTransaction, debts } = useAppContext();
 
   return (
@@ -27,7 +26,7 @@ export const TrxCard: FC<TrxCardProps> = ({ trx, person = DELETED_USER }) => {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <PersonLabel name={person.name} prefix="Paid by" size="sm" />
+          <PersonLabel person={person} prefix="Paid by" size="sm" />
           <div>{formatMoney(trx.amount)}</div>
         </div>
 
@@ -41,10 +40,7 @@ export const TrxCard: FC<TrxCardProps> = ({ trx, person = DELETED_USER }) => {
                   className="flex justify-between"
                 >
                   <PersonLabel
-                    name={
-                      people.find((person) => person.id === debt.borrowerId)
-                        ?.name
-                    }
+                    person={people.find((p) => p.id === debt.borrowerId)!}
                     suffix="owes"
                     size="sm"
                   />
