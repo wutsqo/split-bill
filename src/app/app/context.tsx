@@ -15,6 +15,7 @@ import {
   generateDebtFromTransaction,
 } from "@/utils/core";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { v4 as uuidv4 } from "uuid";
 
 export const AppContext = createContext<AppContextValue>({} as AppContextValue);
 
@@ -41,7 +42,7 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
 
   const addPerson = (name: string) => {
     const newPerson: Person = {
-      id: new Date().getTime().toString(),
+      id: uuidv4(),
       name,
       balance: 0,
       paysTo: {},

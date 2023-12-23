@@ -11,6 +11,7 @@ import { SplitExactForm } from "./split-exact-form";
 import { SplitPercentForm } from "./split-percent-form";
 import { TrxCard } from "./trx-card";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Page() {
   const { people, addTransaction, transactions } = useAppContext();
@@ -110,7 +111,7 @@ export default function Page() {
     );
 
     addTransaction({
-      id: Date.now().toString(),
+      id: uuidv4(),
       date: new Date(data.date),
       amount: data.amount,
       name: data.name,
