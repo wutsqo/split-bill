@@ -28,6 +28,12 @@ export default function Home() {
             <Link href="/app">
               <button className="btn btn-primary">TRY NOW</button>
             </Link>
+            <p className="mt-16">
+              Already have an account?{" "}
+              <Link href="/login" className="link">
+                Login
+              </Link>
+            </p>
           </div>
         </div>
       </div>
