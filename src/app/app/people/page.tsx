@@ -16,7 +16,7 @@ export default function Page() {
       <div className="card card-compact sm:card-normal bg-base-200">
         <div className="card-body">
           <div className="flex justify-between items-center">
-            <div className="card-title">People</div>
+            <div className="card-title text-base">People</div>
             <div className="">
               <button
                 className="btn btn-ghost btn-sm text-error"

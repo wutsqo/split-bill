@@ -46,6 +46,7 @@ export interface Debt {
 export interface AppContextValue {
   people: Person[];
   addPerson: (name: string) => void;
+  editPerson: (id: string, name: string) => void;
   transactions: Transaction[];
   addTransaction: (transaction: Transaction) => void;
   removeTransaction: (id: string) => void;

@@ -46,6 +46,20 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
     setPeople([...people, newPerson]);
   };
 
+  const editPerson = (id: string, name: string) => {
+    setPeople(
+      people.map((person) => {
+        if (person.id === id) {
+          return {
+            ...person,
+            name,
+          };
+        }
+        return person;
+      })
+    );
+  };
+
   const addTransaction = (trx: Transaction) => {
     setTransactions([...transactions, trx]);
     setDebts((prev) => [...prev, ...generateDebtFromTransaction(trx)]);
@@ -70,6 +84,7 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
   const value: AppContextValue = {
     people,
     addPerson,
+    editPerson,
     transactions,
     addTransaction,
     removeTransaction,
