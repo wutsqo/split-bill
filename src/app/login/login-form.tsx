@@ -6,6 +6,7 @@ interface LoginFormProps {
   onChangeEmail: (value: string) => void;
   loading: boolean;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  signInWithGoogle: () => void;
   isValid: boolean;
 }
 
@@ -15,6 +16,7 @@ const LoginForm: FC<LoginFormProps> = ({
   loading,
   onSubmit,
   isValid,
+  signInWithGoogle,
 }) => {
   return (
     <div>
@@ -32,19 +34,23 @@ const LoginForm: FC<LoginFormProps> = ({
           value={email}
           onChange={(e) => onChangeEmail(e.target.value)}
         />
-        <p className="text-sm mt-2">
+        <p className="text-xs mt-2">
           If you don&apos;t have an account, we&apos;ll create one for you.
         </p>
         <button className="btn mt-6 w-full" disabled={!isValid}>
           {loading ? (
             <span className="loading loading-spinner"></span>
           ) : (
-            "Login with Magic Link"
+            "Send me a login link"
           )}
         </button>
       </form>
-      {/* <div className="divider">or</div>
-      <button className="btn btn-primary w-full">Login with Google</button> */}
+      <button
+        className="btn btn-primary w-full mt-4"
+        onClick={signInWithGoogle}
+      >
+        Login with Google
+      </button>
       <div className="my-4 text-center w-full text-sm">
         <button
           className="link w-full"

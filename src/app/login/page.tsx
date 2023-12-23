@@ -45,6 +45,15 @@ export default function Login() {
       });
   };
 
+  const signInWithGoogle = () => {
+    supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${SITE_URL}/auth/callback`,
+      },
+    });
+  };
+
   const renderStep = () => {
     switch (step) {
       case "EMAIL_FORM":
@@ -55,6 +64,7 @@ export default function Login() {
             loading={loading}
             onChangeEmail={(value: string) => updateData("email", value)}
             onSubmit={handleSubmit}
+            signInWithGoogle={signInWithGoogle}
           />
         );
       case "OTP_SENT":
