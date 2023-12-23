@@ -1,10 +1,10 @@
 "use client";
 
 import { useAppContext } from "../context";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { PlusIcon, ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import useFormState from "@/hooks/useFormState";
-import { isNumber, required, validate } from "@/utils/forms";
+import { isGreaterThan, isNumber, required, validate } from "@/utils/forms";
 import { SplitType, SplitTypeLabel } from "../type";
 import { SplitEqualForm } from "./split-equals-form";
 import { SplitExactForm } from "./split-exact-form";
@@ -12,12 +12,29 @@ import { SplitPercentForm } from "./split-percent-form";
 import { TrxCard } from "./trx-card";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
+import { mergeClassname } from "@/utils/common";
+
+const STEPS = [
+  {
+    id: 0,
+    name: "Bills",
+  },
+  {
+    id: 1,
+    name: "Payers",
+  },
+  {
+    id: 2,
+    name: "Split",
+  },
+];
 
 export default function Page() {
   const { people, addTransaction, transactions } = useAppContext();
   const newTrxModal = useRef<HTMLDialogElement>(null);
+  const [currentStep, setCurrentStep] = useState(0);
 
-  const { data, updateData, isValid, resetData } = useFormState(
+  const { data, updateData, isValid, resetData, errors } = useFormState(
     {
       name: "",
       amount: 0,
@@ -30,7 +47,7 @@ export default function Page() {
     },
     {
       name: validate([required]),
-      amount: validate([required, isNumber]),
+      amount: validate([required, isNumber, isGreaterThan(0)]),
       paidBy: validate([required]),
       date: validate([required]),
     }
@@ -92,14 +109,17 @@ export default function Page() {
     e.preventDefault();
     if (!isValid || !isSplitValid()) return;
     const split = Object.keys(data.split).reduce(
-      (acc, key) => ({
-        ...acc,
-        [key]: {
-          amount: data.split[key],
-          id: key,
-          name: people.find((p) => p.id === key)?.name ?? "",
-        },
-      }),
+      (acc, key) => {
+        if (data.split[key] === 0) return acc;
+        return {
+          ...acc,
+          [key]: {
+            amount: data.split[key],
+            id: key,
+            name: people.find((p) => p.id === key)!.name,
+          },
+        };
+      },
       {} as Record<
         string,
         {
@@ -123,6 +143,7 @@ export default function Page() {
       split,
     });
     newTrxModal.current?.close();
+    setCurrentStep(0);
     resetData();
   };
 
@@ -176,108 +197,159 @@ export default function Page() {
         <div className="modal-box">
           <h3 className="font-bold text-lg mb-4">New Transaction</h3>
           <form className="flex flex-col gap-2" onSubmit={onSubmit}>
-            <div className="form-control w-full">
-              <label className="label">
-                <span className="label-text">Title</span>
-              </label>
-              <input
-                type="text"
-                placeholder="What's the title of this transaction?"
-                className="input input-bordered w-full"
-                value={data.name}
-                onChange={(e) => updateData("name", e.target.value)}
-              />
-            </div>
+            <ul className="steps text-sm">
+              {STEPS.map((step) => (
+                <li
+                  key={step.id}
+                  className={mergeClassname(
+                    "step text-xs",
+                    currentStep >= step.id && "step-primary"
+                  )}
+                >
+                  {step.name}
+                </li>
+              ))}
+            </ul>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="form-control w-full">
-                <label className="label">
-                  <span className="label-text">Amount</span>
-                </label>
-                <div className="join">
-                  <span className="join-item flex items-center px-4 border border-base-300">
-                    Rp
-                  </span>
+            {currentStep === 0 ? (
+              <>
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text">Title</span>
+                  </label>
                   <input
-                    type="number"
-                    placeholder="What's the amount?"
-                    className="input input-bordered w-full join-item"
-                    value={data.amount}
-                    onChange={(e) =>
-                      updateData("amount", e.target.valueAsNumber)
-                    }
+                    type="text"
+                    placeholder="What's the title of this transaction?"
+                    className="input input-bordered w-full"
+                    value={data.name}
+                    onChange={(e) => updateData("name", e.target.value)}
                   />
                 </div>
-              </div>
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text">Amount</span>
+                  </label>
+                  <div className="join">
+                    <span className="join-item flex items-center px-4 border border-base-300">
+                      Rp
+                    </span>
+                    <input
+                      type="number"
+                      placeholder="What's the amount?"
+                      className="input input-bordered w-full join-item"
+                      value={data.amount}
+                      onChange={(e) =>
+                        updateData("amount", e.target.valueAsNumber)
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text">Date</span>
+                  </label>
+                  <input
+                    type="date"
+                    className="input input-bordered w-full"
+                    value={data.date}
+                    onChange={(e) => updateData("date", e.target.value)}
+                  />
+                </div>
+              </>
+            ) : null}
+
+            {currentStep === 1 ? (
               <div className="form-control w-full">
                 <label className="label">
-                  <span className="label-text">Date</span>
+                  <span className="label-text">Paid By</span>
                 </label>
-                <input
-                  type="date"
-                  className="input input-bordered w-full"
-                  value={data.date}
-                  onChange={(e) => updateData("date", e.target.value)}
-                />
+                <select
+                  className="select select-bordered w-full"
+                  value={data.paidBy}
+                  onChange={(e) => updateData("paidBy", e.target.value)}
+                >
+                  {people.map((person) => (
+                    <option key={person.id} value={person.id}>
+                      {person.name}
+                    </option>
+                  ))}
+                </select>
               </div>
-            </div>
+            ) : null}
 
-            <div className="form-control w-full">
-              <label className="label">
-                <span className="label-text">Paid By</span>
-              </label>
-              <select
-                className="select select-bordered w-full"
-                value={data.paidBy}
-                onChange={(e) => updateData("paidBy", e.target.value)}
-              >
-                {people.map((person) => (
-                  <option key={person.id} value={person.id}>
-                    {person.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {currentStep === 2 ? (
+              <>
+                <div className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text">Split</span>
+                  </label>
+                  <select
+                    className="select select-bordered w-full"
+                    value={data.splitType}
+                    onChange={(e) =>
+                      onChangeSplitType(e.target.value as SplitType)
+                    }
+                  >
+                    {Object.values(SplitType).map((splitType) => (
+                      <option key={splitType} value={splitType}>
+                        {SplitTypeLabel[splitType]}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-            <div className="form-control w-full">
-              <label className="label">
-                <span className="label-text">Split</span>
-              </label>
-              <select
-                className="select select-bordered w-full"
-                value={data.splitType}
-                onChange={(e) => onChangeSplitType(e.target.value as SplitType)}
-              >
-                {Object.values(SplitType).map((splitType) => (
-                  <option key={splitType} value={splitType}>
-                    {SplitTypeLabel[splitType]}
-                  </option>
-                ))}
-              </select>
-            </div>
+                <div className="divider">Split Between</div>
 
-            <div className="divider">Split Between</div>
-
-            {renderSplitForm()}
+                {renderSplitForm()}
+              </>
+            ) : null}
 
             <div className="modal-action">
-              <button
-                className="btn"
-                onClick={() => {
-                  newTrxModal.current?.close();
-                  resetData();
-                }}
-                type="button"
-              >
-                Cancel
-              </button>
-              <button
-                className="btn btn-primary"
-                disabled={!isValid || !isSplitValid()}
-                type="submit"
-              >
-                Add
-              </button>
+              {currentStep === 0 ? (
+                <button
+                  className="btn"
+                  onClick={() => {
+                    newTrxModal.current?.close();
+                    resetData();
+                  }}
+                  type="button"
+                >
+                  Cancel
+                </button>
+              ) : (
+                <button
+                  className="btn"
+                  onClick={() => setCurrentStep(currentStep - 1)}
+                  type="button"
+                >
+                  Back
+                </button>
+              )}
+
+              {currentStep < STEPS.length - 1 ? (
+                <button
+                  className="btn btn-primary"
+                  disabled={
+                    currentStep === 0
+                      ? !!errors.name || !!errors.amount || !!errors.date
+                      : !!errors.paidBy
+                  }
+                  type="button"
+                  onClick={() => setCurrentStep(currentStep + 1)}
+                >
+                  Next
+                </button>
+              ) : null}
+
+              {currentStep === 2 ? (
+                <button
+                  className="btn btn-primary"
+                  disabled={!isValid || !isSplitValid()}
+                  type="submit"
+                >
+                  Add
+                </button>
+              ) : null}
             </div>
           </form>
         </div>
