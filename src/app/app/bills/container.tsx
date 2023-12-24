@@ -15,6 +15,7 @@ import { usePeopleStore } from "@hooks/usePeopleStore";
 import { SplitFormProps } from "./type";
 import { useTransactionStore } from "@hooks/useTransactionStore";
 import RemoveModal from "./remove-modal";
+import EmptyState from "./empty-state";
 
 const STEPS = [
   {
@@ -87,13 +88,10 @@ export default function BillsContainer() {
 
   if (people.length <= 1) {
     return (
-      <div className="py-4 flex flex-col gap-4">
-        <div className="card bg-base-200">
-          <div className="card-body">
-            <p className="text-base-content">
-              Add at least two people to get started.
-            </p>
-          </div>
+      <div role="alert" className="alert mt-4">
+        <div className="w-full flex justify-center gap-3 items-center text-sm text-center sm:col-span-2 sm:text-base">
+          <span>💡</span>
+          <span>Add at least 2 people to get started</span>
         </div>
       </div>
     );
@@ -205,6 +203,8 @@ export default function BillsContainer() {
           Export CSV
         </button>
       </div>
+
+      {transactions.length === 0 ? <EmptyState /> : null}
 
       {transactions.map((trx) => (
         <TrxCard
