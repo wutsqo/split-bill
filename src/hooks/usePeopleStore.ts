@@ -4,16 +4,19 @@ import { persist } from "zustand/middleware";
 import { v4 as uuidv4 } from "uuid";
 import { ZUSTAND_PERSIST_KEYS } from "@/app/app/constant";
 
-interface PeopleState {
+interface State {
   people: Person[];
   peopleMap: Record<string, Person>;
+}
+
+interface Action {
   addPerson: (data: Pick<Person, "name"> & Partial<Pick<Person, "id">>) => void;
   editPerson: (id: string, update: Partial<Person>) => void;
   removePerson: (id: string) => void;
   removeEveryone: () => void;
 }
 
-export const usePeopleStore = create<PeopleState>()(
+export const usePeopleStore = create<State & Action>()(
   persist(
     (set) => ({
       people: [] as Person[],
