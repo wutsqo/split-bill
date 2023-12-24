@@ -11,6 +11,20 @@ export default function Page() {
     usePeopleStore.persist.rehydrate();
   }, []);
 
+  if (people.length <= 1) {
+    return (
+      <div className="py-4 flex flex-col gap-4">
+        <div className="card bg-base-200">
+          <div className="card-body">
+            <p className="text-base-content">
+              Add at least two people to get started.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="py-4 flex flex-col gap-4">
       <div className="card card-compact bg-base-200 hidden">
