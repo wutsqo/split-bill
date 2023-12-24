@@ -124,7 +124,7 @@ describe("getBalanceOfAPerson", () => {
       {
         ...PERSON_1,
         balance: 0,
-        paysTo: {} as Record<string, number>,
+        paysTo: {},
       },
       PERSON_1,
       [] as Debt[],
@@ -286,7 +286,7 @@ describe("getBalanceOfAPerson", () => {
         transactionIds: ["1", "2", "3", "4", "5", "6"],
       }),
     ],
-  ])("%s", (_, expected, ...args) => {
-    expect(getBalanceOfAPerson(...args)).toEqual(expected);
+  ])("%s", (_, expected, person, debts) => {
+    expect(getBalanceOfAPerson(person, debts)).toEqual(expected);
   });
 });
