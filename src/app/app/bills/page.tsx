@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PlusIcon, ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import useFormState from "@/hooks/useFormState";
 import { isGreaterThan, isNumber, required, validate } from "@/utils/forms";
@@ -75,6 +75,10 @@ export default function Page() {
     );
     updateData("splitType", splitType);
   };
+
+  useEffect(() => {
+    usePeopleStore.persist.rehydrate();
+  }, []);
 
   if (people.length <= 1) {
     return (

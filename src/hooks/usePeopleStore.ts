@@ -53,6 +53,6 @@ export const usePeopleStore = create<State & Action>()(
       },
       resetPeople: () => set({ people: [] }),
     }),
-    { name: ZUSTAND_PERSIST_KEYS.PEOPLE }
+    { name: ZUSTAND_PERSIST_KEYS.PEOPLE, skipHydration: true }
   )
 );

@@ -1,10 +1,15 @@
 "use client";
 
+import { useEffect } from "react";
 import { SummaryCard } from "./summary-card";
 import { usePeopleStore } from "@hooks/usePeopleStore";
 
 export default function Page() {
   const { people } = usePeopleStore();
+
+  useEffect(() => {
+    usePeopleStore.persist.rehydrate();
+  }, []);
 
   return (
     <div className="py-4 flex flex-col gap-4">
