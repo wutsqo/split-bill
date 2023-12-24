@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { createAvatar } from "@dicebear/core";
 import { funEmoji } from "@dicebear/collection";
-import { mergeClassname } from "@/utils/common";
+import { mergeClassname } from "@/utils/merge-classname";
 import { Person } from "./type";
 
 interface PersonLabelProps {

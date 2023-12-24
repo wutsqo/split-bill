@@ -12,7 +12,7 @@ import { SplitPercentForm } from "./split-percent-form";
 import { TrxCard } from "./trx-card";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
-import { mergeClassname } from "@/utils/common";
+import { mergeClassname } from "@/utils/merge-classname";
 
 const STEPS = [
   {

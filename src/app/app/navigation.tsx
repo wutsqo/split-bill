@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { TABS } from "./constant";
-import { mergeClassname } from "@/utils/common";
+import { mergeClassname } from "@/utils/merge-classname";
 import Link from "next/link";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import {
