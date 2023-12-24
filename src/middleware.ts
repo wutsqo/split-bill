@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 import type { NextRequest } from "next/server";
 
-const REDIRECT_LOGGED_IN_PATHS = ["/", "/login"];
+const REDIRECT_LOGGED_IN_PATHS = ["/login"];
 const REDIRECT_LOGGED_OUT_PATHS = ["/account"];
 
 export async function middleware(req: NextRequest) {
@@ -26,5 +26,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/login", "/account"],
+  matcher: ["/login", "/account"],
 };

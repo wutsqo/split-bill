@@ -1,9 +1,7 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { TABS } from "./constant";
 import { mergeClassname } from "@/utils/merge-classname";
-import Link from "next/link";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import {
   Session,
@@ -12,9 +10,11 @@ import {
 import { useEffect, useState } from "react";
 import { createAvatar } from "@dicebear/core";
 import { funEmoji } from "@dicebear/collection";
+import { useTabStore } from "@hooks/useTabStore";
 
 export default function Navigation() {
-  const pathName = usePathname();
+  const activeTabId = useTabStore((state) => state.activeTabId);
+  const setActiveTabId = useTabStore((state) => state.setActiveTabId);
   const supabase = createClientComponentClient();
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState<Session | null>(null);
@@ -27,23 +27,28 @@ export default function Navigation() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    useTabStore.persist.rehydrate();
+  }, []);
+
   const email = session?.user.email;
 
   return (
     <div className="flex flex-row justify-between gap-2 items-stretch">
       <div role="tablist" className="tabs tabs-boxed w-full h-10">
         {TABS.map((tab) => (
-          <Link
+          <button
             role="tab"
             className={mergeClassname(
               "tab",
-              pathName.split("/").pop() === tab.id && "tab-active"
+              activeTabId === tab.id && "tab-active"
             )}
             key={tab.id}
-            href={`/app/${tab.id}`}
+            onClick={() => setActiveTabId(tab.id)}
+            type="button"
           >
             {tab.label}
-          </Link>
+          </button>
         ))}
       </div>
       <button

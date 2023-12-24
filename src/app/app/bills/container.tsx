@@ -31,7 +31,7 @@ const STEPS = [
   },
 ];
 
-export default function Page() {
+export default function BillsContainer() {
   const { addTransaction, transactions, removeTransaction } =
     useTransactionStore();
   const { people, getPerson } = usePeopleStore();

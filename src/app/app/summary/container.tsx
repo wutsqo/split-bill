@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { SummaryCard } from "./summary-card";
 import { usePeopleStore } from "@hooks/usePeopleStore";
 
-export default function Page() {
+export default function SummaryContainer() {
   const { people } = usePeopleStore();
 
   useEffect(() => {

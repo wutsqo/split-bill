@@ -1,5 +1,6 @@
-import { useRouter } from "next/navigation";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
+import { useTabStore } from "@hooks/useTabStore";
+import { TAB_IDS } from "../constant";
 
 export default function NextButton({
   disabled,
@@ -8,7 +9,7 @@ export default function NextButton({
   readonly disabled?: boolean;
   readonly numberOfPeople: number;
 }) {
-  const router = useRouter();
+  const setActiveTabId = useTabStore((state) => state.setActiveTabId);
 
   return (
     <div className="join w-full">
@@ -20,7 +21,7 @@ export default function NextButton({
       </div>
       <button
         className="btn btn-primary btn-lg join-item shrink-0 uppercase"
-        onClick={() => router.push("/app/bills")}
+        onClick={() => setActiveTabId(TAB_IDS.BILLS)}
         disabled={disabled}
       >
         Next

@@ -13,7 +13,7 @@ import { mergeClassname } from "@/utils/merge-classname";
 
 const NextButton = dynamic(() => import("./next-button"), { ssr: false });
 
-export default function Page() {
+export default function PeopleContainer() {
   const { removePerson, people } = usePeopleStore();
   const resetEverything = useResetEverything();
   const removeModalRef = useRef<HTMLDialogElement>(null);
