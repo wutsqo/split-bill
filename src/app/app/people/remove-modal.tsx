@@ -4,7 +4,7 @@ import { usePeopleStore } from "@hooks/usePeopleStore";
 import { useTransactionStore } from "@hooks/useTransactionStore";
 
 interface RemoveModalProps {
-  toRemove: string | null;
+  toRemove: string;
   onRemove: (id: string) => void;
 }
 
@@ -14,8 +14,6 @@ const RemoveModal = forwardRef<Ref, RemoveModalProps>(
   ({ toRemove, onRemove }, ref) => {
     const { transactions } = useTransactionStore();
     const { people, getPerson } = usePeopleStore();
-
-    if (toRemove === null) return null;
 
     const result = checkIfPersonRemovable(transactions, toRemove);
 

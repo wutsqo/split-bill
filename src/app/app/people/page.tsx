@@ -18,7 +18,7 @@ export default function Page() {
   const resetEverything = useResetEverything();
   const removeModalRef = useRef<HTMLDialogElement>(null);
   const resetModalRef = useRef<HTMLDialogElement>(null);
-  const [toRemove, setToRemove] = useState<string | null>(null);
+  const [toRemove, setToRemove] = useState<string>("");
   const onRemove = (id: string) => {
     removePerson(id);
     removeModalRef.current?.close();
@@ -31,6 +31,11 @@ export default function Page() {
   useEffect(() => {
     usePeopleStore.persist.rehydrate();
   }, []);
+
+  const onRemoveModalOpen = (id: string) => {
+    setToRemove(id);
+    removeModalRef.current?.showModal();
+  };
 
   return (
     <div className="py-4 flex flex-col gap-4">
@@ -61,10 +66,7 @@ export default function Page() {
               <PersonCard
                 key={person.id}
                 person={person}
-                onRemove={() => {
-                  setToRemove(person.id);
-                  removeModalRef.current?.showModal();
-                }}
+                onRemove={() => onRemoveModalOpen(person.id)}
               />
             ))}
           </div>
