@@ -1,6 +1,5 @@
 "use client";
 
-import { useAppContext } from "../context";
 import { useRef, useState } from "react";
 import { PlusIcon, ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import useFormState from "@/hooks/useFormState";
@@ -11,10 +10,10 @@ import { SplitExactForm } from "./split-exact-form";
 import { SplitPercentForm } from "./split-percent-form";
 import { TrxCard } from "./trx-card";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 import { mergeClassname } from "@/utils/merge-classname";
 import { usePeopleStore } from "@hooks/usePeopleStore";
 import { SplitFormProps } from "./type";
+import { useTransactionStore } from "@hooks/useTransactionStore";
 
 const STEPS = [
   {
@@ -32,8 +31,8 @@ const STEPS = [
 ];
 
 export default function Page() {
-  const { addTransaction, transactions } = useAppContext();
-  const { people, peopleMap } = usePeopleStore();
+  const { addTransaction, transactions } = useTransactionStore();
+  const { people, getPerson } = usePeopleStore();
   const newTrxModal = useRef<HTMLDialogElement>(null);
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -120,7 +119,7 @@ export default function Page() {
           [key]: {
             amount: data.split[key],
             id: key,
-            name: peopleMap[key].name,
+            name: getPerson(key)!.name,
           },
         };
       },
@@ -135,13 +134,12 @@ export default function Page() {
     );
 
     addTransaction({
-      id: uuidv4(),
       date: new Date(data.date),
       amount: data.amount,
       name: data.name,
       paidBy: {
         id: data.paidBy,
-        name: peopleMap[data.paidBy].name,
+        name: getPerson(data.paidBy)!.name,
       },
       splitType: data.splitType,
       split,
@@ -190,7 +188,7 @@ export default function Page() {
       </div>
 
       {transactions.map((trx) => (
-        <TrxCard person={peopleMap[trx.paidBy.id]!} trx={trx} key={trx.id} />
+        <TrxCard person={getPerson(trx.paidBy.id)!} trx={trx} key={trx.id} />
       ))}
 
       <dialog ref={newTrxModal} className="modal modal-bottom sm:modal-middle">

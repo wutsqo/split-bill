@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { checkIfPersonRemovable } from "@/utils/core";
-import { useAppContext } from "../context";
 import { usePeopleStore } from "@hooks/usePeopleStore";
+import { useTransactionStore } from "@hooks/useTransactionStore";
 
 interface RemoveModalProps {
   toRemove: string | null;
@@ -12,8 +12,8 @@ type Ref = HTMLDialogElement;
 
 const RemoveModal = forwardRef<Ref, RemoveModalProps>(
   ({ toRemove, onRemove }, ref) => {
-    const { transactions } = useAppContext();
-    const { people, peopleMap } = usePeopleStore();
+    const { transactions } = useTransactionStore();
+    const { people, getPerson } = usePeopleStore();
 
     if (toRemove === null) return null;
 
@@ -25,7 +25,7 @@ const RemoveModal = forwardRef<Ref, RemoveModalProps>(
           {result?.removable ? (
             <p className="py-4 text-base">
               Are you sure you want to remove{" "}
-              <strong>{peopleMap[toRemove]?.name}</strong>?
+              <strong>{getPerson(toRemove)?.name}</strong>?
             </p>
           ) : (
             <>

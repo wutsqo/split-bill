@@ -1,7 +1,6 @@
 "use client";
 
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { useAppContext } from "../context";
 import PersonForm from "./person-form";
 import PersonCard from "./person-card";
 import EmptyState from "./empty-state";
@@ -10,10 +9,11 @@ import { useRef, useState } from "react";
 import RemoveModal from "./remove-modal";
 import ResetModal from "./reset-modal";
 import { usePeopleStore } from "@hooks/usePeopleStore";
+import { useResetEverything } from "@hooks/useResetEverything";
 
 export default function Page() {
-  const { reset } = useAppContext();
   const { removePerson, people } = usePeopleStore();
+  const resetEverything = useResetEverything();
   const removeModalRef = useRef<HTMLDialogElement>(null);
   const resetModalRef = useRef<HTMLDialogElement>(null);
   const [toRemove, setToRemove] = useState<string | null>(null);
@@ -22,7 +22,7 @@ export default function Page() {
     removeModalRef.current?.close();
   };
   const onReset = () => {
-    reset();
+    resetEverything();
     resetModalRef.current?.close();
   };
 

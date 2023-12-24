@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { Person, Transaction } from "../type";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { useAppContext } from "../context";
 import { PersonLabel } from "../person";
 import { formatMoney } from "@/utils/common";
 import { usePeopleStore } from "@hooks/usePeopleStore";
+import { useTransactionStore } from "@hooks/useTransactionStore";
 
 interface TrxCardProps {
   trx: Transaction;
@@ -12,8 +12,8 @@ interface TrxCardProps {
 }
 
 export const TrxCard: FC<TrxCardProps> = ({ trx, person }) => {
-  const { removeTransaction, debts } = useAppContext();
-  const { peopleMap } = usePeopleStore();
+  const { removeTransaction, debts } = useTransactionStore();
+  const { getPerson } = usePeopleStore();
 
   return (
     <div className="card card-compact bg-base-200">
@@ -42,7 +42,7 @@ export const TrxCard: FC<TrxCardProps> = ({ trx, person }) => {
                   className="flex justify-between"
                 >
                   <PersonLabel
-                    person={peopleMap[debt.borrowerId]}
+                    person={getPerson(debt.borrowerId)!}
                     suffix="owes"
                     size="sm"
                   />

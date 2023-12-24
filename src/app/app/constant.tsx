@@ -33,7 +33,6 @@ export const LOCALSTORAGE_KEYS = {
 export const ZUSTAND_PERSIST_KEYS = {
   PEOPLE: "people-store",
   TRANSACTIONS: "transactions-store",
-  DEBTS: "debts-store",
 };
 
 export const DELETED_USER = {

@@ -1,26 +1,28 @@
-import { Person } from "@/app/app/type";
+import { Debt, Person } from "@/app/app/type";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { v4 as uuidv4 } from "uuid";
 import { ZUSTAND_PERSIST_KEYS } from "@/app/app/constant";
+import { calculateNewBalances } from "@/utils/core";
 
 interface State {
   people: Person[];
-  peopleMap: Record<string, Person>;
 }
 
 interface Action {
+  getPerson: (id: string) => Person | undefined;
   addPerson: (data: Pick<Person, "name"> & Partial<Pick<Person, "id">>) => void;
   editPerson: (id: string, update: Partial<Person>) => void;
+  recalculateBalances: (debts: Debt[]) => void;
   removePerson: (id: string) => void;
-  removeEveryone: () => void;
+  resetPeople: () => void;
 }
 
 export const usePeopleStore = create<State & Action>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       people: [] as Person[],
-      peopleMap: {} as Record<string, Person>,
+      getPerson: (id) => get().people.find((person) => person.id === id),
       addPerson: ({ id, name }) => {
         const newPerson = {
           id: id ?? uuidv4(),
@@ -30,10 +32,6 @@ export const usePeopleStore = create<State & Action>()(
         };
         set((state) => ({
           people: [...state.people, newPerson],
-          peopleMap: {
-            ...state.peopleMap,
-            [newPerson.id]: newPerson,
-          },
         }));
       },
       editPerson: (id, update) => {
@@ -41,27 +39,19 @@ export const usePeopleStore = create<State & Action>()(
           people: state.people.map((person) =>
             person.id === id ? { ...person, ...update } : person
           ),
-          peopleMap: {
-            ...state.peopleMap,
-            [id]: {
-              ...state.peopleMap[id],
-              ...update,
-            },
-          },
+        }));
+      },
+      recalculateBalances: (debts) => {
+        set((state) => ({
+          people: calculateNewBalances(state.people, debts),
         }));
       },
       removePerson: (id) => {
-        set((state) => {
-          const { [id]: _, ...peopleMap } = state.peopleMap;
-          return {
-            people: state.people.filter((person) => person.id !== id),
-            peopleMap,
-          };
-        });
+        set((state) => ({
+          people: state.people.filter((person) => person.id !== id),
+        }));
       },
-      removeEveryone: () => {
-        set({ people: [], peopleMap: {} });
-      },
+      resetPeople: () => set({ people: [] }),
     }),
     { name: ZUSTAND_PERSIST_KEYS.PEOPLE }
   )

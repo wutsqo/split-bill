@@ -42,17 +42,3 @@ export interface Debt {
   amount: number;
   transactionId: string;
 }
-
-export interface AppContextValue {
-  transactions: Transaction[];
-  addTransaction: (transaction: Transaction) => void;
-  removeTransaction: (id: string) => void;
-  debts: Debt[];
-  preferSimplified: boolean;
-  setPreferSimplified: (preferSimplified: boolean) => void;
-  reset: () => void;
-}
-
-export interface AppContextProviderProps {
-  children: React.ReactNode | React.ReactNode[];
-}
