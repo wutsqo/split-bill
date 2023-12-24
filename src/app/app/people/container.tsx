@@ -10,6 +10,7 @@ import { usePeopleStore } from "@hooks/usePeopleStore";
 import { useResetEverything } from "@hooks/useResetEverything";
 import dynamic from "next/dynamic";
 import { mergeClassname } from "@/utils/merge-classname";
+import EmptyState from "./empty-state";
 
 const NextButton = dynamic(() => import("./next-button"), { ssr: false });
 
@@ -40,6 +41,8 @@ export default function PeopleContainer() {
   return (
     <div className="py-4 flex flex-col gap-4">
       <PersonForm />
+
+      {people.length < 2 ? <EmptyState /> : null}
 
       <div
         className={mergeClassname(
