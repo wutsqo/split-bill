@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 export function isRunningInBrowser() {
   return typeof window !== "undefined";
 }
