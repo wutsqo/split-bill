@@ -13,6 +13,7 @@ interface State {
 
 interface Action {
   addTransaction: (data: Omit<Transaction, "id">) => void;
+  editTransaction: (id: string, data: Partial<Transaction>) => void;
   removeTransaction: (id: string) => void;
   reset: () => void;
 }
@@ -32,6 +33,23 @@ export const useTransactionStore = create<State & Action>()(
         set((state) => ({
           transactions: [...state.transactions, { ...data, id }],
           debts: [...state.debts, ...newDebts],
+        }));
+        usePeopleStore.getState().recalculateBalances(get().debts);
+      },
+      editTransaction: (id, data) => {
+        const newTransaction = {
+          ...get().transactions.find((transaction) => transaction.id === id)!,
+          ...data,
+        };
+        const newDebts = generateDebtFromTransaction(newTransaction);
+        set((state) => ({
+          transactions: state.transactions.map((transaction) =>
+            transaction.id === id ? newTransaction : transaction
+          ),
+          debts: [
+            ...state.debts.filter((debt) => debt.transactionId !== id),
+            ...newDebts,
+          ],
         }));
         usePeopleStore.getState().recalculateBalances(get().debts);
       },

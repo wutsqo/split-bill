@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Person, Transaction } from "../type";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { PersonLabel } from "../person";
 import { formatMoney } from "@/utils/common";
 import { usePeopleStore } from "@hooks/usePeopleStore";
@@ -10,12 +10,14 @@ interface TrxCardProps {
   trx: Transaction;
   person: Person;
   onRemoveModalOpen: () => void;
+  onEditModalOpen: () => void;
 }
 
 export const TrxCard: FC<TrxCardProps> = ({
   trx,
   person,
   onRemoveModalOpen,
+  onEditModalOpen,
 }) => {
   const { debts } = useTransactionStore();
   const { getPerson } = usePeopleStore();
@@ -59,6 +61,14 @@ export const TrxCard: FC<TrxCardProps> = ({
         </div>
 
         <div className="card-actions justify-end join">
+          <button
+            className="btn btn-ghost btn-sm join-item"
+            type="button"
+            onClick={onEditModalOpen}
+          >
+            <PencilIcon className="w-4 h-4" />
+            Edit
+          </button>
           <button
             className="btn btn-ghost btn-sm join-item text-error"
             type="button"
