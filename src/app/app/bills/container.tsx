@@ -16,6 +16,7 @@ import { SplitFormProps } from "./type";
 import { useTransactionStore } from "@hooks/useTransactionStore";
 import RemoveModal from "./remove-modal";
 import EmptyState from "./empty-state";
+import NextButton from "./next-button";
 
 const STEPS = [
   {
@@ -214,6 +215,12 @@ export default function BillsContainer() {
           onRemoveModalOpen={() => onRemoveModalOpen(trx.id)}
         />
       ))}
+
+      <NextButton
+        numberOfTransactions={transactions.length}
+        totalAmount={transactions.reduce((acc, trx) => acc + trx.amount, 0)}
+        disabled={transactions.length === 0}
+      />
 
       <dialog ref={newTrxModal} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
