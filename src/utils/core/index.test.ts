@@ -8,6 +8,7 @@ import { debtsBuilder } from "./builder";
 import {
   PERSON_1,
   PERSON_2,
+  PERSON_3,
   SPLIT_EQUAL_TRANSACTION,
   SPLIT_EXACT_TRANSACTION,
   SPLIT_PERCENT_TRANSACTION,
@@ -284,6 +285,21 @@ describe("getBalanceOfAPerson", () => {
         borrowerIds: ["2", "1", "3", "1", "1", "2"],
         amounts: [10, 15, 20, 5, 10, 5],
         transactionIds: ["1", "2", "3", "4", "5", "6"],
+      }),
+    ],
+    [
+      "return correctly for non-participant",
+      {
+        ...PERSON_3,
+        balance: 0,
+        paysTo: {},
+      },
+      PERSON_3,
+      debtsBuilder({
+        lenderIds: ["1", "2"],
+        borrowerIds: ["2", "1"],
+        amounts: [10, 15],
+        transactionIds: ["1", "2"],
       }),
     ],
   ])("%s", (_, expected, person, debts) => {

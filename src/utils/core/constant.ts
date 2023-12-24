@@ -33,3 +33,4 @@ export const SPLIT_EXACT_TRANSACTION = trxBuilder({
 
 export const PERSON_1 = personBuilder({ id: "1", name: "name_1" });
 export const PERSON_2 = personBuilder({ id: "2", name: "name_2" });
+export const PERSON_3 = personBuilder({ id: "3", name: "name_3" });
