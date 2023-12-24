@@ -1,101 +1,17 @@
-import { Debt, Person, SplitType, Transaction } from "@/app/app/type";
+import { Debt } from "@/app/app/type";
 import {
   calculatePortion,
   generateDebtFromTransaction,
   getBalanceOfAPerson,
-} from "./core";
-
-const trxBuilder = ({
-  amount,
-  splitType,
-  payerId,
-  splits,
-}: {
-  amount: number;
-  splitType: SplitType;
-  payerId: string;
-  splits: { id: string; amount: number }[];
-}): Transaction => ({
-  id: "1",
-  name: "name",
-  date: new Date(),
-  amount: amount,
-  paidBy: {
-    id: payerId,
-    name: "name",
-  },
-  splitType,
-  split: splits.reduce(
-    (acc, { id, amount }) => ({
-      ...acc,
-      [id]: {
-        id,
-        name: "name",
-        amount,
-      },
-    }),
-    {} as Record<string, { id: string; name: string; amount: number }>
-  ),
-});
-
-const SPLIT_EQUAL_TRANSACTION = trxBuilder({
-  amount: 98,
-  splitType: SplitType.EQUAL,
-  payerId: "1",
-  splits: [
-    { id: "1", amount: 1 },
-    { id: "2", amount: 1 },
-  ],
-});
-
-const SPLIT_PERCENT_TRANSACTION = trxBuilder({
-  amount: 100,
-  splitType: SplitType.PERCENT,
-  payerId: "1",
-  splits: [
-    { id: "1", amount: 50 },
-    { id: "2", amount: 50 },
-  ],
-});
-
-const SPLIT_EXACT_TRANSACTION = trxBuilder({
-  amount: 99,
-  splitType: SplitType.EXACT,
-  payerId: "1",
-  splits: [
-    { id: "1", amount: 69 },
-    { id: "2", amount: 30 },
-  ],
-});
-
-describe("trxBuilder", () => {
-  it("return split type correctly", () => {
-    expect(SPLIT_EQUAL_TRANSACTION.splitType).toBe(SplitType.EQUAL);
-    expect(SPLIT_PERCENT_TRANSACTION.splitType).toBe(SplitType.PERCENT);
-    expect(SPLIT_EXACT_TRANSACTION.splitType).toBe(SplitType.EXACT);
-  });
-
-  it("return payer correctly", () => {
-    expect(SPLIT_EQUAL_TRANSACTION.paidBy.id).toBe("1");
-    expect(SPLIT_PERCENT_TRANSACTION.paidBy.id).toBe("1");
-    expect(SPLIT_EXACT_TRANSACTION.paidBy.id).toBe("1");
-  });
-
-  it("return splits correctly", () => {
-    expect(SPLIT_EQUAL_TRANSACTION.split["1"].amount).toBe(1);
-    expect(SPLIT_EQUAL_TRANSACTION.split["2"].amount).toBe(1);
-    expect(SPLIT_PERCENT_TRANSACTION.split["1"].amount).toBe(50);
-    expect(SPLIT_PERCENT_TRANSACTION.split["2"].amount).toBe(50);
-    expect(SPLIT_EXACT_TRANSACTION.split["1"].amount).toBe(69);
-    expect(SPLIT_EXACT_TRANSACTION.split["2"].amount).toBe(30);
-  });
-
-  it("return amount correctly", () => {
-    expect(SPLIT_EQUAL_TRANSACTION.amount).toBe(98);
-    expect(SPLIT_PERCENT_TRANSACTION.amount).toBe(100);
-    expect(SPLIT_EXACT_TRANSACTION.amount).toBe(99);
-  });
-});
+} from ".";
+import { debtsBuilder } from "./builder";
+import {
+  PERSON_1,
+  PERSON_2,
+  SPLIT_EQUAL_TRANSACTION,
+  SPLIT_EXACT_TRANSACTION,
+  SPLIT_PERCENT_TRANSACTION,
+} from "./constant";
 
 describe("calculatePortion", () => {
   it.each([
@@ -198,91 +114,6 @@ describe("generateDebtFromTransaction", () => {
     ],
   ])("%s", (_, expected, ...args) => {
     expect(generateDebtFromTransaction(...args)).toEqual(expected);
-  });
-});
-
-const personBuilder = ({ id, name }: { id: string; name: string }): Person => ({
-  id,
-  name,
-  balance: 0,
-  paysTo: {},
-});
-
-const PERSON_1 = personBuilder({ id: "1", name: "name_1" });
-const PERSON_2 = personBuilder({ id: "2", name: "name_2" });
-
-describe("personBuilder", () => {
-  it("return id correctly", () => {
-    expect(PERSON_1.id).toBe("1");
-    expect(PERSON_2.id).toBe("2");
-  });
-
-  it("return name correctly", () => {
-    expect(PERSON_1.name).toBe("name_1");
-    expect(PERSON_2.name).toBe("name_2");
-  });
-
-  it("return balance correctly", () => {
-    expect(PERSON_1.balance).toBe(0);
-    expect(PERSON_2.balance).toBe(0);
-  });
-
-  it("return paysTo correctly", () => {
-    expect(PERSON_1.paysTo).toEqual({});
-    expect(PERSON_2.paysTo).toEqual({});
-  });
-});
-
-const debtsBuilder = ({
-  lenderIds,
-  borrowerIds,
-  amounts,
-  transactionIds,
-}: {
-  lenderIds: string[];
-  borrowerIds: string[];
-  amounts: number[];
-  transactionIds: string[];
-}): Debt[] => {
-  return lenderIds.reduce((acc, lenderId, index) => {
-    const borrowerId = borrowerIds[index];
-    const amount = amounts[index];
-    const transactionId = transactionIds[index];
-    return [
-      ...acc,
-      {
-        lenderId,
-        borrowerId,
-        amount,
-        transactionId,
-      },
-    ];
-  }, [] as Debt[]);
-};
-
-describe("debtsBuilder", () => {
-  it("return correctly", () => {
-    expect(
-      debtsBuilder({
-        lenderIds: ["1", "2"],
-        borrowerIds: ["2", "1"],
-        amounts: [49, 49],
-        transactionIds: ["1", "2"],
-      })
-    ).toEqual([
-      {
-        lenderId: "1",
-        borrowerId: "2",
-        amount: 49,
-        transactionId: "1",
-      },
-      {
-        lenderId: "2",
-        borrowerId: "1",
-        amount: 49,
-        transactionId: "2",
-      },
-    ]);
   });
 });
 
