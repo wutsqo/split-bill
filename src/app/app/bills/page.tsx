@@ -14,6 +14,7 @@ import { mergeClassname } from "@/utils/merge-classname";
 import { usePeopleStore } from "@hooks/usePeopleStore";
 import { SplitFormProps } from "./type";
 import { useTransactionStore } from "@hooks/useTransactionStore";
+import RemoveModal from "./remove-modal";
 
 const STEPS = [
   {
@@ -31,7 +32,8 @@ const STEPS = [
 ];
 
 export default function Page() {
-  const { addTransaction, transactions } = useTransactionStore();
+  const { addTransaction, transactions, removeTransaction } =
+    useTransactionStore();
   const { people, getPerson } = usePeopleStore();
   const newTrxModal = useRef<HTMLDialogElement>(null);
   const [currentStep, setCurrentStep] = useState(0);
@@ -75,6 +77,9 @@ export default function Page() {
     );
     updateData("splitType", splitType);
   };
+
+  const [toRemove, setToRemove] = useState<string>("");
+  const removeModalRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
     usePeopleStore.persist.rehydrate();
@@ -169,6 +174,16 @@ export default function Page() {
       });
   };
 
+  const onRemoveModalOpen = (id: string) => {
+    setToRemove(id);
+    removeModalRef.current?.showModal();
+  };
+
+  const onRemoveTransaction = (id: string) => {
+    removeTransaction(id);
+    removeModalRef.current?.close();
+  };
+
   return (
     <div className="py-4 flex flex-col gap-4">
       <div className="join w-full">
@@ -192,7 +207,12 @@ export default function Page() {
       </div>
 
       {transactions.map((trx) => (
-        <TrxCard person={getPerson(trx.paidBy.id)!} trx={trx} key={trx.id} />
+        <TrxCard
+          person={getPerson(trx.paidBy.id)!}
+          trx={trx}
+          key={trx.id}
+          onRemoveModalOpen={() => onRemoveModalOpen(trx.id)}
+        />
       ))}
 
       <dialog ref={newTrxModal} className="modal modal-bottom sm:modal-middle">
@@ -361,6 +381,13 @@ export default function Page() {
           </form>
         </div>
       </dialog>
+
+      <RemoveModal
+        onRemove={onRemoveTransaction}
+        ref={removeModalRef}
+        trxId={toRemove}
+        trxName={transactions.find((trx) => trx.id === toRemove)?.name ?? ""}
+      />
     </div>
   );
 }

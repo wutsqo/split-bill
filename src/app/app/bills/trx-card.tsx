@@ -9,10 +9,15 @@ import { useTransactionStore } from "@hooks/useTransactionStore";
 interface TrxCardProps {
   trx: Transaction;
   person: Person;
+  onRemoveModalOpen: () => void;
 }
 
-export const TrxCard: FC<TrxCardProps> = ({ trx, person }) => {
-  const { removeTransaction, debts } = useTransactionStore();
+export const TrxCard: FC<TrxCardProps> = ({
+  trx,
+  person,
+  onRemoveModalOpen,
+}) => {
+  const { debts } = useTransactionStore();
   const { getPerson } = usePeopleStore();
 
   return (
@@ -57,7 +62,7 @@ export const TrxCard: FC<TrxCardProps> = ({ trx, person }) => {
           <button
             className="btn btn-ghost btn-sm join-item text-error"
             type="button"
-            onClick={() => removeTransaction(trx.id)}
+            onClick={onRemoveModalOpen}
           >
             <TrashIcon className="w-4 h-4" />
             Delete
