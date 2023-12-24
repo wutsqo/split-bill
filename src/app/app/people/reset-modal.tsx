@@ -16,11 +16,9 @@ const ResetModal = forwardRef<Ref, RemoveModalProps>(({ onReset }, ref) => {
         </p>
         <div className="modal-action">
           <form method="dialog">
-            <button className="btn btn-sm btn-ghost uppercase">
-              Nevermind
-            </button>
+            <button className="btn btn-ghost uppercase">Nevermind</button>
           </form>
-          <button className="btn btn-sm btn-error uppercase" onClick={onReset}>
+          <button className="btn btn-error uppercase" onClick={onReset}>
             Reset
           </button>
         </div>

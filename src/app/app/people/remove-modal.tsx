@@ -53,18 +53,18 @@ const RemoveModal = forwardRef<Ref, RemoveModalProps>(
           <div className="modal-action">
             <form method="dialog">
               {result?.removable ? (
-                <button className="btn btn-sm btn-ghost uppercase">
+                <button className="btn btn-ghost uppercase">
                   Nevermind
                 </button>
               ) : (
-                <button className="btn btn-sm btn-primary uppercase">
+                <button className="btn btn-primary uppercase">
                   Okay
                 </button>
               )}
             </form>
             {result?.removable ? (
               <button
-                className="btn btn-sm btn-error uppercase"
+                className="btn btn-error uppercase"
                 onClick={() => onRemove(toRemove)}
               >
                 Remove

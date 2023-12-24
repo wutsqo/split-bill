@@ -16,7 +16,7 @@ export default function Layout({
       <AccountModal />
       <TrakteerProvider>
         <AccountModal />
-        <footer className="text-center text-xs">
+        <footer className="text-center text-xs pb-20">
           <TrakteerButton className="umami--click--trakteer-button-about mt-4" />
           <TrakteerModal />
         </footer>
