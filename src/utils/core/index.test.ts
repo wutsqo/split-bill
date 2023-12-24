@@ -1,6 +1,7 @@
-import { Debt } from "@/app/app/type";
+import { Debt, Transaction } from "@/app/app/type";
 import {
   calculatePortion,
+  checkIfPersonRemovable,
   generateDebtFromTransaction,
   getBalanceOfAPerson,
 } from ".";
@@ -304,5 +305,52 @@ describe("getBalanceOfAPerson", () => {
     ],
   ])("%s", (_, expected, person, debts) => {
     expect(getBalanceOfAPerson(person, debts)).toEqual(expected);
+  });
+});
+
+describe("checkIfPersonRemovable", () => {
+  it.each([
+    [
+      "return correctly for person with no transaction",
+      {
+        removable: true,
+        reason: "No transaction involving this person",
+        transactions: [],
+      },
+      [] as Transaction[],
+      "1",
+    ],
+    [
+      "return correctly for payer",
+      {
+        removable: false,
+        reason: "This person is involved in some transactions",
+        transactions: [SPLIT_EQUAL_TRANSACTION],
+      },
+      [SPLIT_EQUAL_TRANSACTION],
+      "1",
+    ],
+    [
+      "return correctly for non-payer participant",
+      {
+        removable: false,
+        reason: "This person is involved in some transactions",
+        transactions: [SPLIT_EQUAL_TRANSACTION],
+      },
+      [SPLIT_EQUAL_TRANSACTION],
+      "2",
+    ],
+    [
+      "return correctly for non-participant",
+      {
+        removable: true,
+        reason: "No transaction involving this person",
+        transactions: [],
+      },
+      [SPLIT_EQUAL_TRANSACTION],
+      "3",
+    ],
+  ])("%s", (_, expected, transactions, id) => {
+    expect(checkIfPersonRemovable(transactions, id)).toEqual(expected);
   });
 });
