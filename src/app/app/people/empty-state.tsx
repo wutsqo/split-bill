@@ -1,9 +1,9 @@
-export default function EmptyState() {
+export default function EmptyState({ text }: { readonly text: string }) {
   return (
-    <div role="alert" className="alert">
+    <div role="alert" className="alert bg-white">
       <div className="w-full flex justify-center gap-3 items-center text-sm text-center sm:col-span-2 sm:text-base">
         <span>💡</span>
-        <span>Get started by adding at least two people</span>
+        <span>{text}</span>
       </div>
     </div>
   );

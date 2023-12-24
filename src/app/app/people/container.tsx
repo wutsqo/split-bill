@@ -42,14 +42,7 @@ export default function PeopleContainer() {
     <div className="py-4 flex flex-col gap-4">
       <PersonForm />
 
-      {people.length < 2 ? <EmptyState /> : null}
-
-      <div
-        className={mergeClassname(
-          "card card-compact sm:card-normal bg-base-200",
-          people.length === 0 ? "hidden" : "block"
-        )}
-      >
+      <div className="card card-compact sm:card-normal bg-base-200">
         <div className="card-body">
           <div className="flex justify-between items-center">
             <div className="card-title text-base">People</div>
@@ -73,6 +66,15 @@ export default function PeopleContainer() {
               />
             ))}
           </div>
+          {people.length < 2 ? (
+            <EmptyState
+              text={
+                people.length
+                  ? "You need one more person"
+                  : "Add at least 2 people to get started"
+              }
+            />
+          ) : null}
         </div>
       </div>
 
