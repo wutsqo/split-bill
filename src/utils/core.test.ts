@@ -1,5 +1,5 @@
 import { SplitType, Transaction } from "@/app/app/type";
-import { calculatePortion } from "./core";
+import { calculatePortion, generateDebtFromTransaction } from "./core";
 
 const trxBuilder = ({
   amount,
@@ -151,5 +151,48 @@ describe("calculatePortion", () => {
     ],
   ])("%s", (_, expected, ...args) => {
     expect(calculatePortion(...args)).toBe(expected);
+  });
+});
+
+describe("generateDebtFromTransaction", () => {
+  it.each([
+    [
+      "return correctly for equal split",
+      [
+        {
+          lenderId: "1",
+          borrowerId: "2",
+          amount: 49,
+          transactionId: "1",
+        },
+      ],
+      SPLIT_EQUAL_TRANSACTION,
+    ],
+    [
+      "return correctly for percent split",
+      [
+        {
+          lenderId: "1",
+          borrowerId: "2",
+          amount: 50,
+          transactionId: "1",
+        },
+      ],
+      SPLIT_PERCENT_TRANSACTION,
+    ],
+    [
+      "return correctly for exact split",
+      [
+        {
+          lenderId: "1",
+          borrowerId: "2",
+          amount: 30,
+          transactionId: "1",
+        },
+      ],
+      SPLIT_EXACT_TRANSACTION,
+    ],
+  ])("%s", (_, expected, ...args) => {
+    expect(generateDebtFromTransaction(...args)).toEqual(expected);
   });
 });
