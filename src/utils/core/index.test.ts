@@ -115,8 +115,8 @@ describe("generateDebtFromTransaction", () => {
       ],
       SPLIT_EXACT_TRANSACTION,
     ],
-  ])("%s", (_, expected, ...args) => {
-    expect(generateDebtFromTransaction(...args)).toEqual(expected);
+  ])("%s", (_, expected, transaction) => {
+    expect(generateDebtFromTransaction(transaction)).toEqual(expected);
   });
 });
 
