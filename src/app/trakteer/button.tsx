@@ -39,9 +39,9 @@ const TrakteerButton = ({ className, size = 100 }: Props) => {
           }
         />
       </span>
-      <span className="text-xs ml-1">Buy me a Coffee</span>
+      <span className="text-xs ml-1 group-hover:hidden">Buy me a Coffee</span>
       <span className="hidden group-hover:block">
-        — Support Indie Developers 🤍
+        Support Indie Developers 🤍
       </span>
     </button>
   );
