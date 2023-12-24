@@ -1,4 +1,4 @@
-import { mergeClassname } from "./common";
+import { mergeClassname } from ".";
 
 describe("mergeClassname", () => {
   it.each([
