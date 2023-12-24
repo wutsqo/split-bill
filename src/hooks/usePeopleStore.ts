@@ -7,7 +7,7 @@ import { ZUSTAND_PERSIST_KEYS } from "@/app/app/constant";
 interface PeopleState {
   people: Person[];
   peopleMap: Record<string, Person>;
-  addPerson: ({ id, name }: { id?: string; name: string }) => void;
+  addPerson: (data: Pick<Person, "name"> & Partial<Pick<Person, "id">>) => void;
   editPerson: (id: string, update: Partial<Person>) => void;
   removePerson: (id: string) => void;
   removeEveryone: () => void;
