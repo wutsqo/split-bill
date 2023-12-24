@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import { useAppContext } from "../context";
 import { SummaryCard } from "./summary-card";
+import { usePeopleStore } from "@hooks/usePeopleStore";
 
 export default function Page() {
-  const { setPreferSimplified, preferSimplified, people } = useAppContext();
+  const { setPreferSimplified, preferSimplified } = useAppContext();
+  const { people } = usePeopleStore();
   const [activePersonId, setActivePersonId] = useState<string>("");
 
   useEffect(() => {

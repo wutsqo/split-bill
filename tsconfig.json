@@ -20,6 +20,7 @@
     ],
     "paths": {
       "@images/*": ["./public/images/*"],
+      "@hooks/*": ["./src/hooks/*"],
       "@/*": ["./src/*"]
     }
   },

@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import { checkIfPersonRemovable } from "@/utils/core";
 import { useAppContext } from "../context";
+import { usePeopleStore } from "@hooks/usePeopleStore";
 
 interface RemoveModalProps {
   toRemove: string | null;
@@ -11,9 +12,12 @@ type Ref = HTMLDialogElement;
 
 const RemoveModal = forwardRef<Ref, RemoveModalProps>(
   ({ toRemove, onRemove }, ref) => {
-    const { transactions, people } = useAppContext();
-    const result =
-      toRemove === null ? null : checkIfPersonRemovable(transactions, toRemove);
+    const { transactions } = useAppContext();
+    const { people, peopleMap } = usePeopleStore();
+
+    if (toRemove === null) return null;
+
+    const result = checkIfPersonRemovable(transactions, toRemove);
 
     return (
       <dialog className="modal modal-bottom sm:modal-middle" ref={ref}>
@@ -21,7 +25,7 @@ const RemoveModal = forwardRef<Ref, RemoveModalProps>(
           {result?.removable ? (
             <p className="py-4 text-base">
               Are you sure you want to remove{" "}
-              <strong>{people.find((p) => p.id === toRemove)?.name}</strong>?
+              <strong>{peopleMap[toRemove]?.name}</strong>?
             </p>
           ) : (
             <>
@@ -63,7 +67,7 @@ const RemoveModal = forwardRef<Ref, RemoveModalProps>(
             {result?.removable ? (
               <button
                 className="btn btn-sm btn-error uppercase"
-                onClick={() => onRemove(toRemove!)}
+                onClick={() => onRemove(toRemove)}
               >
                 Remove
               </button>

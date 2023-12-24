@@ -5,7 +5,6 @@ import {
   AppContextProviderProps,
   AppContextValue,
   Debt,
-  Person,
   Transaction,
 } from "./type";
 import { useLocalStorageState } from "@/hooks/useLocalStorageState";
@@ -15,7 +14,7 @@ import {
   generateDebtFromTransaction,
 } from "@/utils/core";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { v4 as uuidv4 } from "uuid";
+import { usePeopleStore } from "@hooks/usePeopleStore";
 
 export const AppContext = createContext<AppContextValue>({} as AppContextValue);
 
@@ -25,11 +24,8 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
   readonly children: React.ReactNode;
 }) => {
   const supabase = createClientComponentClient();
+  const { people, addPerson, editPerson, removeEveryone } = usePeopleStore();
 
-  const [people, setPeople] = useLocalStorageState<Person[]>(
-    LOCALSTORAGE_KEYS.PEOPLE,
-    []
-  );
   const [transactions, setTransactions] = useLocalStorageState<Transaction[]>(
     LOCALSTORAGE_KEYS.TRANSACTIONS,
     []
@@ -39,34 +35,6 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
     []
   );
   const [preferSimplified, setPreferSimplified] = useState<boolean>(false);
-
-  const addPerson = (name: string) => {
-    const newPerson: Person = {
-      id: uuidv4(),
-      name,
-      balance: 0,
-      paysTo: {},
-    };
-    setPeople([...people, newPerson]);
-  };
-
-  const editPerson = (id: string, name: string) => {
-    setPeople(
-      people.map((person) => {
-        if (person.id === id) {
-          return {
-            ...person,
-            name,
-          };
-        }
-        return person;
-      })
-    );
-  };
-
-  const removePerson = (id: string) => {
-    setPeople(people.filter((person) => person.id !== id));
-  };
 
   const addTransaction = (trx: Transaction) => {
     setTransactions([...transactions, trx]);
@@ -79,39 +47,33 @@ export const AppContextProvider: FC<AppContextProviderProps> = ({
   };
 
   const reset = () => {
-    setPeople([]);
+    removeEveryone();
     setTransactions([]);
     setDebts([]);
   };
 
   useEffect(() => {
-    setPeople((prev) => calculateNewBalances(prev, debts));
+    calculateNewBalances(people, debts).forEach((person) => {
+      editPerson(person.id, person);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debts]);
 
-  useEffect(() => {
-    if (people.length !== 0) return;
-    supabase.auth.getSession().then((res) => {
-      if (res.data.session !== null) {
-        const user = res.data.session.user;
-        setPeople([
-          {
-            id: user.id,
-            name: user.user_metadata?.name || user.email?.split("@")[0],
-            balance: 0,
-            paysTo: {},
-          },
-        ]);
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [people]);
+  // useEffect(() => {
+  //   if (people.length !== 0) return;
+  //   supabase.auth.getSession().then((res) => {
+  //     if (res.data.session !== null) {
+  //       const user = res.data.session.user;
+  //       addPerson({
+  //         id: user.id,
+  //         name: user.user_metadata.full_name,
+  //       });
+  //     }
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [people]);
 
   const value: AppContextValue = {
-    people,
-    addPerson,
-    editPerson,
-    removePerson,
     transactions,
     addTransaction,
     removeTransaction,

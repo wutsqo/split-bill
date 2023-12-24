@@ -1,11 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useAppContext } from "../context";
+import { usePeopleStore } from "@hooks/usePeopleStore";
 
 export default function NextButton() {
   const router = useRouter();
-  const { people } = useAppContext();
+  const { people } = usePeopleStore();
 
   if (people.length <= 1) return null;
 

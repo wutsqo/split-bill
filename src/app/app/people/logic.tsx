@@ -2,7 +2,7 @@
 
 import useFormState from "@/hooks/useFormState";
 import { required, validate } from "@/utils/forms";
-import { useAppContext } from "../context";
+import { usePeopleStore } from "@hooks/usePeopleStore";
 
 export default function useLogic() {
   const { data, updateData, isValid, resetData } = useFormState(
@@ -13,10 +13,10 @@ export default function useLogic() {
       name: validate([required]),
     }
   );
-  const { addPerson } = useAppContext();
+  const { addPerson } = usePeopleStore();
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addPerson(data.name);
+    addPerson({ name: data.name });
     resetData();
   };
 

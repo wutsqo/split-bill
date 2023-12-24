@@ -9,9 +9,11 @@ import NextButton from "./next-button";
 import { useRef, useState } from "react";
 import RemoveModal from "./remove-modal";
 import ResetModal from "./reset-modal";
+import { usePeopleStore } from "@hooks/usePeopleStore";
 
 export default function Page() {
-  const { reset, people, removePerson } = useAppContext();
+  const { reset } = useAppContext();
+  const { removePerson, people } = usePeopleStore();
   const removeModalRef = useRef<HTMLDialogElement>(null);
   const resetModalRef = useRef<HTMLDialogElement>(null);
   const [toRemove, setToRemove] = useState<string | null>(null);

@@ -12,7 +12,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { required, validate } from "@/utils/forms";
 import useFormState from "@/hooks/useFormState";
-import { useAppContext } from "../context";
+import { usePeopleStore } from "@hooks/usePeopleStore";
 
 interface PersonCardProps {
   person: Person;
@@ -30,11 +30,13 @@ const PersonCard: FC<PersonCardProps> = ({ person, onRemove }) => {
     }
   );
   const inputRef = useRef<HTMLInputElement>(null);
-  const { editPerson } = useAppContext();
+  const { editPerson } = usePeopleStore();
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isValid) return;
-    editPerson(person.id, data.name);
+    editPerson(person.id, {
+      name: data.name,
+    });
     setEditMode(false);
   };
   const cancelEdit = () => {

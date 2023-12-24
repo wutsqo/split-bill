@@ -13,6 +13,8 @@ import { TrxCard } from "./trx-card";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { mergeClassname } from "@/utils/merge-classname";
+import { usePeopleStore } from "@hooks/usePeopleStore";
+import { SplitFormProps } from "./type";
 
 const STEPS = [
   {
@@ -30,7 +32,8 @@ const STEPS = [
 ];
 
 export default function Page() {
-  const { people, addTransaction, transactions } = useAppContext();
+  const { addTransaction, transactions } = useAppContext();
+  const { people, peopleMap } = usePeopleStore();
   const newTrxModal = useRef<HTMLDialogElement>(null);
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -74,20 +77,21 @@ export default function Page() {
     updateData("splitType", splitType);
   };
 
-  if (people.length === 0) {
+  if (people.length <= 1) {
     return (
       <div className="py-4 flex flex-col gap-4">
         <div className="card bg-base-200">
           <div className="card-body">
-            <h2 className="card-title">No people yet</h2>
-            <p className="text-base-content">Add some people to get started.</p>
+            <p className="text-base-content">
+              Add at least two people to get started.
+            </p>
           </div>
         </div>
       </div>
     );
   }
 
-  const splitFormProps = {
+  const splitFormProps: SplitFormProps = {
     amount: data.amount,
     split: data.split,
     updateSplit: (split: Record<string, number>) => updateData("split", split),
@@ -116,7 +120,7 @@ export default function Page() {
           [key]: {
             amount: data.split[key],
             id: key,
-            name: people.find((p) => p.id === key)!.name,
+            name: peopleMap[key].name,
           },
         };
       },
@@ -137,7 +141,7 @@ export default function Page() {
       name: data.name,
       paidBy: {
         id: data.paidBy,
-        name: people.find((p) => p.id === data.paidBy)?.name ?? "",
+        name: peopleMap[data.paidBy].name,
       },
       splitType: data.splitType,
       split,
@@ -186,11 +190,7 @@ export default function Page() {
       </div>
 
       {transactions.map((trx) => (
-        <TrxCard
-          person={people.find((p) => p.id === trx.paidBy.id)!}
-          trx={trx}
-          key={trx.id}
-        />
+        <TrxCard person={peopleMap[trx.paidBy.id]!} trx={trx} key={trx.id} />
       ))}
 
       <dialog ref={newTrxModal} className="modal modal-bottom sm:modal-middle">
@@ -214,11 +214,12 @@ export default function Page() {
             {currentStep === 0 ? (
               <>
                 <div className="form-control w-full">
-                  <label className="label">
+                  <label className="label" htmlFor="bills-name-input">
                     <span className="label-text">Title</span>
                   </label>
                   <input
                     type="text"
+                    id="bills-name-input"
                     placeholder="What's the title of this transaction?"
                     className="input input-bordered w-full"
                     value={data.name}
@@ -226,7 +227,7 @@ export default function Page() {
                   />
                 </div>
                 <div className="form-control w-full">
-                  <label className="label">
+                  <label className="label" htmlFor="bills-amount-input">
                     <span className="label-text">Amount</span>
                   </label>
                   <div className="join">
@@ -235,6 +236,7 @@ export default function Page() {
                     </span>
                     <input
                       type="number"
+                      id="bills-amount-input"
                       placeholder="What's the amount?"
                       className="input input-bordered w-full join-item"
                       value={data.amount}
@@ -245,11 +247,12 @@ export default function Page() {
                   </div>
                 </div>
                 <div className="form-control w-full">
-                  <label className="label">
+                  <label className="label" htmlFor="bills-date-input">
                     <span className="label-text">Date</span>
                   </label>
                   <input
                     type="date"
+                    id="bills-date-input"
                     className="input input-bordered w-full"
                     value={data.date}
                     onChange={(e) => updateData("date", e.target.value)}
@@ -260,10 +263,11 @@ export default function Page() {
 
             {currentStep === 1 ? (
               <div className="form-control w-full">
-                <label className="label">
+                <label className="label" htmlFor="bills-paid-by-input">
                   <span className="label-text">Paid By</span>
                 </label>
                 <select
+                  id="bills-paid-by-input"
                   className="select select-bordered w-full"
                   value={data.paidBy}
                   onChange={(e) => updateData("paidBy", e.target.value)}
@@ -280,10 +284,11 @@ export default function Page() {
             {currentStep === 2 ? (
               <>
                 <div className="form-control w-full">
-                  <label className="label">
+                  <label className="label" htmlFor="bills-split-type-input">
                     <span className="label-text">Split</span>
                   </label>
                   <select
+                    id="bills-split-type-input"
                     className="select select-bordered w-full"
                     value={data.splitType}
                     onChange={(e) =>

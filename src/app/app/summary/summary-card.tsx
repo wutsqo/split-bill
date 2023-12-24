@@ -1,16 +1,16 @@
 import { FC } from "react";
-import { useAppContext } from "../context";
 import { PersonLabel } from "../person";
 import { formatMoney } from "@/utils/common";
+import { usePeopleStore } from "@hooks/usePeopleStore";
 
 interface SummaryCardProps {
   personId: string;
 }
 
 export const SummaryCard: FC<SummaryCardProps> = ({ personId }) => {
-  const { people } = useAppContext();
+  const { peopleMap } = usePeopleStore();
 
-  const person = people.find((person) => person.id === personId)!;
+  const person = peopleMap[personId];
   const debtsByPerson = Object.keys(person.paysTo).map((personId) => ({
     id: personId,
     amount: person.paysTo[personId],
@@ -36,7 +36,7 @@ export const SummaryCard: FC<SummaryCardProps> = ({ personId }) => {
               {givesTo.map((debt) => (
                 <div key={debt.id} className="flex justify-between">
                   <PersonLabel
-                    person={people.find((person) => person.id === debt.id)!}
+                    person={peopleMap[debt.id]}
                     prefix="To"
                     size="sm"
                   />
@@ -59,7 +59,7 @@ export const SummaryCard: FC<SummaryCardProps> = ({ personId }) => {
               {receivesFrom.map((debt) => (
                 <div key={debt.id} className="flex justify-between">
                   <PersonLabel
-                    person={people.find((person) => person.id === debt.id)!}
+                    person={peopleMap[debt.id]}
                     prefix="From"
                     size="sm"
                   />
