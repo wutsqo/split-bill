@@ -1,5 +1,6 @@
 import { Debt, Transaction } from "@/app/app/type";
 import {
+  calculateNewBalances,
   calculatePortion,
   checkIfPersonRemovable,
   generateDebtFromTransaction,
@@ -352,5 +353,30 @@ describe("checkIfPersonRemovable", () => {
     ],
   ])("%s", (_, expected, transactions, id) => {
     expect(checkIfPersonRemovable(transactions, id)).toEqual(expected);
+  });
+});
+
+describe("calculateNewBalances", () => {
+  const DEBTS = debtsBuilder({
+    lenderIds: ["1", "2", "1", "3", "2", "1"],
+    borrowerIds: ["2", "1", "3", "1", "1", "2"],
+    amounts: [10, 15, 20, 5, 10, 5],
+    transactionIds: ["1", "2", "3", "4", "5", "6"],
+  });
+
+  it("return correctly", () => {
+    expect(calculateNewBalances([PERSON_1, PERSON_2, PERSON_3], DEBTS)).toEqual(
+      [
+        {
+          ...getBalanceOfAPerson(PERSON_1, DEBTS),
+        },
+        {
+          ...getBalanceOfAPerson(PERSON_2, DEBTS),
+        },
+        {
+          ...getBalanceOfAPerson(PERSON_3, DEBTS),
+        },
+      ]
+    );
   });
 });
