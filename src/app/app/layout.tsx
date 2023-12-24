@@ -1,3 +1,6 @@
+import TrakteerButton from "../trakteer/button";
+import TrakteerModal from "../trakteer/modal";
+import { TrakteerProvider } from "../trakteer/provider";
 import AccountModal from "./account-modal";
 import Navigation from "./navigation";
 
@@ -11,6 +14,13 @@ export default function Layout({
       <Navigation />
       {children}
       <AccountModal />
+      <TrakteerProvider>
+        <AccountModal />
+        <footer className="text-center text-xs">
+          <TrakteerButton className="umami--click--trakteer-button-about mt-4" />
+          <TrakteerModal />
+        </footer>
+      </TrakteerProvider>
     </div>
   );
 }
