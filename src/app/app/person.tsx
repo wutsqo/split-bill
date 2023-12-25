@@ -9,6 +9,7 @@ interface PersonLabelProps {
   size?: "sm" | "md" | "lg";
   suffix?: string;
   prefix?: string;
+  hideName?: boolean;
 }
 
 const sizeMap = {
@@ -22,6 +23,7 @@ export const PersonLabel: FC<PersonLabelProps> = ({
   size = "md",
   suffix = "",
   prefix = "",
+  hideName = false,
 }) => {
   return (
     <div className="flex items-center gap-2">
@@ -33,7 +35,7 @@ export const PersonLabel: FC<PersonLabelProps> = ({
         alt={person.name}
         className={mergeClassname("mask mask-squircle", sizeMap[size])}
       />
-      {prefix} {person.name} {suffix}
+      {prefix} {hideName ? "" : person.name} {suffix}
     </div>
   );
 };
