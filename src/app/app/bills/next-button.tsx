@@ -15,7 +15,7 @@ export default function NextButton({
 
   return (
     <div className="join w-full fixed rounded-none sm:rounded-2xl left-0 bottom-0 sm:sticky sm:bottom-4 z-50">
-      <div className="join-item bg-base-200 flex items-center justify-between w-full p-4">
+      <div className="join-item bg-base-100 flex items-center justify-between w-full p-4">
         <div>Total</div>
         <div>
           {numberOfTransactions === 1

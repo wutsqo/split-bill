@@ -23,7 +23,7 @@ export const TrxCard: FC<TrxCardProps> = ({
   const { getPerson } = usePeopleStore();
 
   return (
-    <div className="card card-compact bg-base-200">
+    <div className="card card-compact bg-base-100">
       <div className="card-body">
         <div className="flex justify-between items-center">
           <div className="card-title">{trx.name}</div>
@@ -39,7 +39,7 @@ export const TrxCard: FC<TrxCardProps> = ({
           <div>{formatMoney(trx.amount)}</div>
         </div>
 
-        <div className="card card-compact bg-base-100 mt-1">
+        <div className="card card-compact bg-base-200 mt-1">
           <div className="card-body">
             {debts
               .filter((debt) => debt.transactionId === trx.id)

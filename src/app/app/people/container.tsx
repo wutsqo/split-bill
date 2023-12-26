@@ -9,7 +9,6 @@ import ResetModal from "./reset-modal";
 import { usePeopleStore } from "@hooks/usePeopleStore";
 import { useResetEverything } from "@hooks/useResetEverything";
 import dynamic from "next/dynamic";
-import { mergeClassname } from "@/utils/merge-classname";
 import EmptyState from "./empty-state";
 
 const NextButton = dynamic(() => import("./next-button"), { ssr: false });
@@ -39,10 +38,10 @@ export default function PeopleContainer() {
   };
 
   return (
-    <div className="py-4 flex flex-col gap-4">
+    <div className="py-4 flex flex-col gap-4 min-h-[calc(100vh-13.5rem)]">
       <PersonForm />
 
-      <div className="card card-compact sm:card-normal bg-base-200">
+      <div className="card card-compact sm:card-normal bg-base-100">
         <div className="card-body">
           <div className="flex justify-between items-center">
             <div className="card-title text-base">People</div>

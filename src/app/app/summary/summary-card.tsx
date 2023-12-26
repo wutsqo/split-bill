@@ -28,7 +28,7 @@ export const SummaryCard: FC<SummaryCardProps> = ({
   const receivesFromTotal = receivesFrom.reduce((a, b) => a - b.amount, 0);
 
   return (
-    <div className="card card-compact bg-base-200" key={person.id}>
+    <div className="card card-compact bg-base-100" key={person.id}>
       <div className="card-body">
         <div className="text-lg">
           <PersonLabel person={person} />
@@ -38,7 +38,7 @@ export const SummaryCard: FC<SummaryCardProps> = ({
           <div>{givesToTotal ? formatMoney(givesToTotal) : "Nothing"}</div>
         </div>
         {givesToTotal === 0 ? null : (
-          <div className="card card-compact bg-base-100">
+          <div className="card card-compact bg-base-200">
             <div className="card-body">
               {givesTo.map((debt) => (
                 <div key={debt.id} className="flex justify-between">
@@ -61,7 +61,7 @@ export const SummaryCard: FC<SummaryCardProps> = ({
           </div>
         </div>
         {receivesFromTotal === 0 ? null : (
-          <div className="card card-compact bg-base-100">
+          <div className="card card-compact bg-base-200">
             <div className="card-body">
               {receivesFrom.map((debt) => (
                 <div key={debt.id} className="flex justify-between">

@@ -6,7 +6,7 @@ export default function PersonForm() {
   const { data, isValid, onSubmit, updateData } = useLogic();
 
   return (
-    <div className="card-compact sm:card-normal card bg-base-200">
+    <div className="card-compact sm:card-normal card bg-base-100">
       <div className="card-body">
         <h2 className="card-title text-base">Add New Person</h2>
         <form className="join" onSubmit={onSubmit}>

@@ -28,11 +28,18 @@ export default function BillsContainer() {
 
   if (people.length <= 1) {
     return (
-      <div role="alert" className="alert mt-4">
-        <div className="w-full flex justify-center gap-3 items-center text-sm text-center sm:col-span-2 sm:text-base">
-          <span>💡</span>
-          <span>Add at least 2 people to get started</span>
+      <div className="min-h-[calc(100vh-14.5rem)]">
+        <div role="alert" className="alert mt-4">
+          <div className="w-full flex justify-center gap-3 items-center text-sm text-center sm:col-span-2 sm:text-base">
+            <span>💡</span>
+            <span>Add at least 2 people to get started</span>
+          </div>
         </div>
+        <NextButton
+          numberOfTransactions={transactions.length}
+          totalAmount={transactions.reduce((acc, trx) => acc + trx.amount, 0)}
+          disabled={transactions.length === 0}
+        />
       </div>
     );
   }
@@ -76,19 +83,20 @@ export default function BillsContainer() {
   };
 
   return (
-    <div className="py-4 flex flex-col gap-4">
-      <div className="join w-full">
+    <div className="py-4 flex flex-col gap-4 min-h-[calc(100vh-13.5rem)]">
+      <div className="join w-full bg-base-100">
         <button
           type="button"
-          className="btn text-xs join-item w-1/2 "
+          className="btn btn-ghost text-xs join-item w-1/2 "
           onClick={onAddTransactionModalOpen}
         >
           <PlusIcon className="h-5 w-5 mr-2" />
           Add Transaction
         </button>
+        <div className="bg-base-200 w-0.5 shrink-0 h-12 join-item"></div>
         <button
           type="button"
-          className="btn text-xs join-item w-1/2 "
+          className="btn btn-ghost text-xs join-item w-1/2 "
           onClick={onExport}
           disabled={transactions.length === 0}
         >

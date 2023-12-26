@@ -2,14 +2,7 @@
 
 import { TABS } from "./constant";
 import { mergeClassname } from "@/utils/merge-classname";
-import { UserCircleIcon } from "@heroicons/react/24/outline";
-import {
-  Session,
-  createClientComponentClient,
-} from "@supabase/auth-helpers-nextjs";
-import { useEffect, useState } from "react";
-import { createAvatar } from "@dicebear/core";
-import { funEmoji } from "@dicebear/collection";
+import { useEffect } from "react";
 import { useTabStore } from "@hooks/useTabStore";
 
 export default function Navigation() {
@@ -35,7 +28,7 @@ export default function Navigation() {
 
   return (
     <div className="flex flex-row justify-between gap-2 items-stretch">
-      <div role="tablist" className="tabs tabs-boxed w-full h-10">
+      <div role="tablist" className="tabs tabs-boxed w-full h-10 bg-base-100">
         {TABS.map((tab) => (
           <button
             role="tab"

@@ -45,7 +45,7 @@ const PersonCard: FC<PersonCardProps> = ({ person, onRemove }) => {
   };
 
   return (
-    <div className="bg-base-100 flex flex-row gap-3 items-center join-item p-2 first:rounded-t-lg last:rounded-b-lg">
+    <div className="flex flex-row gap-3 items-center join-item p-2 first:rounded-t-lg last:rounded-b-lg">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={createAvatar(funEmoji, {

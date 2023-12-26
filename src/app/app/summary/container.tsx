@@ -14,10 +14,12 @@ export default function SummaryContainer() {
 
   if (people.length <= 1) {
     return (
-      <div role="alert" className="alert mt-4">
-        <div className="w-full flex justify-center gap-3 items-center text-sm text-center sm:col-span-2 sm:text-base">
-          <span>💡</span>
-          <span>Add at least 2 people to get started</span>
+      <div className="min-h-[calc(100vh-14.5rem)]">
+        <div role="alert" className="alert mt-4">
+          <div className="w-full flex justify-center gap-3 items-center text-sm text-center sm:col-span-2 sm:text-base">
+            <span>💡</span>
+            <span>Add at least 2 people to get started</span>
+          </div>
         </div>
       </div>
     );
@@ -25,7 +27,7 @@ export default function SummaryContainer() {
 
   return (
     <div className="py-4 flex flex-col gap-4">
-      <div className="card card-compact bg-base-200 ">
+      <div className="card card-compact bg-base-100 ">
         <div className="card-body">
           <div className="form-control">
             <label className="label cursor-pointer">
