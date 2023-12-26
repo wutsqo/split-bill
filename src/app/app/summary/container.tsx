@@ -3,12 +3,10 @@
 import { useEffect } from "react";
 import { SummaryCard } from "./summary-card";
 import { usePeopleStore } from "@hooks/usePeopleStore";
-import Image from "next/image";
-import Simplified from "@images/simplified.png";
-import Normal from "@images/normal.png";
 
 export default function SummaryContainer() {
-  const { people } = usePeopleStore();
+  const { people, preferSimplifiedBalances, setPreferSimplifiedBalances } =
+    usePeopleStore();
 
   useEffect(() => {
     usePeopleStore.persist.rehydrate();
@@ -27,27 +25,35 @@ export default function SummaryContainer() {
 
   return (
     <div className="py-4 flex flex-col gap-4">
-      <div className="card card-compact bg-base-200 hidden">
+      <div className="card card-compact bg-base-200 ">
         <div className="card-body">
           <div className="form-control">
-            <label
-              className="label cursor-pointer"
-              htmlFor="simplify-modal-debt"
-            >
+            <label className="label cursor-pointer">
               <span className="label-text text-base font-medium">
                 Simplify Debts
               </span>
-              <input type="checkbox" className="toggle" />
+              <input
+                type="checkbox"
+                className="toggle"
+                checked={preferSimplifiedBalances}
+                onChange={() =>
+                  setPreferSimplifiedBalances(!preferSimplifiedBalances)
+                }
+              />
             </label>
           </div>
         </div>
       </div>
 
       {people.map((person) => (
-        <SummaryCard key={person.id} person={person} />
+        <SummaryCard
+          key={`summary-card-${person.id}`}
+          person={person}
+          preferSimplified={preferSimplifiedBalances}
+        />
       ))}
 
-      <input
+      {/* <input
         type="checkbox"
         id="simplify-modal-debt"
         className="modal-toggle"
@@ -79,7 +85,7 @@ export default function SummaryContainer() {
         <label className="modal-backdrop" htmlFor="simplify-modal-debt">
           Close
         </label>
-      </div>
+      </div> */}
     </div>
   );
 }

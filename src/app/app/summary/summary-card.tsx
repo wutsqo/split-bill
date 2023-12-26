@@ -6,13 +6,21 @@ import { usePeopleStore } from "@hooks/usePeopleStore";
 
 interface SummaryCardProps {
   person: Person;
+  preferSimplified: boolean;
 }
 
-export const SummaryCard: FC<SummaryCardProps> = ({ person }) => {
+export const SummaryCard: FC<SummaryCardProps> = ({
+  person,
+  preferSimplified,
+}) => {
   const { getPerson } = usePeopleStore();
-  const debtsByPerson = Object.keys(person.paysTo).map((personId) => ({
+  const debtsByPerson = Object.keys(
+    preferSimplified ? person.simplifiedPaysTo : person.paysTo
+  ).map((personId) => ({
     id: personId,
-    amount: person.paysTo[personId],
+    amount: preferSimplified
+      ? person.simplifiedPaysTo[personId]
+      : person.paysTo[personId],
   }));
   const givesTo = debtsByPerson.filter((debt) => debt.amount > 0);
   const receivesFrom = debtsByPerson.filter((debt) => debt.amount < 0);

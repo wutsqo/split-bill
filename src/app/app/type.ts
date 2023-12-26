@@ -3,6 +3,7 @@ export interface Person {
   name: string;
   balance: number;
   paysTo: Record<string, number>;
+  simplifiedPaysTo: Record<string, number>;
 }
 
 export enum SplitType {

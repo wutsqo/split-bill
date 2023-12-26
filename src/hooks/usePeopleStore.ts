@@ -7,6 +7,7 @@ import { calculateNewBalances } from "@/utils/core";
 
 interface State {
   people: Person[];
+  preferSimplifiedBalances: boolean;
 }
 
 interface Action {
@@ -16,12 +17,14 @@ interface Action {
   recalculateBalances: (debts: Debt[]) => void;
   removePerson: (id: string) => void;
   resetPeople: () => void;
+  setPreferSimplifiedBalances: (value: boolean) => void;
 }
 
 export const usePeopleStore = create<State & Action>()(
   persist(
     (set, get) => ({
       people: [] as Person[],
+      preferSimplifiedBalances: false,
       getPerson: (id) => get().people.find((person) => person.id === id),
       addPerson: ({ id, name }) => {
         const newPerson = {
@@ -29,6 +32,7 @@ export const usePeopleStore = create<State & Action>()(
           name,
           balance: 0,
           paysTo: {},
+          simplifiedPaysTo: {},
         };
         set((state) => ({
           people: [...state.people, newPerson],
@@ -52,6 +56,9 @@ export const usePeopleStore = create<State & Action>()(
         }));
       },
       resetPeople: () => set({ people: [] }),
+      setPreferSimplifiedBalances: (value) => {
+        set({ preferSimplifiedBalances: value });
+      },
     }),
     { name: ZUSTAND_PERSIST_KEYS.PEOPLE, skipHydration: true }
   )
