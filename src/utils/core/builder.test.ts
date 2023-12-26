@@ -6,7 +6,7 @@ import {
   SPLIT_EXACT_TRANSACTION,
   SPLIT_PERCENT_TRANSACTION,
 } from "./constant";
-import { debtsBuilder } from "./builder";
+import { debtsBuilder, personWithBalanceBuilder } from "./builder";
 
 describe("trxBuilder", () => {
   it("return split type correctly", () => {
@@ -82,5 +82,17 @@ describe("debtsBuilder", () => {
         transactionId: "2",
       },
     ]);
+  });
+});
+
+describe("personWithBalanceBuilder", () => {
+  it("return correctly", () => {
+    expect(personWithBalanceBuilder(49)).toEqual({
+      id: expect.any(String),
+      name: expect.any(String),
+      balance: 49,
+      paysTo: {},
+      simplifiedPaysTo: {},
+    });
   });
 });

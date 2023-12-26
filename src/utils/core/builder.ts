@@ -1,4 +1,5 @@
 import { Debt, Person, SplitType, Transaction } from "@/app/app/type";
+import { v4 as uuidv4 } from "uuid";
 
 export const trxBuilder = ({
   amount,
@@ -44,6 +45,15 @@ export const personBuilder = ({
   name,
   balance: 0,
   paysTo: {},
+  simplifiedPaysTo: {},
+});
+
+export const personWithBalanceBuilder = (balance: number): Person => ({
+  balance,
+  id: uuidv4(),
+  name: "name",
+  paysTo: {},
+  simplifiedPaysTo: {},
 });
 
 export const debtsBuilder = ({
