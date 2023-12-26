@@ -3,10 +3,12 @@ import {
   calculateNewBalances,
   calculatePortion,
   checkIfPersonRemovable,
+  combinations,
   generateDebtFromTransaction,
+  dividePeopleIntoZeroSumSubsets,
   getBalanceOfAPerson,
 } from ".";
-import { debtsBuilder } from "./builder";
+import { debtsBuilder, personWithBalanceBuilder } from "./builder";
 import {
   PERSON_1,
   PERSON_2,
@@ -358,25 +360,98 @@ describe("checkIfPersonRemovable", () => {
 
 describe("calculateNewBalances", () => {
   const DEBTS = debtsBuilder({
-    lenderIds: ["1", "2", "1", "3", "2", "1"],
-    borrowerIds: ["2", "1", "3", "1", "1", "2"],
-    amounts: [10, 15, 20, 5, 10, 5],
-    transactionIds: ["1", "2", "3", "4", "5", "6"],
+    lenderIds: ["2", "3"],
+    borrowerIds: ["1", "2"],
+    amounts: [10, 10],
+    transactionIds: ["1", "2"],
   });
 
   it("return correctly", () => {
     expect(calculateNewBalances([PERSON_1, PERSON_2, PERSON_3], DEBTS)).toEqual(
       [
         {
-          ...getBalanceOfAPerson(PERSON_1, DEBTS),
+          ...getBalanceOfAPerson(
+            {
+              ...PERSON_1,
+              simplifiedPaysTo: {
+                "3": -10,
+              },
+            },
+            DEBTS
+          ),
         },
         {
-          ...getBalanceOfAPerson(PERSON_2, DEBTS),
+          ...getBalanceOfAPerson({ ...PERSON_2, simplifiedPaysTo: {} }, DEBTS),
         },
         {
-          ...getBalanceOfAPerson(PERSON_3, DEBTS),
+          ...getBalanceOfAPerson(
+            {
+              ...PERSON_3,
+              simplifiedPaysTo: {
+                "1": 10,
+              },
+            },
+            DEBTS
+          ),
         },
       ]
+    );
+  });
+});
+
+describe("combinations", () => {
+  it.each([
+    ["k0 l3", [[]], ["1", "2", "3"], 0],
+    ["k1 l3", [["1"], ["2"], ["3"]], ["1", "2", "3"], 1],
+    [
+      "k2 l3",
+      [
+        ["1", "2"],
+        ["1", "3"],
+        ["2", "3"],
+      ],
+      ["1", "2", "3"],
+      2,
+    ],
+    [
+      "k2 l4",
+      [
+        ["1", "2"],
+        ["1", "3"],
+        ["1", "4"],
+        ["2", "3"],
+        ["2", "4"],
+        ["3", "4"],
+      ],
+      ["1", "2", "3", "4"],
+      2,
+    ],
+    ["k3 l3", [["1", "2", "3"]], ["1", "2", "3"], 3],
+  ])("%s", (_, expected, arr, k) => {
+    expect(combinations(arr, k)).toEqual(expected);
+  });
+});
+
+describe("dividePeopleIntoZeroSumSubsets", () => {
+  it.each([
+    ["return correctly for empty array", [] as number[][], [] as number[]],
+    ["return correctly for 0", [[0]], [0]],
+    ["return correctly for 0 0", [[0], [0]], [0, 0]],
+    ["return correctly for 1 -1", [[1, -1]], [1, -1]],
+    ["return correctly for 1 2 -3", [[1, 2, -3]], [1, 2, -3]],
+    ["return correctly for 1 0 -1", [[1, -1], [0]], [1, 0, -1]],
+    [
+      "return correctly for 1 -1 2 -2",
+      [
+        [1, -1],
+        [2, -1],
+      ],
+      [1, -1, 2, -2],
+    ],
+  ])("%s", (_, expected, arr) => {
+    const people = arr.map((balance) => personWithBalanceBuilder(balance));
+    expect(dividePeopleIntoZeroSumSubsets(people)).toHaveLength(
+      expected.length
     );
   });
 });

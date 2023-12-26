@@ -71,7 +71,13 @@ export const checkIfPersonRemovable = (
 export const calculateNewBalances = (
   people: Person[],
   debts: Debt[]
-): Person[] => people.map((person) => getBalanceOfAPerson(person, debts));
+): Person[] => {
+  const peopleWithNewBalances = [
+    ...people.map((person) => getBalanceOfAPerson(person, debts)),
+  ];
+  const subsets = dividePeopleIntoZeroSumSubsets(peopleWithNewBalances);
+  return calculateSimplifiedBalances(peopleWithNewBalances, subsets);
+};
 
 export const generateDebtFromTransaction = (trx: Transaction) => {
   return Object.keys(trx.split).reduce((acc, personId) => {
@@ -90,4 +96,85 @@ export const generateDebtFromTransaction = (trx: Transaction) => {
       },
     ];
   }, [] as Debt[]);
+};
+
+export function combinations<T>(arr: T[], k: number): T[][] {
+  const result: T[][] = [];
+  function combine(start: number, current: T[]) {
+    if (current.length === k) {
+      result.push([...current]);
+      return;
+    }
+    for (let i = start; i < arr.length; i++) {
+      current.push(arr[i]);
+      combine(i + 1, current);
+      current.pop();
+    }
+  }
+  combine(0, []);
+  return result;
+}
+
+export const dividePeopleIntoZeroSumSubsets = (
+  balances: Person[]
+): Person[][] => {
+  const remainingBalances = [...balances];
+  const subsets: Person[][] = [];
+  const findZeroSumSubset = (balances: Person[]): Person[] => {
+    for (let i = 0; i < balances.length; i++)
+      for (const subset of combinations(balances, i + 1))
+        if (subset.reduce((acc, v) => acc + v.balance, 0) === 0) return subset;
+    return [];
+  };
+  while (remainingBalances.length) {
+    const subset = findZeroSumSubset(remainingBalances);
+    subset.forEach((person) => {
+      remainingBalances.splice(
+        remainingBalances.findIndex((p) => p.id === person.id),
+        1
+      );
+    });
+    subsets.push(subset);
+  }
+  return subsets;
+};
+
+export const simplifyDebtsUsingCollector = (
+  people: Person[]
+): Record<Person["id"], Person["simplifiedPaysTo"]> => {
+  const collector = people[0];
+  const rest = [...people].slice(1);
+  const simplifiedPaysTo = {} as Record<string, Person["simplifiedPaysTo"]>;
+  rest.forEach((person) => {
+    const amount = person.balance;
+    simplifiedPaysTo[person.id] = {
+      [collector.id]: amount >= 0 ? amount : amount * -1,
+    };
+    simplifiedPaysTo[collector.id] = {
+      ...simplifiedPaysTo[collector.id],
+      [person.id]: amount > 0 ? amount * -1 : amount,
+    };
+  });
+  return simplifiedPaysTo;
+};
+
+export const calculateSimplifiedBalances = (
+  people: Person[],
+  subsets: Person[][]
+): Person[] => {
+  const newPeople = [...people];
+  subsets.forEach((subset) => {
+    const simplifiedPaysTo = simplifyDebtsUsingCollector(subset);
+    subset.forEach((person) => {
+      newPeople.splice(
+        newPeople.findIndex((p) => p.id === person.id),
+        1,
+        {
+          ...person,
+          simplifiedPaysTo: simplifiedPaysTo[person.id] ?? {},
+        }
+      );
+    });
+  });
+  return newPeople;
 };
