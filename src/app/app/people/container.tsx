@@ -38,7 +38,7 @@ export default function PeopleContainer() {
   };
 
   return (
-    <div className="py-4 flex flex-col gap-4 min-h-[calc(100vh-13.5rem)]">
+    <div className="py-4 flex flex-col gap-4">
       <PersonForm />
 
       <div className="card card-compact sm:card-normal bg-base-100">

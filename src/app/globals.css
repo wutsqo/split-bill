@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply bg-base-200 min-h-screen;
+}
+
 h1 {
   @apply text-4xl font-semibold;
 }
