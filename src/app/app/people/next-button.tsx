@@ -12,7 +12,7 @@ export default function NextButton({
   const setActiveTabId = useTabStore((state) => state.setActiveTabId);
 
   return (
-    <div className="join w-full fixed rounded-none sm:rounded-2xl left-0 bottom-0 sm:bottom-4 sm:max-w-[calc(640px-2rem)] sm:left-auto z-50 border">
+    <div className="join w-full fixed rounded-none sm:rounded-2xl left-0 bottom-0 sm:bottom-4 sm:max-w-[calc(640px-2rem)] sm:left-auto z-10 border">
       <div className="join-item bg-base-100 flex items-center justify-between w-full shrink-1 p-4">
         <div>Registered</div>
         <div>
