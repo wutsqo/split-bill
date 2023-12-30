@@ -4,6 +4,7 @@ import "./globals.css";
 import { appName } from "./config";
 import { Toaster } from "react-hot-toast";
 import { mergeClassname } from "@/utils/merge-classname";
+import Drawer from "./drawer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={mergeClassname(inter.className, "bg-base-200")}>
-        {children}
+        <Drawer>{children}</Drawer>
         <Toaster />
       </body>
     </html>

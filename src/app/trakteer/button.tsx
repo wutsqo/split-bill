@@ -6,7 +6,7 @@ import { useTrakteer } from "./provider";
 import Image from "next/image";
 
 type Props = {
-  className: string;
+  className?: string;
   size?: number;
 };
 
@@ -25,7 +25,7 @@ const TrakteerButton = ({ className, size = 100 }: Props) => {
 
   return (
     <button
-      className={`rounded-full btn btn-xs normal-case overflow-visible transition group ${className}`}
+      className={`normal-case overflow-visible transition group ${className}`}
       onClick={() => onButtonClick()}
     >
       <span className="animate-[trbtn-wiggle_3s_infinite] overflow-visible">
@@ -39,7 +39,7 @@ const TrakteerButton = ({ className, size = 100 }: Props) => {
           }
         />
       </span>
-      <span className="text-xs ml-1 group-hover:hidden">Buy me a Coffee</span>
+      <span className="ml-1 group-hover:hidden">Buy me a Coffee</span>
       <span className="hidden group-hover:block">
         Support Indie Developers 🤍
       </span>

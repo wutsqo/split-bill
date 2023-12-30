@@ -2,29 +2,30 @@
 
 import { TABS } from "./constant";
 import { mergeClassname } from "@/utils/merge-classname";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTabStore } from "@hooks/useTabStore";
+import {
+  Session,
+  createClientComponentClient,
+} from "@supabase/auth-helpers-nextjs";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 
 export default function Navigation() {
   const activeTabId = useTabStore((state) => state.activeTabId);
   const setActiveTabId = useTabStore((state) => state.setActiveTabId);
-  // const supabase = createClientComponentClient();
-  // const [loading, setLoading] = useState(true);
-  // const [session, setSession] = useState<Session | null>(null);
+  const supabase = createClientComponentClient();
+  const [session, setSession] = useState<Session | null>(null);
 
-  // useEffect(() => {
-  //   supabase.auth.getSession().then((res) => {
-  //     setSession(res.data.session);
-  //     setLoading(false);
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    supabase.auth.getSession().then((res) => {
+      setSession(res.data.session);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     useTabStore.persist.rehydrate();
   }, []);
-
-  // const email = session?.user.email;
 
   return (
     <div className="flex flex-row justify-between gap-2 items-stretch">
@@ -44,32 +45,14 @@ export default function Navigation() {
           </button>
         ))}
       </div>
-      {/* <button
-        className="btn btn-square btn-sm shadow-none drawer-button h-10 w-10"
-        onClick={() => {
-          const modal = document.getElementById(
-            "account_modal"
-          ) as HTMLDialogElement;
-          modal?.showModal();
-        }}
-      >
-        {loading ? (
-          <div className="loading loading-spinner loading-sm"></div>
-        ) : null}
-
-        {!loading && email ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={createAvatar(funEmoji, {
-              seed: session.user.id,
-            }).toDataUriSync()}
-            alt={email}
-            className={"mask mask-squircle h-6 w-6"}
-          />
-        ) : null}
-
-        {!loading && !email ? <UserCircleIcon className="w-6 h-6" /> : null}
-      </button> */}
+      <div className="dropdown dropdown-end">
+        <label
+          htmlFor="my-drawer"
+          className="btn btn-square btn-ghost btn-sm shadow-none drawer-button h-10 w-10 bg-base-100"
+        >
+          <Bars3Icon className="w-6 h-6" />
+        </label>
+      </div>
     </div>
   );
 }
