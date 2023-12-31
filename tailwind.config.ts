@@ -13,11 +13,16 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      scale: {
+        "1/4": "0.25",
+        "1/3": "calc(1/3)",
+        "2/3": "calc(2/3)",
+      },
     },
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["emerald", "dim"],
+    themes: ["light", "dim"],
   },
 };
 export default config;
