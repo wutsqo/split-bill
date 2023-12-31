@@ -2,8 +2,13 @@
 
 import { ReactNode, useEffect, useRef } from "react";
 import { appName } from "./config";
-import { HomeIcon, MoonIcon, SunIcon } from "@heroicons/react/24/outline";
-import { useRouter } from "next/navigation";
+import {
+  ArrowRightIcon,
+  HomeIcon,
+  MoonIcon,
+  SunIcon,
+} from "@heroicons/react/24/outline";
+import { useRouter, usePathname } from "next/navigation";
 import TrakteerButton from "./trakteer/button";
 import { themeChange } from "theme-change";
 
@@ -16,6 +21,7 @@ export default function Drawer({ children }: { readonly children: ReactNode }) {
       themeChange(false);
     };
   }, []);
+  const pathName = usePathname();
   return (
     <div className="drawer">
       <input
@@ -40,11 +46,15 @@ export default function Drawer({ children }: { readonly children: ReactNode }) {
             <button
               onClick={() => {
                 if (inputRef.current) inputRef.current.checked = false;
-                router.push("/");
+                router.push(pathName === "/" ? "/app" : "/");
               }}
             >
-              <HomeIcon className="w-6 h-6" />
-              Home
+              {pathName !== "/" ? (
+                <HomeIcon className="w-6 h-6 shrink-0" />
+              ) : (
+                <ArrowRightIcon className="w-6 h-6 shrink-0" />
+              )}
+              {pathName === "/" ? "Open App" : "Home"}
             </button>
           </li>
 

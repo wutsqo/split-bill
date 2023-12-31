@@ -1,4 +1,4 @@
-import { ArrowRightIcon, UsersIcon } from "@heroicons/react/24/outline";
+import { ArrowRightIcon, Bars3Icon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import MockupBills from "@images/mockups/bills.png";
 import MockupPeople from "@images/mockups/people.png";
@@ -22,11 +22,18 @@ export default function Home() {
         </svg>
       </div>
 
-      <div className="navbar z-50 absolute text-white">
+      <div className="navbar z-50 relative lg:absolute text-white">
         <div className="flex-1">
           <a className="btn btn-ghost text-xl">{appName}</a>
         </div>
-        <div className="flex-none"></div>
+        <div className="flex-none">
+          <label
+            htmlFor="my-drawer"
+            className="btn btn-square btn-ghost btn-sm shadow-none drawer-button h-10 w-10"
+          >
+            <Bars3Icon className="w-6 h-6" />
+          </label>
+        </div>
       </div>
 
       <div className="hero min-h-screen container max-w-screen-xl mx-auto">
