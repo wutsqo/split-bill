@@ -179,22 +179,20 @@ export default function Home() {
       </svg>
 
       <div className="bg-[#3405BB] text-primary-content">
-        <footer className="footer items-center px-4 py-12 mx-auto container max-w-screen-xl">
-          <aside className="items-center grid-flow-col">
-            <p>
-              <a
-                className="btn"
-                href="https://wutzz.space"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Built with 🤍 by Wutsqo
-              </a>
-            </p>
-          </aside>
-          <nav className="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
-            <TrakteerButton className="btn" />
-          </nav>
+        <footer className="items-center px-4 py-12 mx-auto container max-w-screen-xl flex flex-col md:flex-row justify-between gap-8">
+          <p>
+            <span>Built with 🤍 by </span>
+
+            <a
+              className="link"
+              href="https://wutzz.space"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Wutsqo
+            </a>
+          </p>
+          <TrakteerButton className="btn" />
         </footer>
       </div>
     </main>
