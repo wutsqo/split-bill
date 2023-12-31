@@ -89,7 +89,7 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="card w-full bg-base-100">
+          {/* <div className="card w-full bg-base-100">
             <div className="card-body">
               <h2 className="card-title">👤 No Registration Needed</h2>
               <p className="mt-4">
@@ -105,7 +105,7 @@ export default function Home() {
                 {appName} is completely free to use and no payment is required.
               </p>
             </div>
-          </div>
+          </div> */}
           <div className="card w-full bg-base-100">
             <div className="card-body">
               <h2 className="card-title">🔀 Multiple Splitting Options</h2>
@@ -130,7 +130,7 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="card w-full bg-primary col-span-1 md:col-span-2 xl:col-span-3 text-base-100">
+          <div className="card w-full bg-primary col-span-1 md:col-span-2 text-base-100">
             <div className="card-body py-12 flex md:flex-row justify-between gap-8">
               <div>
                 <h2 className="text-3xl">Start sharing your expenses</h2>
