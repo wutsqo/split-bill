@@ -1,21 +1,23 @@
 "use client";
 
-import React from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { appName } from "./config";
-import { HomeIcon } from "@heroicons/react/24/outline";
+import { HomeIcon, MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { TrakteerProvider } from "./trakteer/provider";
 import TrakteerButton from "./trakteer/button";
 import TrakteerModal from "./trakteer/modal";
+import { themeChange } from "theme-change";
 
-export default function Drawer({
-  children,
-}: {
-  readonly children: React.ReactNode;
-}) {
-  const inputRef = React.useRef<HTMLInputElement>(null);
+export default function Drawer({ children }: { readonly children: ReactNode }) {
+  const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-
+  useEffect(() => {
+    themeChange(false);
+    return () => {
+      themeChange(false);
+    };
+  }, []);
   return (
     <TrakteerProvider>
       <div className="drawer">
@@ -46,6 +48,23 @@ export default function Drawer({
               >
                 <HomeIcon className="w-6 h-6" />
                 Home
+              </button>
+            </li>
+
+            <li>
+              <button
+                className="swap justify-start"
+                data-toggle-theme="dark,light"
+                data-act-class="swap-active"
+              >
+                <div className="swap-off w-full flex justify-start items-center gap-2">
+                  <SunIcon className="w-6 h-6 shrink-0" />
+                  <div className="w-full">Light Mode</div>
+                </div>
+                <div className="swap-on w-full flex justify-start items-center gap-2">
+                  <MoonIcon className="w-6 h-6 shrink-0" />
+                  <div className="w-full">Dark Mode</div>
+                </div>
               </button>
             </li>
             <li>
