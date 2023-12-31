@@ -14,7 +14,7 @@ export default function ThemeSwitch() {
   return (
     <button
       className=" btn btn-square btn-ghost swap swap-rotate "
-      data-toggle-theme="dim,light"
+      data-toggle-theme="dark,light"
       data-act-class="swap-active"
     >
       <SunIcon className="swap-on w-5 h-5" />

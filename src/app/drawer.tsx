@@ -51,7 +51,7 @@ export default function Drawer({ children }: { readonly children: ReactNode }) {
           <li>
             <button
               className="swap justify-start"
-              data-toggle-theme="dim,light"
+              data-toggle-theme="dark,light"
               data-act-class="swap-active"
             >
               <div className="swap-off w-full flex justify-start items-center gap-2">

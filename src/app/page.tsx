@@ -12,10 +12,10 @@ export default function Home() {
   return (
     <main className="">
       <div className="fill-accent absolute top-0 w-full">
-        <div className="w-full h-32 lg:h-0 bg-primary "></div>
+        <div className="w-full h-32 lg:h-0 bg-[#3405BB] "></div>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
           <path
-            className="fill-primary"
+            className="fill-[#3405BB]"
             fillOpacity="1"
             d="M0,320L60,293.3C120,267,240,213,360,176C480,139,600,117,720,144C840,171,960,245,1080,272C1200,299,1320,277,1380,266.7L1440,256L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"
           ></path>
@@ -140,7 +140,7 @@ export default function Home() {
               </div>
               <div>
                 <Link href="/app">
-                  <button className="btn md:btn-lg uppercase group glass bg-base-100">
+                  <button className="btn md:btn-lg uppercase group glass bg-primary-content">
                     Open App
                     <ArrowRightIcon className="w-6 h-6 group-hover:translate-x-2 transition-all" />
                   </button>
@@ -174,15 +174,14 @@ export default function Home() {
       <div className="bg-[#3405BB] text-primary-content">
         <footer className="footer items-center px-4 py-12 mx-auto container max-w-screen-xl">
           <aside className="items-center grid-flow-col">
-            <p className="text-lg font-medium">
-              Built with 🤍 by{" "}
+            <p>
               <a
-                className="underline decoration-primary-content decoration-4 underline-offset-4"
+                className="btn"
                 href="https://wutzz.space"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Wutsqo
+                Built with 🤍 by Wutsqo
               </a>
             </p>
           </aside>
