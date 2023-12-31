@@ -151,13 +151,33 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="bg-neutral text-neutral-content">
+      <svg
+        viewBox="0 0 900 160"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        version="1.1"
+      >
+        <path
+          d="M0 68L21.5 62.2C43 56.3 86 44.7 128.8 38.2C171.7 31.7 214.3 30.3 257.2 39.2C300 48 343 67 385.8 65C428.7 63 471.3 40 514.2 32.3C557 24.7 600 32.3 642.8 35.5C685.7 38.7 728.3 37.3 771.2 42.7C814 48 857 60 878.5 66L900 72L900 161L878.5 161C857 161 814 161 771.2 161C728.3 161 685.7 161 642.8 161C600 161 557 161 514.2 161C471.3 161 428.7 161 385.8 161C343 161 300 161 257.2 161C214.3 161 171.7 161 128.8 161C86 161 43 161 21.5 161L0 161Z"
+          fill="#9165ff"
+        ></path>
+        <path
+          d="M0 55L21.5 62.7C43 70.3 86 85.7 128.8 88C171.7 90.3 214.3 79.7 257.2 74C300 68.3 343 67.7 385.8 66.7C428.7 65.7 471.3 64.3 514.2 71.7C557 79 600 95 642.8 104.8C685.7 114.7 728.3 118.3 771.2 118.8C814 119.3 857 116.7 878.5 115.3L900 114L900 161L878.5 161C857 161 814 161 771.2 161C728.3 161 685.7 161 642.8 161C600 161 557 161 514.2 161C471.3 161 428.7 161 385.8 161C343 161 300 161 257.2 161C214.3 161 171.7 161 128.8 161C86 161 43 161 21.5 161L0 161Z"
+          fill="#4a00ff"
+        ></path>
+        <path
+          d="M0 141L21.5 140.7C43 140.3 86 139.7 128.8 133.7C171.7 127.7 214.3 116.3 257.2 109C300 101.7 343 98.3 385.8 103.5C428.7 108.7 471.3 122.3 514.2 122C557 121.7 600 107.3 642.8 108C685.7 108.7 728.3 124.3 771.2 127.7C814 131 857 122 878.5 117.5L900 113L900 161L878.5 161C857 161 814 161 771.2 161C728.3 161 685.7 161 642.8 161C600 161 557 161 514.2 161C471.3 161 428.7 161 385.8 161C343 161 300 161 257.2 161C214.3 161 171.7 161 128.8 161C86 161 43 161 21.5 161L0 161Z"
+          fill="#3405bb"
+        ></path>
+      </svg>
+
+      <div className="bg-[#3405BB] text-primary-content">
         <footer className="footer items-center px-4 py-12 mx-auto container max-w-screen-xl">
           <aside className="items-center grid-flow-col">
             <p className="text-lg font-medium">
               Built with 🤍 by{" "}
               <a
-                className="underline decoration-primary decoration-4 underline-offset-4"
+                className="underline decoration-primary-content decoration-4 underline-offset-4"
                 href="https://wutzz.space"
                 target="_blank"
                 rel="noopener noreferrer"
