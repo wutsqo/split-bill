@@ -22,7 +22,7 @@ export default function Home() {
         </svg>
       </div>
 
-      <div className="navbar z-50 relative text-white">
+      <div className="navbar z-50 absolute text-white">
         <div className="flex-1">
           <a className="btn btn-ghost text-xl">{appName}</a>
         </div>
