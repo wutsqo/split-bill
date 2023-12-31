@@ -56,7 +56,7 @@ export default function PeopleContainer() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 divide-y">
+          <div className="grid grid-cols-1 divide-y divide-base-200">
             {people.map((person) => (
               <PersonCard
                 key={person.id}

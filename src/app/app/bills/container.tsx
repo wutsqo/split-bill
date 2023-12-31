@@ -87,16 +87,16 @@ export default function BillsContainer() {
       <div className="join w-full bg-base-100">
         <button
           type="button"
-          className="btn btn-ghost text-xs join-item w-1/2 "
+          className="btn btn-ghost text-xs join-item w-1/2 uppercase"
           onClick={onAddTransactionModalOpen}
         >
           <PlusIcon className="h-5 w-5 mr-2" />
-          Add Transaction
+          New TRX
         </button>
         <div className="bg-base-200 w-0.5 shrink-0 h-12 join-item"></div>
         <button
           type="button"
-          className="btn btn-ghost text-xs join-item w-1/2 "
+          className="btn btn-ghost text-xs join-item w-1/2 uppercase"
           onClick={onExport}
           disabled={transactions.length === 0}
         >

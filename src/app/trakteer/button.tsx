@@ -25,10 +25,10 @@ const TrakteerButton = ({ className, size = 100 }: Props) => {
 
   return (
     <button
-      className={`normal-case overflow-visible transition group ${className}`}
+      className={`normal-case overflow-visible transition group flex justify-start items-center gap-2 ${className}`}
       onClick={() => onButtonClick()}
     >
-      <span className="animate-[trbtn-wiggle_3s_infinite] overflow-visible">
+      <span className="animate-[trbtn-wiggle_3s_infinite] overflow-visible h-6 w-6 shrink-0">
         <Image
           src="https://trakteer.id/images/mix/coffee.png"
           alt="Traktiran"
@@ -39,7 +39,7 @@ const TrakteerButton = ({ className, size = 100 }: Props) => {
           }
         />
       </span>
-      <span className="ml-1 group-hover:hidden">Buy me a Coffee</span>
+      <span className="group-hover:hidden">Buy me a Coffee</span>
       <span className="hidden group-hover:block">
         Support Indie Developers 🤍
       </span>

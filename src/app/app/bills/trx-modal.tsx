@@ -188,7 +188,7 @@ const TrxModal = forwardRef<Ref, RemoveModalProps>(
             <div className="modal-action">
               {currentStep === 0 ? (
                 <button
-                  className="btn"
+                  className="btn uppercase"
                   onClick={() => {
                     onClose();
                     resetFormData();
@@ -209,7 +209,7 @@ const TrxModal = forwardRef<Ref, RemoveModalProps>(
 
               {currentStep < STEPS.length - 1 ? (
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-primary uppercase"
                   disabled={
                     currentStep === 0
                       ? !!formErrors.name ||
@@ -226,11 +226,11 @@ const TrxModal = forwardRef<Ref, RemoveModalProps>(
 
               {currentStep === 2 ? (
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-primary uppercase"
                   disabled={!isFormValid || !isSplitValid()}
                   type="submit"
                 >
-                  Add
+                  {mode === "add" ? "Add" : "Save"}
                 </button>
               ) : null}
             </div>

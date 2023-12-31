@@ -14,7 +14,7 @@ export default function NextButton({
   const setActiveTabId = useTabStore((state) => state.setActiveTabId);
 
   return (
-    <div className="join w-full fixed rounded-none sm:rounded-2xl left-0 bottom-0 sm:bottom-4 sm:max-w-[calc(640px-2rem)] sm:left-auto z-10 border">
+    <div className="join w-full fixed rounded-none sm:rounded-2xl left-0 bottom-0 sm:bottom-4 sm:max-w-[calc(640px-2rem)] sm:left-auto z-10 border-t sm:border border-base-300">
       <div className="join-item bg-base-100 flex items-center justify-between w-full p-4">
         <div>Total</div>
         <div>
@@ -24,7 +24,7 @@ export default function NextButton({
         </div>
       </div>
       <button
-        className="btn btn-primary btn-lg join-item shrink-0 uppercase"
+        className="btn btn-primary btn-lg join-item shrink-0 uppercase no-animation"
         onClick={() => setActiveTabId(TAB_IDS.SUMMARY)}
         disabled={disabled}
       >
