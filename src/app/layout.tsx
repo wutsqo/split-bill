@@ -22,6 +22,47 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head></head>
+      <title>SplitEasy | The Easiest Expense Sharing App</title>
+      <meta
+        name="description"
+        content="Track your shared expenses and simplify debt calculations with friends and roommates hassle-free with SplitEasy."
+      />
+
+      <meta property="og:url" content="https://debt-simplifier.vercel.app/" />
+      <meta property="og:type" content="website" />
+      <meta
+        property="og:title"
+        content="SplitEasy | The Easiest Expense Sharing App"
+      />
+      <meta
+        property="og:description"
+        content="Track your shared expenses and simplify debt calculations with friends and roommates hassle-free with SplitEasy."
+      />
+      <meta
+        property="og:image"
+        content="https://opengraph.b-cdn.net/production/documents/29558b54-2223-486c-bb89-dd68df5e3049.png?token=OdifxerHQv6cIiabvnqNhnMNB-CEjzBZ2mN5v6XkwMo&height=675&width=1200&expires=33240020299"
+      />
+
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta property="twitter:domain" content="debt-simplifier.vercel.app" />
+      <meta
+        property="twitter:url"
+        content="https://debt-simplifier.vercel.app/"
+      />
+      <meta
+        name="twitter:title"
+        content="SplitEasy | The Easiest Expense Sharing App"
+      />
+      <meta
+        name="twitter:description"
+        content="Track your shared expenses and simplify debt calculations with friends and roommates hassle-free with SplitEasy."
+      />
+      <meta
+        name="twitter:image"
+        content="https://opengraph.b-cdn.net/production/documents/29558b54-2223-486c-bb89-dd68df5e3049.png?token=OdifxerHQv6cIiabvnqNhnMNB-CEjzBZ2mN5v6XkwMo&height=675&width=1200&expires=33240020299"
+      />
+
       <body className={mergeClassname(inter.className, "bg-base-200")}>
         <TrakteerProvider>
           <Drawer>{children}</Drawer>
