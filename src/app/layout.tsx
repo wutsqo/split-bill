@@ -29,7 +29,7 @@ export default function RootLayout({
         content="Track your shared expenses and simplify debt calculations with friends and roommates hassle-free with SplitEasy."
       />
 
-      <meta property="og:url" content="https://debt-simplifier.vercel.app/" />
+      <meta property="og:url" content="https://split-easy.vercel.app/" />
       <meta property="og:type" content="website" />
       <meta
         property="og:title"
@@ -45,10 +45,10 @@ export default function RootLayout({
       />
 
       <meta name="twitter:card" content="summary_large_image" />
-      <meta property="twitter:domain" content="debt-simplifier.vercel.app" />
+      <meta property="twitter:domain" content="split-easy.vercel.app" />
       <meta
         property="twitter:url"
-        content="https://debt-simplifier.vercel.app/"
+        content="https://split-easy.vercel.app/"
       />
       <meta
         name="twitter:title"

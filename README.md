@@ -15,7 +15,7 @@ A free tool for friends and roommates to track bills and other shared expenses. 
 
 ## Live Demo
 
-https://debt-simplifier.vercel.app
+https://split-easy.vercel.app
 
 
 
