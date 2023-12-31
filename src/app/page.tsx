@@ -6,6 +6,9 @@ import MockupSummary from "@images/mockups/summary.png";
 import Image from "next/image";
 import { appName } from "./config";
 import Balancer from "react-wrap-balancer";
+import dynamic from "next/dynamic";
+
+const ThemeSwitch = dynamic(() => import("./theme-switch"), { ssr: false });
 
 export default function Home() {
   return (
@@ -21,13 +24,11 @@ export default function Home() {
         </svg>
       </div>
 
-      <div className="navbar bg-transparent fixed top-0 z-50">
+      <div className="navbar bg-transparent fixed top-0 z-50 text-black">
         <div className="flex-1">
           <a className="btn btn-ghost text-xl">{appName}</a>
         </div>
-        <div className="flex-none">
-          <button className="btn btn-square btn-ghost"></button>
-        </div>
+        <div className="flex-none"></div>
       </div>
 
       <div className="hero min-h-screen container mx-auto">
