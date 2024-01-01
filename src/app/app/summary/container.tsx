@@ -26,7 +26,7 @@ export default function SummaryContainer() {
   }
 
   return (
-    <div className="py-4 flex flex-col gap-4">
+    <div className="py-4 flex flex-col gap-4 pb-20">
       <div className="card card-compact bg-base-100 ">
         <div className="card-body">
           <div className="form-control">

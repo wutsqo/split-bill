@@ -83,7 +83,7 @@ export default function BillsContainer() {
   };
 
   return (
-    <div className="py-4 flex flex-col gap-4 min-h-[calc(100vh-13.5rem)]">
+    <div className="py-4 flex flex-col gap-4 min-h-[calc(100vh-13.5rem)] pb-20">
       <div className="join w-full bg-base-100">
         <button
           type="button"
