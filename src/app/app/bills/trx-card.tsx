@@ -6,7 +6,7 @@ import { formatMoney } from "@/utils/common";
 
 interface TrxCardProps {
   trx: Transaction;
-  person: Person;
+  person: Pick<Person, "id" | "name">;
   onRemoveModalOpen: () => void;
   onEditModalOpen: () => void;
 }

@@ -12,7 +12,7 @@ import { useTransactionStore } from "@hooks/useTransactionStore";
 import TrxModal from "./trx-modal";
 
 export default function BillsContainer() {
-  const { people, getPerson } = usePeopleStore();
+  const { people } = usePeopleStore();
   const newTrxModal = useRef<HTMLDialogElement>(null);
   const [selectedId, setSelectedId] = useState<string>("");
   const [modalAction, setModalAction] = useState<"add" | "edit">("add");
@@ -109,7 +109,7 @@ export default function BillsContainer() {
 
       {transactions.map((trx) => (
         <TrxCard
-          person={getPerson(trx.paidBy.id)!}
+          person={trx.paidBy}
           trx={trx}
           key={trx.id}
           onRemoveModalOpen={() => onRemoveModalOpen(trx.id)}
