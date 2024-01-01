@@ -191,7 +191,7 @@ const TrxModal = forwardRef<Ref, RemoveModalProps>(
                   className="btn uppercase"
                   onClick={() => {
                     onClose();
-                    resetFormData();
+                    if (mode === "add") resetFormData();
                   }}
                   type="button"
                 >
