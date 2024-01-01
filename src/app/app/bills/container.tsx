@@ -90,8 +90,8 @@ export default function BillsContainer() {
           className="btn btn-ghost text-xs join-item w-1/2 uppercase"
           onClick={onAddTransactionModalOpen}
         >
-          <PlusIcon className="h-5 w-5 mr-2" />
-          New TRX
+          <PlusIcon className="h-4 w-4" />
+          New Transaction
         </button>
         <div className="bg-base-200 w-0.5 shrink-0 h-12 join-item"></div>
         <button
@@ -100,7 +100,7 @@ export default function BillsContainer() {
           onClick={onExport}
           disabled={transactions.length === 0}
         >
-          <ArrowDownTrayIcon className="h-5 w-5 mr-2" />
+          <ArrowDownTrayIcon className="h-4 w-4" />
           Export CSV
         </button>
       </div>
