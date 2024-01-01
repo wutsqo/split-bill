@@ -6,8 +6,8 @@ export const SPLIT_EQUAL_TRANSACTION = trxBuilder({
   splitType: SplitType.EQUAL,
   payerId: "1",
   splits: [
-    { id: "1", amount: 1 },
-    { id: "2", amount: 1 },
+    { id: "1", fraction: 1 },
+    { id: "2", fraction: 1 },
   ],
 });
 
@@ -16,8 +16,8 @@ export const SPLIT_PERCENT_TRANSACTION = trxBuilder({
   splitType: SplitType.PERCENT,
   payerId: "1",
   splits: [
-    { id: "1", amount: 50 },
-    { id: "2", amount: 50 },
+    { id: "1", fraction: 50 },
+    { id: "2", fraction: 50 },
   ],
 });
 
@@ -26,8 +26,8 @@ export const SPLIT_EXACT_TRANSACTION = trxBuilder({
   splitType: SplitType.EXACT,
   payerId: "1",
   splits: [
-    { id: "1", amount: 69 },
-    { id: "2", amount: 30 },
+    { id: "1", fraction: 69 },
+    { id: "2", fraction: 30 },
   ],
 });
 

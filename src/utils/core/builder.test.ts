@@ -22,18 +22,26 @@ describe("trxBuilder", () => {
   });
 
   it("return splits correctly", () => {
-    expect(SPLIT_EQUAL_TRANSACTION.split["1"].amount).toBe(1);
-    expect(SPLIT_EQUAL_TRANSACTION.split["2"].amount).toBe(1);
-    expect(SPLIT_PERCENT_TRANSACTION.split["1"].amount).toBe(50);
-    expect(SPLIT_PERCENT_TRANSACTION.split["2"].amount).toBe(50);
-    expect(SPLIT_EXACT_TRANSACTION.split["1"].amount).toBe(69);
-    expect(SPLIT_EXACT_TRANSACTION.split["2"].amount).toBe(30);
+    expect(SPLIT_EQUAL_TRANSACTION.split["1"].fraction).toBe(1);
+    expect(SPLIT_EQUAL_TRANSACTION.split["2"].fraction).toBe(1);
+    expect(SPLIT_PERCENT_TRANSACTION.split["1"].fraction).toBe(50);
+    expect(SPLIT_PERCENT_TRANSACTION.split["2"].fraction).toBe(50);
+    expect(SPLIT_EXACT_TRANSACTION.split["1"].fraction).toBe(69);
+    expect(SPLIT_EXACT_TRANSACTION.split["2"].fraction).toBe(30);
   });
 
   it("return amount correctly", () => {
     expect(SPLIT_EQUAL_TRANSACTION.amount).toBe(98);
     expect(SPLIT_PERCENT_TRANSACTION.amount).toBe(100);
     expect(SPLIT_EXACT_TRANSACTION.amount).toBe(99);
+  });
+  it("return amount correctly", () => {
+    expect(SPLIT_EQUAL_TRANSACTION.split["1"].amount).toBe(49);
+    expect(SPLIT_EQUAL_TRANSACTION.split["2"].amount).toBe(49);
+    expect(SPLIT_PERCENT_TRANSACTION.split["1"].amount).toBe(50);
+    expect(SPLIT_PERCENT_TRANSACTION.split["2"].amount).toBe(50);
+    expect(SPLIT_EXACT_TRANSACTION.split["1"].amount).toBe(69);
+    expect(SPLIT_EXACT_TRANSACTION.split["2"].amount).toBe(30);
   });
 });
 

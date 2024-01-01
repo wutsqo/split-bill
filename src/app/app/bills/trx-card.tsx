@@ -3,8 +3,6 @@ import { Person, Transaction } from "../type";
 import { TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { PersonLabel } from "../person";
 import { formatMoney } from "@/utils/common";
-import { usePeopleStore } from "@hooks/usePeopleStore";
-import { useTransactionStore } from "@hooks/useTransactionStore";
 
 interface TrxCardProps {
   trx: Transaction;
@@ -19,9 +17,6 @@ export const TrxCard: FC<TrxCardProps> = ({
   onRemoveModalOpen,
   onEditModalOpen,
 }) => {
-  const { debts } = useTransactionStore();
-  const { getPerson } = usePeopleStore();
-
   return (
     <div className="card card-compact bg-base-100">
       <div className="card-body">
@@ -41,20 +36,19 @@ export const TrxCard: FC<TrxCardProps> = ({
 
         <div className="card card-compact bg-base-200 mt-1">
           <div className="card-body">
-            {debts
-              .filter((debt) => debt.transactionId === trx.id)
-              .map((debt) => (
+            {Object.keys(trx.split)
+              .filter((key) => key !== trx.paidBy.id)
+              .map((key) => (
                 <div
-                  key={`${debt.transactionId}-${debt.borrowerId}-${debt.lenderId}`}
+                  key={`trxcard-${trx.id}-${trx.split[key]}`}
                   className="flex justify-between"
                 >
                   <PersonLabel
-                    person={getPerson(debt.borrowerId)!}
+                    person={trx.split[key]}
                     suffix="owes"
                     size="sm"
                   />
-
-                  <div>{formatMoney(debt.amount)}</div>
+                  <div>{formatMoney(trx.split[key].amount)}</div>
                 </div>
               ))}
           </div>

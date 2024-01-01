@@ -58,7 +58,7 @@ const TrxModal = forwardRef<Ref, RemoveModalProps>(
         Object.keys(transaction.split).reduce(
           (acc, key) => ({
             ...acc,
-            [key]: transaction.split[key].amount,
+            [key]: transaction.split[key].fraction,
           }),
           {} as Record<string, number>
         )

@@ -1,5 +1,12 @@
-import { Debt, Person, SplitType, Transaction } from "@/app/app/type";
+import {
+  Debt,
+  Person,
+  SplitData,
+  SplitType,
+  Transaction,
+} from "@/app/app/type";
 import { v4 as uuidv4 } from "uuid";
+import TransactionService from "./transaction";
 
 export const trxBuilder = ({
   amount,
@@ -10,29 +17,32 @@ export const trxBuilder = ({
   amount: number;
   splitType: SplitType;
   payerId: string;
-  splits: { id: string; amount: number }[];
-}): Transaction => ({
-  id: "1",
-  name: "name",
-  date: new Date(),
-  amount: amount,
-  paidBy: {
-    id: payerId,
-    name: "name",
-  },
-  splitType,
-  split: splits.reduce(
-    (acc, { id, amount }) => ({
+  splits: Pick<SplitData, "id" | "fraction">[];
+}): Transaction => {
+  const split: Record<string, Omit<SplitData, "amount">> = splits.reduce(
+    (acc, { id, fraction }) => ({
       ...acc,
       [id]: {
         id,
         name: "name",
-        amount,
+        fraction,
       },
     }),
-    {} as Record<string, { id: string; name: string; amount: number }>
-  ),
-});
+    {} as Record<string, Omit<SplitData, "amount">>
+  );
+  return {
+    id: "1",
+    name: "name",
+    date: new Date(),
+    amount: amount,
+    paidBy: {
+      id: payerId,
+      name: "name",
+    },
+    splitType,
+    split: TransactionService.calculateSplitAmount(amount, split, splitType),
+  };
+};
 
 export const personBuilder = ({
   id,

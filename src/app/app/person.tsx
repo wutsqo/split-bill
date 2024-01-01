@@ -5,7 +5,7 @@ import { mergeClassname } from "@/utils/merge-classname";
 import { Person } from "./type";
 
 interface PersonLabelProps {
-  person: Person;
+  person: Pick<Person, "id" | "name">;
   size?: "sm" | "md" | "lg";
   suffix?: string;
   prefix?: string;

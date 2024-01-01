@@ -1,6 +1,6 @@
 import useFormState from "@hooks/useFormState";
 import { usePeopleStore } from "@hooks/usePeopleStore";
-import { SplitType, Transaction } from "../type";
+import { SplitData, SplitType, Transaction } from "../type";
 import { isGreaterThan, isNumber, required, validate } from "@/utils/forms";
 import { useTransactionStore } from "@hooks/useTransactionStore";
 import { useState } from "react";
@@ -8,6 +8,7 @@ import { SplitFormProps } from "./type";
 import { SplitEqualForm } from "./split-equals-form";
 import { SplitPercentForm } from "./split-percent-form";
 import { SplitExactForm } from "./split-exact-form";
+import TransactionService from "@/utils/core/transaction";
 
 const formInitialData = {
   name: "",
@@ -75,54 +76,37 @@ export default function useLogic({
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isFormValid || !isSplitValid()) return;
-    const split = Object.keys(formData.split).reduce(
-      (acc, key) => {
-        if (formData.split[key] === 0) return acc;
-        return {
-          ...acc,
-          [key]: {
-            amount: formData.split[key],
-            id: key,
-            name: getPerson(key)!.name,
-          },
-        };
+    const split = Object.keys(formData.split).reduce((acc, key) => {
+      if (formData.split[key] === 0) return acc;
+      return {
+        ...acc,
+        [key]: {
+          fraction: formData.split[key],
+          id: key,
+          name: getPerson(key)!.name,
+        },
+      };
+    }, {} as Record<string, Omit<SplitData, "amount">>);
+    const newTransaction: Omit<Transaction, "id"> = {
+      date: new Date(formData.date),
+      amount: formData.amount,
+      name: formData.name,
+      paidBy: {
+        id: formData.paidBy,
+        name: getPerson(formData.paidBy)!.name,
       },
-      {} as Record<
-        string,
-        {
-          amount: number;
-          id: string;
-          name: string;
-        }
-      >
-    );
-
+      splitType: formData.splitType,
+      split: TransactionService.calculateSplitAmount(
+        formData.amount,
+        split,
+        formData.splitType
+      ),
+    };
     if (mode === "add") {
-      addTransaction({
-        date: new Date(formData.date),
-        amount: formData.amount,
-        name: formData.name,
-        paidBy: {
-          id: formData.paidBy,
-          name: getPerson(formData.paidBy)!.name,
-        },
-        splitType: formData.splitType,
-        split,
-      });
+      addTransaction(newTransaction);
     } else {
-      editTransaction(transaction?.id!, {
-        date: new Date(formData.date),
-        amount: formData.amount,
-        name: formData.name,
-        paidBy: {
-          id: formData.paidBy,
-          name: getPerson(formData.paidBy)!.name,
-        },
-        splitType: formData.splitType,
-        split,
-      });
+      editTransaction(transaction?.id!, newTransaction);
     }
-
     setCurrentStep(0);
     resetFormData();
   };

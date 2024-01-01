@@ -1,5 +1,8 @@
 import { Debt, Person, SplitType, Transaction } from "@/app/app/type";
 
+/**
+ * @deprecated This will be removed in the future
+ */
 export const calculatePortion = (
   trx: Transaction,
   personId: string
@@ -8,12 +11,12 @@ export const calculatePortion = (
   switch (trx.splitType) {
     case SplitType.EQUAL:
       return (
-        trx.amount / Object.values(trx.split).filter((v) => v.amount).length
+        trx.amount / Object.values(trx.split).filter((v) => v.fraction).length
       );
     case SplitType.PERCENT:
-      return (trx.amount * trx.split[personId].amount) / 100;
+      return (trx.amount * trx.split[personId].fraction) / 100;
     case SplitType.EXACT:
-      return trx.split[personId].amount;
+      return trx.split[personId].fraction;
   }
 };
 
@@ -77,25 +80,6 @@ export const calculateNewBalances = (
   ];
   const subsets = dividePeopleIntoZeroSumSubsets(peopleWithNewBalances);
   return calculateSimplifiedBalances(peopleWithNewBalances, subsets);
-};
-
-export const generateDebtFromTransaction = (trx: Transaction) => {
-  return Object.keys(trx.split).reduce((acc, personId) => {
-    const lenderId = trx.paidBy.id;
-    const borrowerId = personId;
-    if (lenderId === borrowerId) return acc;
-    const amount = calculatePortion(trx, personId);
-    if (amount === 0) return acc;
-    return [
-      ...acc,
-      {
-        lenderId,
-        borrowerId,
-        amount,
-        transactionId: trx.id,
-      },
-    ];
-  }, [] as Debt[]);
 };
 
 export function combinations<T>(arr: T[], k: number): T[][] {

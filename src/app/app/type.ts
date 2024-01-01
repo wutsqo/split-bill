@@ -18,6 +18,13 @@ export enum SplitTypeLabel {
   PERCENT = "Percentage",
 }
 
+export interface SplitData {
+  id: string;
+  name: string;
+  fraction: number;
+  amount: number;
+}
+
 export interface Transaction {
   id: string;
   name: string;
@@ -28,13 +35,7 @@ export interface Transaction {
     name: string;
   };
   splitType: SplitType;
-  split: {
-    [key: string]: {
-      id: string;
-      name: string;
-      amount: number;
-    };
-  };
+  split: Record<string, SplitData>;
 }
 
 export interface Debt {
