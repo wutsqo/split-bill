@@ -251,40 +251,94 @@ describe("checkIfPersonRemovable", () => {
 });
 
 describe("calculateNewBalances", () => {
-  const DEBTS = debtsBuilder({
-    lenderIds: ["2", "3"],
-    borrowerIds: ["1", "2"],
-    amounts: [10, 10],
-    transactionIds: ["1", "2"],
-  });
-
-  it("return correctly", () => {
+  it("return correctly if debts can be simplified", () => {
+    const DEBTS = debtsBuilder({
+      lenderIds: ["2", "3"],
+      borrowerIds: ["1", "2"],
+      amounts: [10, 10],
+      transactionIds: ["1", "2"],
+    });
     expect(calculateNewBalances([PERSON_1, PERSON_2, PERSON_3], DEBTS)).toEqual(
       [
         {
-          ...getBalanceOfAPerson(
-            {
-              ...PERSON_1,
-              simplifiedPaysTo: {
-                "3": -10,
-              },
-            },
-            DEBTS
-          ),
+          id: PERSON_1.id,
+          name: PERSON_1.name,
+          balance: -10,
+          paysTo: {
+            "2": 10,
+          },
+          simplifiedPaysTo: {
+            "3": 10,
+          },
         },
         {
-          ...getBalanceOfAPerson({ ...PERSON_2, simplifiedPaysTo: {} }, DEBTS),
+          id: PERSON_2.id,
+          name: PERSON_2.name,
+          balance: 0,
+          paysTo: {
+            "1": -10,
+            "3": 10,
+          },
+          simplifiedPaysTo: {},
         },
         {
-          ...getBalanceOfAPerson(
-            {
-              ...PERSON_3,
-              simplifiedPaysTo: {
-                "1": 10,
-              },
-            },
-            DEBTS
-          ),
+          id: PERSON_3.id,
+          name: PERSON_3.name,
+          balance: 10,
+          paysTo: {
+            "2": -10,
+          },
+          simplifiedPaysTo: {
+            "1": -10,
+          },
+        },
+      ]
+    );
+  });
+
+  it("return correctly if debt already simplified", () => {
+    const DEBTS = debtsBuilder({
+      lenderIds: ["1", "1"],
+      borrowerIds: ["2", "3"],
+      amounts: [10, 10],
+      transactionIds: ["1", "1"],
+    });
+    expect(calculateNewBalances([PERSON_1, PERSON_2, PERSON_3], DEBTS)).toEqual(
+      [
+        {
+          id: PERSON_1.id,
+          name: PERSON_1.name,
+          balance: 20,
+          paysTo: {
+            "2": -10,
+            "3": -10,
+          },
+          simplifiedPaysTo: {
+            "2": -10,
+            "3": -10,
+          },
+        },
+        {
+          id: PERSON_2.id,
+          name: PERSON_2.name,
+          balance: -10,
+          paysTo: {
+            "1": 10,
+          },
+          simplifiedPaysTo: {
+            "1": 10,
+          },
+        },
+        {
+          id: PERSON_3.id,
+          name: PERSON_3.name,
+          balance: -10,
+          paysTo: {
+            "1": 10,
+          },
+          simplifiedPaysTo: {
+            "1": 10,
+          },
         },
       ]
     );

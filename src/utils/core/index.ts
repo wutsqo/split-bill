@@ -110,13 +110,13 @@ export const simplifyDebtsUsingCollector = (
   const rest = [...people].slice(1);
   const simplifiedPaysTo = {} as Record<string, Person["simplifiedPaysTo"]>;
   rest.forEach((person) => {
-    const amount = person.balance;
     simplifiedPaysTo[person.id] = {
-      [collector.id]: amount >= 0 ? amount : amount * -1,
+      ...simplifiedPaysTo[person.id],
+      [collector.id]: person.balance * -1,
     };
     simplifiedPaysTo[collector.id] = {
       ...simplifiedPaysTo[collector.id],
-      [person.id]: amount > 0 ? amount * -1 : amount,
+      [person.id]: person.balance,
     };
   });
   return simplifiedPaysTo;
