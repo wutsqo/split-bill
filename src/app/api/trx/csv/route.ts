@@ -1,5 +1,4 @@
 import { Person, Transaction } from "@/app/app/type";
-import { calculatePortion } from "@/utils/core";
 
 export async function POST(request: Request) {
   const res = await request.json();
@@ -18,8 +17,8 @@ export async function POST(request: Request) {
     transaction.amount,
     ...people.map((person) =>
       transaction.paidBy.id === person.id
-        ? transaction.amount - calculatePortion(transaction, person.id)
-        : calculatePortion(transaction, person.id) * -1
+        ? transaction.amount - transaction.split[person.id].amount
+        : transaction.split[person.id].amount * -1
     ),
   ]);
 

@@ -5,7 +5,6 @@ import {
   combinations,
   dividePeopleIntoZeroSumSubsets,
   getBalanceOfAPerson,
-  calculatePortion,
 } from ".";
 import { debtsBuilder, personWithBalanceBuilder } from "./builder";
 import {
@@ -13,70 +12,7 @@ import {
   PERSON_2,
   PERSON_3,
   SPLIT_EQUAL_TRANSACTION,
-  SPLIT_EXACT_TRANSACTION,
-  SPLIT_PERCENT_TRANSACTION,
 } from "./constant";
-
-describe("calculatePortion", () => {
-  it.each([
-    [
-      "return correctly for payer at equal split",
-      49,
-      SPLIT_EQUAL_TRANSACTION,
-      "1",
-    ],
-    [
-      "return correctly for non-payer participant at equal split",
-      49,
-      SPLIT_EQUAL_TRANSACTION,
-      "2",
-    ],
-    [
-      "return correctly for non-participant at equal split",
-      0,
-      SPLIT_EQUAL_TRANSACTION,
-      "3",
-    ],
-    [
-      "return correctly for payer at percent split",
-      50,
-      SPLIT_PERCENT_TRANSACTION,
-      "1",
-    ],
-    [
-      "return correctly for non-payer participant at percent split",
-      50,
-      SPLIT_PERCENT_TRANSACTION,
-      "2",
-    ],
-    [
-      "return correctly for non-participant at percent split",
-      0,
-      SPLIT_PERCENT_TRANSACTION,
-      "3",
-    ],
-    [
-      "return correctly for payer at exact split",
-      69,
-      SPLIT_EXACT_TRANSACTION,
-      "1",
-    ],
-    [
-      "return correctly for non-payer participant at exact split",
-      30,
-      SPLIT_EXACT_TRANSACTION,
-      "2",
-    ],
-    [
-      "return correctly for non-participant at exact split",
-      0,
-      SPLIT_EXACT_TRANSACTION,
-      "3",
-    ],
-  ])("%s", (_, expected, ...args) => {
-    expect(calculatePortion(...args)).toBe(expected);
-  });
-});
 
 describe("getBalanceOfAPerson", () => {
   it.each([

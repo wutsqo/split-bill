@@ -1,25 +1,5 @@
 import { Debt, Person, SplitType, Transaction } from "@/app/app/type";
 
-/**
- * @deprecated This will be removed in the future
- */
-export const calculatePortion = (
-  trx: Transaction,
-  personId: string
-): number => {
-  if (!trx.split[personId]) return 0;
-  switch (trx.splitType) {
-    case SplitType.EQUAL:
-      return (
-        trx.amount / Object.values(trx.split).filter((v) => v.fraction).length
-      );
-    case SplitType.PERCENT:
-      return (trx.amount * trx.split[personId].fraction) / 100;
-    case SplitType.EXACT:
-      return trx.split[personId].fraction;
-  }
-};
-
 export const getBalanceOfAPerson = (person: Person, debts: Debt[]): Person =>
   debts.reduce(
     (acc, debt) => {
