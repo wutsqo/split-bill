@@ -40,7 +40,7 @@ export const TrxCard: FC<TrxCardProps> = ({
               .filter((key) => key !== trx.paidBy.id)
               .map((key) => (
                 <div
-                  key={`trxcard-${trx.id}-${trx.split[key]}`}
+                  key={`trxcard-${trx.id}-${trx.split[key].id}`}
                   className="flex justify-between"
                 >
                   <PersonLabel
