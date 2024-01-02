@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SummaryCard } from "./summary-card";
 import { usePeopleStore } from "@hooks/usePeopleStore";
 import {
@@ -9,9 +9,12 @@ import {
 } from "@heroicons/react/24/outline";
 import { useTransactionStore } from "@hooks/useTransactionStore";
 import { generatePDF } from "./actions";
-import useStore from "@hooks/useStore";
-import { useSupabase } from "@hooks/useSupabase";
 import { useFormStatus, useFormState } from "react-dom";
+import { useSupabase } from "@hooks/useSupabase";
+import {
+  User,
+  createClientComponentClient,
+} from "@supabase/auth-helpers-nextjs";
 
 function SubmitButton({ disabled }: { readonly disabled: boolean }) {
   const { pending } = useFormStatus();
@@ -46,7 +49,19 @@ export default function SummaryContainer() {
   const { people, preferSimplifiedBalances, setPreferSimplifiedBalances } =
     usePeopleStore();
   const { transactions } = useTransactionStore();
-  const user = useStore(useSupabase, (state) => state.user);
+  const supabase = createClientComponentClient();
+  const [user, setUser] = useState<null | User>(null);
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const { showAuthModal } = useSupabase();
 
   useEffect(() => {
@@ -84,7 +99,7 @@ export default function SummaryContainer() {
               </span>
               <input
                 type="checkbox"
-                className="toggle"
+                className="toggle toggle-primary"
                 checked={preferSimplifiedBalances}
                 onChange={() =>
                   setPreferSimplifiedBalances(!preferSimplifiedBalances)
@@ -92,6 +107,11 @@ export default function SummaryContainer() {
               />
             </label>
           </div>
+        </div>
+      </div>
+
+      <div className="card card-compact bg-base-100">
+        <div className="card-body">
           {user ? (
             <form action={formAction}>
               <input
