@@ -12,7 +12,13 @@ export async function middleware(req: NextRequest) {
 
   const {
     data: { user },
+    error,
   } = await supabase.auth.getUser();
+
+  if (error) {
+    res.cookies.delete("sb-yjnbdruawdszowxvzrwt-auth-token");
+    return ["error", res];
+  }
 
   if (user)
     if (REDIRECT_LOGGED_IN_PATHS.includes(req.nextUrl.pathname))
