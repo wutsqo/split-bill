@@ -22,9 +22,7 @@ const LoginForm: FC<LoginFormProps> = ({
     <div>
       <h2 className="font-taviraj">Welcome to {appName}</h2>
       <form className="mt-4 card" onSubmit={onSubmit}>
-        <label className="block mb-2" htmlFor="email">
-          Login to sync your data
-        </label>
+        <label className="block mb-2" htmlFor="email"></label>
         <input
           className="input input-bordered w-full"
           id="email"
