@@ -31,6 +31,7 @@ export const PersonLabel: FC<PersonLabelProps> = ({
       <img
         src={createAvatar(funEmoji, {
           seed: person.id,
+          size: 32,
         }).toDataUriSync()}
         alt={person.name}
         className={mergeClassname("mask mask-squircle", sizeMap[size])}
