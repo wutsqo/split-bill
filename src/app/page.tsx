@@ -129,7 +129,7 @@ export default function Home() {
           <div className="card w-full bg-primary col-span-1 md:col-span-2 text-base-100">
             <div className="card-body py-12 flex md:flex-row justify-between gap-8">
               <div>
-                <h2 className="text-3xl">Start sharing your expenses</h2>
+                <h2 className="text-3xl font-taviraj">Start sharing your expenses</h2>
                 <p className="mt-1">
                   And spend more time enjoying your occasion.
                 </p>
