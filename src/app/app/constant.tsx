@@ -20,7 +20,7 @@ export const TABS: Tab[] = [
   },
   {
     id: TAB_IDS.SUMMARY,
-    label: "Summary",
+    label: "Settle Up",
   },
 ];
 

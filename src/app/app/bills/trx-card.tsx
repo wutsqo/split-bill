@@ -1,6 +1,10 @@
 import { FC } from "react";
 import { Person, Transaction } from "../type";
-import { TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
+import {
+  TrashIcon,
+  PencilIcon,
+  CalendarIcon,
+} from "@heroicons/react/24/outline";
 import { PersonLabel } from "../person";
 import { formatMoney } from "@/utils/common";
 
@@ -9,6 +13,7 @@ interface TrxCardProps {
   onRemoveModalOpen?: () => void;
   onEditModalOpen?: () => void;
   hideActions?: boolean;
+  showFullDate?: boolean;
 }
 
 export const TrxCard: FC<TrxCardProps> = ({
@@ -16,16 +21,18 @@ export const TrxCard: FC<TrxCardProps> = ({
   onRemoveModalOpen,
   onEditModalOpen,
   hideActions = false,
+  showFullDate = false,
 }) => {
   return (
     <div className="card card-compact bg-base-100">
       <div className="card-body">
         <div className="flex justify-between items-center">
           <div className="card-title">{trx.name}</div>
-          <div>
-            {new Date(trx.date).toLocaleDateString("en-US", {
+          <div className="">
+            {new Date(trx.date).toLocaleDateString("id-ID", {
               month: "short",
               day: "numeric",
+              year: showFullDate ? "numeric" : undefined,
             })}
           </div>
         </div>
