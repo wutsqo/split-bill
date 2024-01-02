@@ -60,7 +60,10 @@ export default function Drawer({ children }: { readonly children: ReactNode }) {
         <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
           {/* Sidebar content here */}
           <li>
-            <h1>{appName}</h1>
+            <h1 className="font-taviraj justify-start items-start">
+              {appName}
+              <span className="badge badge-outline">Beta</span>
+            </h1>
           </li>
           <li className="mt-4">
             <button

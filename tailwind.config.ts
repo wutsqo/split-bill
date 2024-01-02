@@ -18,6 +18,9 @@ const config: Config = {
         "1/3": "calc(1/3)",
         "2/3": "calc(2/3)",
       },
+      fontFamily: {
+        taviraj: ["Taviraj", "serif"],
+      },
     },
   },
   plugins: [require("daisyui")],

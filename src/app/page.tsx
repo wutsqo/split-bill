@@ -24,14 +24,16 @@ export default function Home() {
 
       <div className="navbar z-50 relative lg:absolute text-white">
         <div className="flex-1">
-          <a className="btn btn-ghost text-xl">{appName}</a>
+          <a className="btn btn-ghost text-xl font-taviraj">
+            {appName}
+          </a>
         </div>
         <div className="flex-none">
           <label
             htmlFor="my-drawer"
-            className="btn btn-square btn-ghost btn-sm shadow-none drawer-button h-10 w-10"
+            className="btn btn-square btn-ghost shadow-none drawer-button"
           >
-            <Bars3Icon className="w-6 h-6" />
+            <Bars3Icon className="w-8 h-8" />
           </label>
         </div>
       </div>
@@ -67,12 +69,14 @@ export default function Home() {
             </div>
           </div>
           <div className="w-full max-w-screen-md">
-            <h1 className="text-4xl sm:text-5xl font-bold">
+            <h1 className="text-4xl sm:text-5xl font-bold font-taviraj">
               <Balancer>The Easiest Expense Sharing App.</Balancer>
             </h1>
             <p className="text-lg sm:text-xl py-6 mb-6">
-              Track your shared expenses and simplify debt calculations with
-              friends and roommates hassle-free with <strong>{appName}</strong>.
+              <Balancer>
+                Track your shared expenses and simplify debt calculations with
+                friends and roommates hassle-free.
+              </Balancer>
             </p>
             <Link href="/app">
               <button className="btn sm:btn-lg uppercase group glass btn-primary bg-primary">
@@ -85,7 +89,9 @@ export default function Home() {
       </div>
 
       <div className="container max-w-screen-xl mx-auto px-4 pb-16">
-        <h2 className="text-center text-4xl">Split Expenses Easily</h2>
+        <h2 className="text-center text-4xl font-taviraj font-bold">
+          Split Expenses Easily
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-16 mb-24">
           <div className="card w-full bg-base-100">
             <div className="card-body">
@@ -96,23 +102,6 @@ export default function Home() {
               </p>
             </div>
           </div>
-          {/* <div className="card w-full bg-base-100">
-            <div className="card-body">
-              <h2 className="card-title">👤 No Registration Needed</h2>
-              <p className="mt-4">
-                Use the app without registration. Your data is stored in your
-                browser.
-              </p>
-            </div>
-          </div>
-          <div className="card w-full bg-base-100">
-            <div className="card-body">
-              <h2 className="card-title">🆓 Free to Use</h2>
-              <p className="mt-4">
-                {appName} is completely free to use and no payment is required.
-              </p>
-            </div>
-          </div> */}
           <div className="card w-full bg-base-100">
             <div className="card-body">
               <h2 className="card-title">🔀 Multiple Splitting Options</h2>
@@ -123,9 +112,9 @@ export default function Home() {
           </div>
           <div className="card w-full bg-base-100">
             <div className="card-body">
-              <h2 className="card-title">📑 Export to Spreadsheet</h2>
+              <h2 className="card-title">📑 Export to CSV and PDF</h2>
               <p className="mt-4">
-                Export your expenses to a spreadsheet easily.
+                Export your expenses to CSV and PDF for your convenience.
               </p>
             </div>
           </div>
