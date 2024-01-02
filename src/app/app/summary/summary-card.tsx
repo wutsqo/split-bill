@@ -2,7 +2,6 @@ import { FC } from "react";
 import { PersonLabel } from "../person";
 import { formatMoney } from "@/utils/common";
 import { Person } from "../type";
-import { usePeopleStore } from "@hooks/usePeopleStore";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 
 interface SummaryCardProps {
@@ -14,14 +13,16 @@ export const SummaryCard: FC<SummaryCardProps> = ({
   person,
   preferSimplified,
 }) => {
-  const { getPerson } = usePeopleStore();
   const debtsByPerson = Object.keys(
     preferSimplified ? person.simplifiedPaysTo : person.paysTo
   ).map((personId) => ({
     id: personId,
     amount: preferSimplified
-      ? person.simplifiedPaysTo[personId]
-      : person.paysTo[personId],
+      ? person.simplifiedPaysTo[personId].amount
+      : person.paysTo[personId].amount,
+    name: preferSimplified
+      ? person.simplifiedPaysTo[personId].name
+      : person.paysTo[personId].name,
   }));
   const givesTo = debtsByPerson.filter((debt) => debt.amount > 0);
   const receivesFrom = debtsByPerson.filter((debt) => debt.amount < 0);
@@ -52,11 +53,7 @@ export const SummaryCard: FC<SummaryCardProps> = ({
             <div className="card-body">
               {givesTo.map((debt) => (
                 <div key={debt.id} className="flex justify-between">
-                  <PersonLabel
-                    person={getPerson(debt.id)!}
-                    prefix="To"
-                    size="sm"
-                  />
+                  <PersonLabel person={debt} prefix="To" size="sm" />
                   <div>{formatMoney(debt.amount)}</div>
                 </div>
               ))}
@@ -75,11 +72,7 @@ export const SummaryCard: FC<SummaryCardProps> = ({
             <div className="card-body">
               {receivesFrom.map((debt) => (
                 <div key={debt.id} className="flex justify-between">
-                  <PersonLabel
-                    person={getPerson(debt.id)!}
-                    prefix="From"
-                    size="sm"
-                  />
+                  <PersonLabel person={debt} prefix="From" size="sm" />
                   <div>{formatMoney(-debt.amount)}</div>
                 </div>
               ))}

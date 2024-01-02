@@ -7,6 +7,7 @@ import { mergeClassname } from "@/utils/merge-classname";
 import Drawer from "./drawer";
 import { TrakteerProvider } from "./trakteer/provider";
 import TrakteerModal from "./trakteer/modal";
+import AccountModal from "./app/account-modal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -46,10 +47,7 @@ export default function RootLayout({
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta property="twitter:domain" content="split-easy.vercel.app" />
-      <meta
-        property="twitter:url"
-        content="https://split-easy.vercel.app/"
-      />
+      <meta property="twitter:url" content="https://split-easy.vercel.app/" />
       <meta
         name="twitter:title"
         content="SplitEasy | The Easiest Expense Sharing App"
@@ -69,6 +67,7 @@ export default function RootLayout({
           <TrakteerModal />
         </TrakteerProvider>
         <Toaster />
+        <AccountModal />
       </body>
     </html>
   );

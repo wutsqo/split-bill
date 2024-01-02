@@ -78,14 +78,26 @@ describe("debtsBuilder", () => {
       })
     ).toEqual([
       {
-        lenderId: "1",
-        borrowerId: "2",
+        lender: {
+          id: "1",
+          name: "name_1",
+        },
+        borrower: {
+          id: "2",
+          name: "name_2",
+        },
         amount: 49,
         transactionId: "1",
       },
       {
-        lenderId: "2",
-        borrowerId: "1",
+        lender: {
+          id: "2",
+          name: "name_2",
+        },
+        borrower: {
+          id: "1",
+          name: "name_1",
+        },
         amount: 49,
         transactionId: "2",
       },

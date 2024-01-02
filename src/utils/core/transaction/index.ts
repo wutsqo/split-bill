@@ -48,8 +48,14 @@ export default class TransactionService {
       return [
         ...acc,
         {
-          lenderId,
-          borrowerId,
+          lender: {
+            id: lenderId,
+            name: trx.paidBy.name,
+          },
+          borrower: {
+            id: borrowerId,
+            name: trx.split[personId].name,
+          },
           amount: trx.split[personId].amount,
           transactionId: trx.id,
         },

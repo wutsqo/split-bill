@@ -77,7 +77,7 @@ describe("TransactionService", () => {
         );
         Object.keys(expectedSplitAmounts).forEach((id) => {
           expect(calculatedSplitAmounts[id].amount).toBe(
-            expectedSplitAmounts[id] as number
+            expectedSplitAmounts[id]
           );
         });
       }
@@ -90,8 +90,14 @@ describe("TransactionService", () => {
         "return correctly",
         [
           {
-            lenderId: "1",
-            borrowerId: "2",
+            lender: {
+              id: "1",
+              name: "name",
+            },
+            borrower: {
+              id: "2",
+              name: "name",
+            },
             amount: 49,
             transactionId: "1",
           },

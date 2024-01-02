@@ -1,23 +1,35 @@
-"use client";
-
-import { PersonLabel } from "../app/person";
-import { TrxCard } from "../app/bills/trx-card";
-import { SummaryCard } from "../app/summary/summary-card";
-import { usePeopleStore } from "@hooks/usePeopleStore";
-import { useTransactionStore } from "@hooks/useTransactionStore";
-import { useEffect } from "react";
+import { PersonLabel } from "../../app/person";
+import { TrxCard } from "../../app/bills/trx-card";
+import { SummaryCard } from "../../app/summary/summary-card";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { formatMoney } from "@/utils/common";
-import { SITE_URL, appName } from "../config";
-import { GlobeAltIcon } from "@heroicons/react/24/outline";
+import { SITE_URL, appName } from "../../config";
+import { Person, Transaction } from "../../app/type";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { Database } from "@/lib/database.types";
 
-export default function Page() {
-  const { people } = usePeopleStore();
-  const { transactions } = useTransactionStore();
-  useEffect(() => {
-    usePeopleStore.persist.rehydrate();
-    useTransactionStore.persist.rehydrate();
-  }, []);
+export default async function Page({
+  params,
+}: {
+  readonly params: { id: string };
+}) {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient<Database>({
+    cookies: () => cookieStore,
+  });
+
+  const { data } = await supabase
+    .from("workspace")
+    .select("*")
+    .eq("id", params.id)
+    .single();
+
+  if (!data) return <div>Not found</div>;
+  const people = JSON.parse(data.people?.toString() ?? "[]") as Person[];
+  const transactions = JSON.parse(
+    data.transactions?.toString() ?? "[]"
+  ) as Transaction[];
   return (
     <div className="bg-white min-h-screen relative">
       <div

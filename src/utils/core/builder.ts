@@ -84,8 +84,14 @@ export const debtsBuilder = ({
     return [
       ...acc,
       {
-        lenderId,
-        borrowerId,
+        lender: {
+          id: lenderId,
+          name: "name_" + lenderId,
+        },
+        borrower: {
+          id: borrowerId,
+          name: "name_" + borrowerId,
+        },
         amount,
         transactionId,
       },

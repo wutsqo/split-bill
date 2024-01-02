@@ -3,17 +3,62 @@
 import { useEffect } from "react";
 import { SummaryCard } from "./summary-card";
 import { usePeopleStore } from "@hooks/usePeopleStore";
-import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowDownTrayIcon,
+  ArrowLeftOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 import { useTransactionStore } from "@hooks/useTransactionStore";
+import { generatePDF } from "./actions";
+import useStore from "@hooks/useStore";
+import { useSupabase } from "@hooks/useSupabase";
+import { useFormStatus, useFormState } from "react-dom";
+
+function SubmitButton({ disabled }: { readonly disabled: boolean }) {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      type="submit"
+      aria-disabled={pending}
+      className="btn btn-primary glass bg-primary text-primary-content uppercase w-full"
+      disabled={disabled}
+    >
+      {pending ? (
+        <>
+          <span className="loading loading-spinner"></span> Generating PDF...
+        </>
+      ) : (
+        <>
+          <ArrowDownTrayIcon className="h-5 w-5" />
+          Download PDF
+        </>
+      )}
+    </button>
+  );
+}
+
+const initialState = {
+  message: "",
+  id: "",
+};
 
 export default function SummaryContainer() {
   const { people, preferSimplifiedBalances, setPreferSimplifiedBalances } =
     usePeopleStore();
   const { transactions } = useTransactionStore();
+  const user = useStore(useSupabase, (state) => state.user);
+  const { showAuthModal } = useSupabase();
 
   useEffect(() => {
     usePeopleStore.persist.rehydrate();
   }, []);
+
+  const [state, formAction] = useFormState(generatePDF, initialState);
+  useEffect(() => {
+    if (state.id) {
+      window.open(`/api/pdf?id=${state.id}`, "_blank");
+    }
+  }, [state]);
 
   if (people.length <= 1) {
     return (
@@ -47,13 +92,32 @@ export default function SummaryContainer() {
               />
             </label>
           </div>
-          <button
-            className="btn btn-primary glass bg-primary text-primary-content uppercase w-full hidden"
-            disabled={transactions.length === 0}
-          >
-            <ArrowDownTrayIcon className="h-5 w-5" />
-            Download as PDF
-          </button>
+          {user ? (
+            <form action={formAction}>
+              <input
+                type="hidden"
+                name="people"
+                required
+                value={JSON.stringify(people)}
+              />
+              <input
+                type="hidden"
+                name="transactions"
+                required
+                value={JSON.stringify(transactions)}
+              />
+              <SubmitButton disabled={transactions.length < 1} />
+            </form>
+          ) : (
+            <button
+              className="btn btn-primary glass bg-primary text-primary-content uppercase w-full"
+              type="button"
+              onClick={showAuthModal}
+            >
+              <ArrowLeftOnRectangleIcon className="h-5 w-5" />
+              Login to Generate PDF
+            </button>
+          )}
         </div>
       </div>
 

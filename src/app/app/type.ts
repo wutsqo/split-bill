@@ -1,9 +1,15 @@
+export interface PaysToData {
+  amount: number;
+  id: string;
+  name: string;
+}
+
 export interface Person {
   id: string;
   name: string;
   balance: number;
-  paysTo: Record<string, number>;
-  simplifiedPaysTo: Record<string, number>;
+  paysTo: Record<string, PaysToData>;
+  simplifiedPaysTo: Record<string, PaysToData>;
 }
 
 export enum SplitType {
@@ -39,8 +45,14 @@ export interface Transaction {
 }
 
 export interface Debt {
-  lenderId: string;
-  borrowerId: string;
+  lender: {
+    id: string;
+    name: string;
+  };
+  borrower: {
+    id: string;
+    name: string;
+  };
   amount: number;
   transactionId: string;
 }

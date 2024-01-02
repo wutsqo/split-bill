@@ -32,7 +32,11 @@ describe("getBalanceOfAPerson", () => {
         ...PERSON_1,
         balance: 49,
         paysTo: {
-          "2": -49,
+          "2": {
+            amount: -49,
+            id: "2",
+            name: PERSON_2.name,
+          },
         },
       },
       PERSON_1,
@@ -49,7 +53,11 @@ describe("getBalanceOfAPerson", () => {
         ...PERSON_2,
         balance: -49,
         paysTo: {
-          "1": 49,
+          "1": {
+            amount: 49,
+            id: "1",
+            name: PERSON_1.name,
+          },
         },
       },
       PERSON_2,
@@ -66,7 +74,11 @@ describe("getBalanceOfAPerson", () => {
         ...PERSON_1,
         balance: 99,
         paysTo: {
-          "2": -99,
+          "2": {
+            amount: -99,
+            id: "2",
+            name: PERSON_2.name,
+          },
         },
       },
       PERSON_1,
@@ -83,8 +95,16 @@ describe("getBalanceOfAPerson", () => {
         ...PERSON_1,
         balance: 79,
         paysTo: {
-          "2": -49,
-          "3": -30,
+          "2": {
+            amount: -49,
+            id: "2",
+            name: PERSON_2.name,
+          },
+          "3": {
+            amount: -30,
+            id: "3",
+            name: PERSON_3.name,
+          },
         },
       },
       PERSON_1,
@@ -101,7 +121,11 @@ describe("getBalanceOfAPerson", () => {
         ...PERSON_2,
         balance: -99,
         paysTo: {
-          "1": 99,
+          "1": {
+            amount: 99,
+            id: "1",
+            name: PERSON_1.name,
+          },
         },
       },
       PERSON_2,
@@ -118,8 +142,17 @@ describe("getBalanceOfAPerson", () => {
         ...PERSON_2,
         balance: -79,
         paysTo: {
-          "1": 49,
-          "3": 30,
+          "1": {
+            amount: 49,
+            id: "1",
+            name: PERSON_1.name,
+          },
+
+          "3": {
+            amount: 30,
+            id: "3",
+            name: PERSON_3.name,
+          },
         },
       },
       PERSON_2,
@@ -136,7 +169,11 @@ describe("getBalanceOfAPerson", () => {
         ...PERSON_1,
         balance: 0,
         paysTo: {
-          "2": 0,
+          "2": {
+            amount: 0,
+            id: "2",
+            name: PERSON_2.name,
+          },
         },
       },
       PERSON_1,
@@ -153,8 +190,16 @@ describe("getBalanceOfAPerson", () => {
         ...PERSON_1,
         balance: 49 - 30,
         paysTo: {
-          "2": -49,
-          "3": 30,
+          "2": {
+            amount: -49,
+            id: "2",
+            name: PERSON_2.name,
+          },
+          "3": {
+            amount: 30,
+            id: "3",
+            name: PERSON_3.name,
+          },
         },
       },
       PERSON_1,
@@ -171,8 +216,16 @@ describe("getBalanceOfAPerson", () => {
         ...PERSON_1,
         balance: 10 - 15 + 20 - 5 - 10 + 5,
         paysTo: {
-          "2": -10 + 15 + 10 - 5,
-          "3": -20 + 5,
+          "2": {
+            amount: -10 + 15 + 10 - 5,
+            id: "2",
+            name: PERSON_2.name,
+          },
+          "3": {
+            amount: -20 + 5,
+            id: "3",
+            name: PERSON_3.name,
+          },
         },
       },
       PERSON_1,
@@ -265,10 +318,18 @@ describe("calculateNewBalances", () => {
           name: PERSON_1.name,
           balance: -10,
           paysTo: {
-            "2": 10,
+            "2": {
+              amount: 10,
+              id: "2",
+              name: PERSON_2.name,
+            },
           },
           simplifiedPaysTo: {
-            "3": 10,
+            "3": {
+              amount: 10,
+              id: "3",
+              name: PERSON_3.name,
+            },
           },
         },
         {
@@ -276,8 +337,16 @@ describe("calculateNewBalances", () => {
           name: PERSON_2.name,
           balance: 0,
           paysTo: {
-            "1": -10,
-            "3": 10,
+            "1": {
+              amount: -10,
+              id: "1",
+              name: PERSON_1.name,
+            },
+            "3": {
+              amount: 10,
+              id: "3",
+              name: PERSON_3.name,
+            },
           },
           simplifiedPaysTo: {},
         },
@@ -286,10 +355,18 @@ describe("calculateNewBalances", () => {
           name: PERSON_3.name,
           balance: 10,
           paysTo: {
-            "2": -10,
+            "2": {
+              amount: -10,
+              id: "2",
+              name: PERSON_2.name,
+            },
           },
           simplifiedPaysTo: {
-            "1": -10,
+            "1": {
+              amount: -10,
+              id: "1",
+              name: PERSON_1.name,
+            },
           },
         },
       ]
@@ -310,12 +387,29 @@ describe("calculateNewBalances", () => {
           name: PERSON_1.name,
           balance: 20,
           paysTo: {
-            "2": -10,
-            "3": -10,
+            "2": {
+              amount: -10,
+              id: "2",
+              name: PERSON_2.name,
+            },
+            "3": {
+              amount: -10,
+              id: "3",
+              name: PERSON_3.name,
+            },
           },
           simplifiedPaysTo: {
-            "2": -10,
-            "3": -10,
+            "2": {
+              amount: -10,
+              id: "2",
+              name: PERSON_2.name,
+            },
+
+            "3": {
+              amount: -10,
+              id: "3",
+              name: PERSON_3.name,
+            },
           },
         },
         {
@@ -323,10 +417,18 @@ describe("calculateNewBalances", () => {
           name: PERSON_2.name,
           balance: -10,
           paysTo: {
-            "1": 10,
+            "1": {
+              amount: 10,
+              id: "1",
+              name: PERSON_1.name,
+            },
           },
           simplifiedPaysTo: {
-            "1": 10,
+            "1": {
+              amount: 10,
+              id: "1",
+              name: PERSON_1.name,
+            },
           },
         },
         {
@@ -334,10 +436,18 @@ describe("calculateNewBalances", () => {
           name: PERSON_3.name,
           balance: -10,
           paysTo: {
-            "1": 10,
+            "1": {
+              amount: 10,
+              id: "1",
+              name: PERSON_1.name,
+            },
           },
           simplifiedPaysTo: {
-            "1": 10,
+            "1": {
+              amount: 10,
+              id: "1",
+              name: PERSON_1.name,
+            },
           },
         },
       ]

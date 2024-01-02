@@ -1,4 +1,3 @@
-import AccountModal from "./account-modal";
 import Navigation from "./navigation";
 
 export default function Layout({
@@ -10,7 +9,6 @@ export default function Layout({
     <div className="mx-auto container p-4 max-w-screen-sm">
       <Navigation />
       {children}
-      <AccountModal />
     </div>
   );
 }

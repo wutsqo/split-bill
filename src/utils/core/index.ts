@@ -1,19 +1,23 @@
-import { Debt, Person, SplitType, Transaction } from "@/app/app/type";
+import { Debt, PaysToData, Person, Transaction } from "@/app/app/type";
 
 export const getBalanceOfAPerson = (person: Person, debts: Debt[]): Person =>
   debts.reduce(
     (acc, debt) => {
-      const isLender = debt.lenderId === person.id;
-      const isBorrower = debt.borrowerId === person.id;
+      const isLender = debt.lender.id === person.id;
+      const isBorrower = debt.borrower.id === person.id;
       if (isLender || isBorrower) {
         const amount = isLender ? debt.amount : -debt.amount;
-        const counterPartyId = isLender ? debt.borrowerId : debt.lenderId;
+        const counterPartyId = isLender ? debt.borrower.id : debt.lender.id;
         return {
           ...acc,
           balance: acc.balance + amount,
           paysTo: {
             ...acc.paysTo,
-            [counterPartyId]: (acc.paysTo[counterPartyId] || 0) - amount,
+            [counterPartyId]: {
+              amount: (acc.paysTo[counterPartyId]?.amount || 0) - amount,
+              id: counterPartyId,
+              name: isLender ? debt.borrower.name : debt.lender.name,
+            },
           },
         };
       }
@@ -22,7 +26,7 @@ export const getBalanceOfAPerson = (person: Person, debts: Debt[]): Person =>
     {
       ...person,
       balance: 0,
-      paysTo: {} as Record<string, number>,
+      paysTo: {} as Record<string, PaysToData>,
     }
   );
 
@@ -112,11 +116,19 @@ export const simplifyDebtsUsingCollector = (
   rest.forEach((person) => {
     simplifiedPaysTo[person.id] = {
       ...simplifiedPaysTo[person.id],
-      [collector.id]: person.balance * -1,
+      [collector.id]: {
+        amount: person.balance * -1,
+        id: collector.id,
+        name: collector.name,
+      },
     };
     simplifiedPaysTo[collector.id] = {
       ...simplifiedPaysTo[collector.id],
-      [person.id]: person.balance,
+      [person.id]: {
+        amount: person.balance,
+        id: person.id,
+        name: person.name,
+      },
     };
   });
   return simplifiedPaysTo;

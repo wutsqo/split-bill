@@ -2,26 +2,13 @@
 
 import { TABS } from "./constant";
 import { mergeClassname } from "@/utils/merge-classname";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useTabStore } from "@hooks/useTabStore";
-import {
-  Session,
-  createClientComponentClient,
-} from "@supabase/auth-helpers-nextjs";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 
 export default function Navigation() {
   const activeTabId = useTabStore((state) => state.activeTabId);
   const setActiveTabId = useTabStore((state) => state.setActiveTabId);
-  const supabase = createClientComponentClient();
-  const [session, setSession] = useState<Session | null>(null);
-
-  useEffect(() => {
-    supabase.auth.getSession().then((res) => {
-      setSession(res.data.session);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     useTabStore.persist.rehydrate();
