@@ -109,7 +109,6 @@ export default function BillsContainer() {
 
       {transactions.map((trx) => (
         <TrxCard
-          person={trx.paidBy}
           trx={trx}
           key={trx.id}
           onRemoveModalOpen={() => onRemoveModalOpen(trx.id)}

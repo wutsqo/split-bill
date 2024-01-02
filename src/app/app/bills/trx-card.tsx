@@ -6,16 +6,16 @@ import { formatMoney } from "@/utils/common";
 
 interface TrxCardProps {
   trx: Transaction;
-  person: Pick<Person, "id" | "name">;
-  onRemoveModalOpen: () => void;
-  onEditModalOpen: () => void;
+  onRemoveModalOpen?: () => void;
+  onEditModalOpen?: () => void;
+  hideActions?: boolean;
 }
 
 export const TrxCard: FC<TrxCardProps> = ({
   trx,
-  person,
   onRemoveModalOpen,
   onEditModalOpen,
+  hideActions = false,
 }) => {
   return (
     <div className="card card-compact bg-base-100">
@@ -30,7 +30,7 @@ export const TrxCard: FC<TrxCardProps> = ({
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <PersonLabel person={person} prefix="Paid by" size="sm" />
+          <PersonLabel person={trx.paidBy} prefix="Paid by" size="sm" />
           <div>{formatMoney(trx.amount)}</div>
         </div>
 
@@ -53,25 +53,26 @@ export const TrxCard: FC<TrxCardProps> = ({
               ))}
           </div>
         </div>
-
-        <div className="card-actions justify-end join">
-          <button
-            className="btn btn-ghost btn-sm join-item"
-            type="button"
-            onClick={onEditModalOpen}
-          >
-            <PencilIcon className="w-4 h-4" />
-            Edit
-          </button>
-          <button
-            className="btn btn-ghost btn-sm join-item text-error"
-            type="button"
-            onClick={onRemoveModalOpen}
-          >
-            <TrashIcon className="w-4 h-4" />
-            Delete
-          </button>
-        </div>
+        {hideActions ? null : (
+          <div className="card-actions justify-end join">
+            <button
+              className="btn btn-ghost btn-sm join-item"
+              type="button"
+              onClick={onEditModalOpen}
+            >
+              <PencilIcon className="w-4 h-4" />
+              Edit
+            </button>
+            <button
+              className="btn btn-ghost btn-sm join-item text-error"
+              type="button"
+              onClick={onRemoveModalOpen}
+            >
+              <TrashIcon className="w-4 h-4" />
+              Delete
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
