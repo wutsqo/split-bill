@@ -3,10 +3,13 @@
 import { useEffect } from "react";
 import { SummaryCard } from "./summary-card";
 import { usePeopleStore } from "@hooks/usePeopleStore";
+import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
+import { useTransactionStore } from "@hooks/useTransactionStore";
 
 export default function SummaryContainer() {
   const { people, preferSimplifiedBalances, setPreferSimplifiedBalances } =
     usePeopleStore();
+  const { transactions } = useTransactionStore();
 
   useEffect(() => {
     usePeopleStore.persist.rehydrate();
@@ -44,6 +47,13 @@ export default function SummaryContainer() {
               />
             </label>
           </div>
+          <button
+            className="btn btn-primary glass bg-primary text-primary-content uppercase w-full hidden"
+            disabled={transactions.length === 0}
+          >
+            <ArrowDownTrayIcon className="h-5 w-5" />
+            Download as PDF
+          </button>
         </div>
       </div>
 
