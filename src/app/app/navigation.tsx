@@ -2,17 +2,13 @@
 
 import { TABS } from "./constant";
 import { mergeClassname } from "@/utils/merge-classname";
-import { useEffect } from "react";
 import { useTabStore } from "@hooks/useTabStore";
 import { Bars3Icon } from "@heroicons/react/24/outline";
+import useStore from "@hooks/useStore";
 
 export default function Navigation() {
-  const activeTabId = useTabStore((state) => state.activeTabId);
+  const activeTabId = useStore(useTabStore, (state) => state.activeTabId);
   const setActiveTabId = useTabStore((state) => state.setActiveTabId);
-
-  useEffect(() => {
-    useTabStore.persist.rehydrate();
-  }, []);
 
   return (
     <div className="flex flex-row justify-between gap-2 items-stretch">

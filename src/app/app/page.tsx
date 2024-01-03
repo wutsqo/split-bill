@@ -5,9 +5,10 @@ import { TAB_IDS } from "./constant";
 import BillsContainer from "./bills/container";
 import SummaryContainer from "./summary/container";
 import PeopleContainer from "./people/container";
+import useStore from "@hooks/useStore";
 
 export default function Page() {
-  const activeTabId = useTabStore((state) => state.activeTabId);
+  const activeTabId = useStore(useTabStore, (state) => state.activeTabId);
 
   if (activeTabId === TAB_IDS.PEOPLE) {
     return <PeopleContainer />;
@@ -21,5 +22,5 @@ export default function Page() {
     return <SummaryContainer />;
   }
 
-  return null;
+  return <div className="skeleton w-full h-32 mt-4"></div>;
 }

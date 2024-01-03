@@ -16,6 +16,6 @@ export const useTabStore = create<State & Action>()(
       activeTabId: TAB_IDS.PEOPLE,
       setActiveTabId: (tabId) => set({ activeTabId: tabId }),
     }),
-    { name: "tab", skipHydration: true }
+    { name: "tab" }
   )
 );
