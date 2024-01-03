@@ -24,9 +24,7 @@ export default function Home() {
 
       <div className="navbar z-50 relative lg:absolute text-white">
         <div className="flex-1">
-          <a className="btn btn-ghost text-xl font-taviraj">
-            {appName}
-          </a>
+          <a className="btn btn-ghost text-xl font-taviraj">{appName}</a>
         </div>
         <div className="flex-none">
           <label
@@ -92,13 +90,13 @@ export default function Home() {
         <h2 className="text-center text-4xl font-taviraj font-bold">
           Split Expenses Easily
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-16 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-16 mb-24">
           <div className="card w-full bg-base-100">
             <div className="card-body">
               <h2 className="card-title">😊 Easy to Use</h2>
               <p className="mt-4">
-                Add and manage your expenses with a few clicks with our
-                intuitive interface.
+                Manage your expenses with a few clicks with our intuitive
+                interface.
               </p>
             </div>
           </div>
@@ -120,28 +118,118 @@ export default function Home() {
           </div>
           <div className="card w-full bg-base-100">
             <div className="card-body">
-              <h2 className="card-title">✨ Simplify Debt Calculations</h2>
+              <h2 className="card-title">✨ Simplify Repayments</h2>
               <p className="mt-4">
                 We will calculate and show you the easiest way to settle up.
               </p>
             </div>
           </div>
-          <div className="card w-full bg-primary col-span-1 md:col-span-2 text-base-100">
-            <div className="card-body py-12 flex md:flex-row justify-between gap-8">
-              <div>
-                <h2 className="text-3xl font-taviraj">Start sharing your expenses</h2>
-                <p className="mt-1">
-                  And spend more time enjoying your occasion.
+        </div>
+      </div>
+
+      <div className="container max-w-screen-xl mx-auto px-4 pb-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="col-span-1 h-full grid place-content-center">
+          <h2 className="text-center text-4xl font-taviraj font-bold">
+            Have a Question?
+          </h2>
+        </div>
+        <div className="col-span-1">
+          <div className="join join-vertical w-full bg-base-100 divide-y divide-base-200">
+            <div className="collapse collapse-arrow join-item">
+              <input type="checkbox" />
+              <div className="collapse-title text-base font-medium p-6">
+                Is this app free?
+              </div>
+              <div className="collapse-content px-6">
+                <p className="prose">
+                  Yes, it is completely free! 🆓
+                  <br /> <br />
+                  However, there are limits on the number of PDFs that can be
+                  generated due to the infrastructure cost.
+                  <br /> <br />
+                  If you like this app, you can give some support by{" "}
+                  <a
+                    href="http://trakteer.id/wutsqo"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    buying me a coffee ☕️
+                  </a>{" "}
+                  and I&apos;ll gladly increase the limit for you.
                 </p>
               </div>
-              <div>
-                <Link href="/app">
-                  <button className="btn md:btn-lg uppercase group glass bg-primary-content">
-                    Open App
-                    <ArrowRightIcon className="w-6 h-6 group-hover:translate-x-2 transition-all" />
-                  </button>
-                </Link>
+            </div>
+            <div className="collapse collapse-arrow join-item">
+              <input type="checkbox" />
+              <div className="collapse-title text-base font-medium p-6">
+                Do you have a mobile app?
               </div>
+              <div className="collapse-content px-6">
+                <p className="prose">
+                  {appName} isn’t on the iOS App Store or Google Play (yet) but
+                  we are planning to do so in the near future.
+                </p>
+              </div>
+            </div>
+            <div className="collapse collapse-arrow join-item">
+              <input type="checkbox" />
+              <div className="collapse-title text-base font-medium p-6">
+                What is Simplify Repayments?
+              </div>
+              <div className="collapse-content px-6">
+                <p className="prose">
+                  Simplify Repayments is a feature that will combine all debts
+                  so that you can settle up with the least amount of
+                  transactions.
+                  <br /> <br />
+                  Let&apos;s say, you owe Walter $10, and Walter owes Jesse $10.
+                  Instead of you paying Walter $10 and Walter paying Jesse $10,
+                  you can just pay Jesse $10 directly.
+                </p>
+              </div>
+            </div>
+            <div className="collapse collapse-arrow join-item">
+              <input type="checkbox" />
+              <div className="collapse-title text-base font-medium p-6">
+                I found a bug or have a feature request.
+              </div>
+              <div className="collapse-content px-6">
+                <p className="prose">
+                  Please mention or DM me on Twitter{" "}
+                  <a
+                    className="link"
+                    href="https://twitter.com/gitcommitsudoku"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    @gitcommitsudoku
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container max-w-screen-xl mx-auto px-4 py-16 w-full">
+        <div className="card w-full bg-primary text-base-100">
+          <div className="card-body py-12 flex md:flex-row justify-between gap-8">
+            <div>
+              <h2 className="text-3xl font-taviraj">
+                Start sharing your expenses
+              </h2>
+              <p className="mt-1">
+                And spend more time enjoying your occasion.
+              </p>
+            </div>
+            <div>
+              <Link href="/app">
+                <button className="btn md:btn-lg uppercase group glass bg-primary-content">
+                  Open App
+                  <ArrowRightIcon className="w-6 h-6 group-hover:translate-x-2 transition-all" />
+                </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -174,11 +262,11 @@ export default function Home() {
 
             <a
               className="link"
-              href="https://wutzz.space"
+              href="https://twitter.com/gitcommitsudoku"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Wutsqo
+              @gitcommitsudoku
             </a>
           </p>
           <TrakteerButton className="btn" />
