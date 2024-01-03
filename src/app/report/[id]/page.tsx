@@ -7,7 +7,7 @@ import { SITE_URL, appName } from "../../config";
 import { Person, Transaction } from "../../app/type";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { Database } from "@/lib/database.types";
+import { Database } from "@/supabase.types";
 
 export default async function Page({
   params,
