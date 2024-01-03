@@ -1,6 +1,6 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import Login from "../login/container";
+import Login from "./login/container";
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
 
 export default async function AccountModal() {

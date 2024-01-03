@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { SummaryCard } from "./summary-card";
 import { usePeopleStore } from "@hooks/usePeopleStore";
 import {
@@ -10,11 +10,9 @@ import {
 import { useTransactionStore } from "@hooks/useTransactionStore";
 import { generatePDF } from "./actions";
 import { useFormStatus, useFormState } from "react-dom";
-import { useSupabase } from "@hooks/useSupabase";
-import {
-  User,
-  createClientComponentClient,
-} from "@supabase/auth-helpers-nextjs";
+import useStore from "@hooks/useStore";
+import { useAuthStore } from "@hooks/useAuthStore";
+import { useModalAction } from "@hooks/useModalAction";
 
 function SubmitButton({ disabled }: { readonly disabled: boolean }) {
   const { pending } = useFormStatus();
@@ -49,20 +47,8 @@ export default function SummaryContainer() {
   const { people, preferSimplifiedBalances, setPreferSimplifiedBalances } =
     usePeopleStore();
   const { transactions } = useTransactionStore();
-  const supabase = createClientComponentClient();
-  const [user, setUser] = useState<null | User>(null);
-  useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user ?? null);
-      }
-    );
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  const { showAuthModal } = useSupabase();
+  const { showAuthModal } = useModalAction();
+  const user = useStore(useAuthStore, (state) => state.user);
 
   useEffect(() => {
     usePeopleStore.persist.rehydrate();

@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { appName } from "./config";
 import {
   ArrowLeftOnRectangleIcon,
@@ -13,10 +13,8 @@ import {
 import { useRouter, usePathname } from "next/navigation";
 import TrakteerButton from "./trakteer/button";
 import { themeChange } from "theme-change";
-import {
-  User,
-  createClientComponentClient,
-} from "@supabase/auth-helpers-nextjs";
+import useStore from "@hooks/useStore";
+import { useAuthStore } from "@hooks/useAuthStore";
 
 export default function Drawer({ children }: { readonly children: ReactNode }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -28,19 +26,7 @@ export default function Drawer({ children }: { readonly children: ReactNode }) {
     };
   }, []);
   const pathName = usePathname();
-  const supabase = createClientComponentClient();
-  const [user, setUser] = useState<null | User>(null);
-  useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setUser(session?.user ?? null);
-      }
-    );
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const user = useStore(useAuthStore, (state) => state.user);
 
   return (
     <div className="drawer">
