@@ -13,6 +13,7 @@ export interface Database {
         Row: {
           created_at: string
           id: string
+          name: string
           people: Json
           transactions: Json
           updated_at: string
@@ -21,6 +22,7 @@ export interface Database {
         Insert: {
           created_at?: string
           id?: string
+          name?: string
           people: Json
           transactions: Json
           updated_at: string
@@ -29,6 +31,7 @@ export interface Database {
         Update: {
           created_at?: string
           id?: string
+          name?: string
           people?: Json
           transactions?: Json
           updated_at?: string
