@@ -13,10 +13,13 @@ import NoAccess from "@/app/no-access";
 
 export default async function Page({
   params,
+  searchParams,
 }: {
   readonly params: { id: string };
+  readonly searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const cookieStore = cookies();
+  const byPass = searchParams["key"] === process.env.NEXT_PUBLIC_BYPASS_KEY;
   const supabase = createServerComponentClient<Database>({
     cookies: () => cookieStore,
   });
@@ -29,7 +32,7 @@ export default async function Page({
     .eq("id", params.id)
     .single();
   if (!data) return notFound();
-  if (!data.is_public && !user) return <NoAccess />;
+  if (!data.is_public && !user && !byPass) return <NoAccess />;
   const people = data.people as unknown as Person[];
   const transactions = data.transactions as unknown as Transaction[];
   return (
