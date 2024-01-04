@@ -8,6 +8,7 @@ interface State {
 
 interface Action {
   setActiveTabId: (tabId: TAB_IDS) => void;
+  reset: () => void;
 }
 
 export const useTabStore = create<State & Action>()(
@@ -15,6 +16,7 @@ export const useTabStore = create<State & Action>()(
     (set) => ({
       activeTabId: TAB_IDS.PEOPLE,
       setActiveTabId: (tabId) => set({ activeTabId: tabId }),
+      reset: () => set({ activeTabId: TAB_IDS.PEOPLE }),
     }),
     { name: "tab" }
   )
