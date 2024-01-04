@@ -21,3 +21,15 @@ export function isInIframe() {
     return true;
   }
 }
+
+type Modal = "account_modal" | "share_modal";
+
+export function showModal(modalId: Modal) {
+  const modal = document.getElementById(modalId) as HTMLDialogElement;
+  modal?.showModal();
+}
+
+export function closeModal(modalId: Modal) {
+  const modal = document.getElementById(modalId) as HTMLDialogElement;
+  modal?.close();
+}

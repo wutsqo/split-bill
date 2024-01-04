@@ -1,3 +1,4 @@
+import { showModal } from "@/utils/common";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { User as SupabaseUser } from "@supabase/supabase-js";
 import { create } from "zustand";
@@ -36,10 +37,7 @@ export const useAuthStore = create<Action & State>((set) => {
       loginSubtitle = initialState.loginSubtitle,
     }) => {
       set({ loginTitle, loginSubtitle });
-      const dialog = document.getElementById(
-        "account_modal"
-      ) as HTMLDialogElement;
-      dialog.showModal();
+      showModal("account_modal");
     },
     logout: () => {
       supabase.auth.signOut().then(() => {

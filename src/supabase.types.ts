@@ -50,38 +50,6 @@ export interface Database {
           }
         ]
       }
-      workspace: {
-        Row: {
-          created_at: string
-          id: number
-          people: Json | null
-          transactions: Json | null
-          user: string
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          people?: Json | null
-          transactions?: Json | null
-          user: string
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          people?: Json | null
-          transactions?: Json | null
-          user?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "workspace_user_fkey"
-            columns: ["user"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
     }
     Views: {
       [_ in never]: never

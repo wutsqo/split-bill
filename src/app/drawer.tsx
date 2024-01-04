@@ -15,6 +15,7 @@ import TrakteerButton from "./trakteer/button";
 import { themeChange } from "theme-change";
 import useStore from "@hooks/useStore";
 import { useAuthStore } from "@hooks/useAuthStore";
+import { showModal } from "@/utils/common";
 
 export default function Drawer({ children }: { readonly children: ReactNode }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -84,13 +85,7 @@ export default function Drawer({ children }: { readonly children: ReactNode }) {
             </button>
           </li>
           <li>
-            <button
-              onClick={() => {
-                (
-                  document.getElementById("account_modal") as HTMLDialogElement
-                )?.showModal();
-              }}
-            >
+            <button onClick={() => showModal("account_modal")}>
               {user ? (
                 <>
                   <UserCircleIcon className="h-6 w-6 shrink-0" />

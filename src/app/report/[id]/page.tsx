@@ -8,6 +8,8 @@ import { Person, Transaction } from "../../app/type";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { Database } from "@/supabase.types";
+import { notFound } from "next/navigation";
+import NoAccess from "@/app/no-access";
 
 export default async function Page({
   params,
@@ -18,18 +20,18 @@ export default async function Page({
   const supabase = createServerComponentClient<Database>({
     cookies: () => cookieStore,
   });
-
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   const { data } = await supabase
-    .from("workspace")
+    .from("split_groups")
     .select("*")
     .eq("id", params.id)
     .single();
-
-  if (!data) return <div>Not found</div>;
-  const people = JSON.parse(data.people?.toString() ?? "[]") as Person[];
-  const transactions = JSON.parse(
-    data.transactions?.toString() ?? "[]"
-  ) as Transaction[];
+  if (!data) return notFound();
+  if (!data.is_public && !user) return <NoAccess />;
+  const people = data.people as unknown as Person[];
+  const transactions = data.transactions as unknown as Transaction[];
   return (
     <div className="bg-white min-h-screen relative">
       <div
@@ -45,7 +47,7 @@ export default async function Page({
       </div>
       <div className="container mx-auto max-w-screen-md px-4 py-6 z-10 relative">
         <div className="flex items-baseline justify-between mt-6 bg-[#3d3056] text-white p-6">
-          <h2 className="taviraj">People</h2>
+          <h2 className="taviraj">{data.name}</h2>
           <div>{people.length} people</div>
         </div>
         <div className="p-4 mt-4 border text-sm rounded-2xl">
@@ -80,7 +82,7 @@ export default async function Page({
               chronological order.
             </p>
           </div>
-          <ul className="columns-2 gap-2 mt-4">
+          <ul className="columns-1 sm:columns-2 gap-2 mt-4">
             {transactions
               .sort(
                 (a, b) =>
@@ -109,7 +111,7 @@ export default async function Page({
                 people they borrowed it from.
               </p>
             </div>
-            <div className="columns-2 gap-2">
+            <div className="columns-1 sm:columns-2 gap-2">
               {people.map((person) => (
                 <div
                   className="border rounded-2xl break-inside-avoid w-full mb-2"
@@ -134,7 +136,7 @@ export default async function Page({
                 the total number of repayments.
               </p>
             </div>
-            <div className="columns-2 gap-2">
+            <div className="columns-1 sm:columns-2 gap-2">
               {people.map((person) => (
                 <div
                   className="border break-inside-avoid mb-2 rounded-2xl"
@@ -149,7 +151,7 @@ export default async function Page({
         </div>
       </div>
       <div
-        className="w-full h-screen p-8 text-white grid place-content-center break-before-page relative"
+        className="w-full h-screen p-8 text-white place-content-center break-before-page relative hidden print:grid"
         style={{
           backgroundImage: "url(/back-cover.svg)",
           backgroundSize: "cover",
@@ -163,7 +165,7 @@ export default async function Page({
           </p>
         </div>
       </div>
-      <div className="print:fixed bottom-4 left-8 text-xs text-[#001220]">
+      <div className="hidden print:block print:fixed bottom-4 left-8 text-xs text-[#001220]">
         Generated using {appName}. Create your own for free at{" "}
         <a href={SITE_URL} target="_blank" rel="noopener noreferrer">
           {SITE_URL}

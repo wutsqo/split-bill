@@ -199,7 +199,7 @@ const TrxModal = forwardRef<Ref, RemoveModalProps>(
                 </button>
               ) : (
                 <button
-                  className="btn"
+                  className="btn uppercase"
                   onClick={() => setCurrentStep(currentStep - 1)}
                   type="button"
                 >

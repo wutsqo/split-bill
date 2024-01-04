@@ -1,18 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
 import { SummaryCard } from "./summary-card";
 import { ArrowDownTrayIcon, ShareIcon } from "@heroicons/react/24/outline";
-import { generatePDF } from "./actions";
-import { useFormStatus, useFormState } from "react-dom";
 import useStore from "@hooks/useStore";
 import { useAuthStore } from "@hooks/useAuthStore";
 import { useGroupStore } from "@hooks/useGroupStore";
-
-const initialState = {
-  message: "",
-  id: "",
-};
+import ShareModal from "./share-modal";
+import { showModal } from "@/utils/common";
 
 export default function SummaryContainer() {
   const preferSimplifiedBalances = useStore(
@@ -24,12 +18,7 @@ export default function SummaryContainer() {
   const transactions = useStore(useGroupStore, (state) => state.transactions);
   const user = useStore(useAuthStore, (state) => state.user);
   const { showAuthModal } = useAuthStore();
-  const [state, formAction] = useFormState(generatePDF, initialState);
-  useEffect(() => {
-    if (state.id) {
-      window.open(`/api/pdf?id=${state.id}`, "_blank");
-    }
-  }, [state]);
+
   if (!people || !transactions) return null;
   if (people.length <= 1) {
     return (
@@ -48,6 +37,7 @@ export default function SummaryContainer() {
       showAuthModal({
         loginTitle: "Login to Generate PDF",
       });
+    } else {
     }
   };
   const onClickShareButton = () => {
@@ -55,6 +45,8 @@ export default function SummaryContainer() {
       showAuthModal({
         loginTitle: "Login to Share",
       });
+    } else {
+      showModal("share_modal");
     }
   };
   return (
@@ -62,7 +54,7 @@ export default function SummaryContainer() {
       <div className="join w-full bg-base-100">
         <button
           type="button"
-          className="btn btn-primary text-xs join-item w-1/2 uppercase"
+          className="btn btn-ghost text-xs join-item w-1/2 uppercase"
           disabled={transactions.length < 1}
           onClick={onClickPDFButton}
         >
@@ -72,7 +64,7 @@ export default function SummaryContainer() {
         <div className="bg-base-200 w-0.5 shrink-0 h-12 join-item"></div>
         <button
           type="button"
-          className="btn btn-secondary text-xs join-item w-1/2 uppercase"
+          className="btn btn-ghost text-xs join-item w-1/2 uppercase"
           onClick={onClickShareButton}
         >
           <ShareIcon className="h-4 w-4" />
@@ -100,37 +92,6 @@ export default function SummaryContainer() {
         </div>
       </div>
 
-      {/* <div className="card card-compact bg-base-100">
-        <div className="card-body">
-          {user ? (
-            <form action={formAction}>
-              <input
-                type="hidden"
-                name="people"
-                required
-                value={JSON.stringify(people)}
-              />
-              <input
-                type="hidden"
-                name="transactions"
-                required
-                value={JSON.stringify(transactions)}
-              />
-              <SubmitButton disabled={transactions.length < 1} />
-            </form>
-          ) : (
-            <button
-              className="btn btn-primary glass bg-primary text-primary-content uppercase w-full"
-              type="button"
-              onClick={showAuthModal}
-            >
-              <ArrowLeftOnRectangleIcon className="h-5 w-5" />
-              Login to Generate PDF
-            </button>
-          )}
-        </div>
-      </div> */}
-
       {people.map((person) => (
         <SummaryCard
           key={`summary-card-${person.id}`}
@@ -138,6 +99,8 @@ export default function SummaryContainer() {
           preferSimplified={preferSimplifiedBalances}
         />
       ))}
+
+      <ShareModal />
 
       {/* <input
         type="checkbox"
