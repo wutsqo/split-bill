@@ -17,8 +17,8 @@ export default function PersonForm() {
   const { personFormState, onPersonSubmit, editGroupMode, setEditGroupMode } =
     useLogic();
   const inputRef = useRef<HTMLInputElement>(null);
-  const groupName = useStore(useGroupStore, (state) => state.name);
-  const { renameGroup } = useGroupStore((state) => state);
+  const groupName = useStore(useGroupStore, (state) => state.name) ?? "";
+  const { updateGroup } = useGroupStore((state) => state);
   const groupFormState = useFormState(
     {
       name: "",
@@ -31,7 +31,6 @@ export default function PersonForm() {
     groupFormState.updateData("name", groupName as string);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupName]);
-  if (!groupName) return null;
   const onCancelEditGroup = () => {
     setEditGroupMode(false);
     groupFormState.updateData("name", groupName);
@@ -39,7 +38,7 @@ export default function PersonForm() {
   const onEditGroupSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setEditGroupMode(false);
-    renameGroup(groupFormState.data.name);
+    updateGroup({ name: groupFormState.data.name });
   };
   const onEnableEditGroup = () => {
     setEditGroupMode(true);

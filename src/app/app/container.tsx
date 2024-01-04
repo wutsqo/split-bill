@@ -8,24 +8,10 @@ import PeopleContainer from "./people/container";
 import useStore from "@hooks/useStore";
 import Navigation from "./navigation";
 import { Group } from "./type";
-import { useEffect } from "react";
-import { useGroupStore } from "@hooks/useGroupStore";
+import GroupSubscriber from "./group-subscriber";
 
-export default function AppContainer({
-  group,
-  is_guest = false,
-}: {
-  group: Group;
-  is_guest?: boolean;
-}) {
+export default function AppContainer({ group }: { group?: Group }) {
   const activeTabId = useStore(useTabStore, (state) => state.activeTabId);
-  const { setGroup, setIsGuest } = useGroupStore((state) => state);
-  useEffect(() => {
-    setGroup(group);
-    setIsGuest(is_guest);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <>
       <Navigation />
@@ -33,6 +19,7 @@ export default function AppContainer({
       {activeTabId === TAB_IDS.BILLS && <BillsContainer />}
       {activeTabId === TAB_IDS.SUMMARY && <SummaryContainer />}
       {!activeTabId && <div className="skeleton w-full h-40 mt-4"></div>}
+      <GroupSubscriber groupFromServer={group} />
     </>
   );
 }

@@ -8,6 +8,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import OtpSent from "./otp-sent";
 import LoginForm from "./login-form";
+import { useAuthStore } from "@hooks/useAuthStore";
 
 type LoginStep = "EMAIL_FORM" | "OTP_SENT";
 
@@ -54,6 +55,8 @@ export default function Login() {
     });
   };
 
+  const loginTitle = useAuthStore((state) => state.loginTitle);
+
   const renderStep = () => {
     switch (step) {
       case "EMAIL_FORM":
@@ -65,6 +68,7 @@ export default function Login() {
             onChangeEmail={(value: string) => updateData("email", value)}
             onSubmit={handleSubmit}
             signInWithGoogle={signInWithGoogle}
+            title={loginTitle}
           />
         );
       case "OTP_SENT":

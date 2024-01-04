@@ -13,12 +13,11 @@ import { useGroupStore } from "@hooks/useGroupStore";
 const NextButton = dynamic(() => import("./next-button"), { ssr: false });
 
 export default function PeopleContainer() {
-  const people = useStore(useGroupStore, (state) => state.people);
+  const people = useStore(useGroupStore, (state) => state.people) ?? [];
   const { removePerson, reset } = useGroupStore();
   const removeModalRef = useRef<HTMLDialogElement>(null);
   const resetModalRef = useRef<HTMLDialogElement>(null);
   const [toRemove, setToRemove] = useState<string>("");
-  if (!people) return null;
   const onRemove = (id: string) => {
     removePerson(id);
     removeModalRef.current?.close();

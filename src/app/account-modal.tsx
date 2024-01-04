@@ -1,29 +1,27 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+"use client";
+
 import Login from "./login/container";
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
+import { useAuthStore } from "@hooks/useAuthStore";
 
-export default async function AccountModal() {
-  const cookieStore = cookies();
-  const supabase = createServerComponentClient({ cookies: () => cookieStore });
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  const isLoggedIn = session !== null;
+export default function AccountModal() {
+  const user = useAuthStore((state) => state.user);
+  const isLoggedIn = user !== null;
+  const logout = useAuthStore((state) => state.logout);
 
   const LoggedIn = () => (
     <div className="grid grid-cols-1 gap-4">
       <p>
-        You&apos;re currently logged in as{" "}
-        <strong>{session?.user.email}</strong>.
+        You&apos;re currently logged in as <strong>{user?.email}</strong>.
       </p>
-      <form action="/auth/logout" method="post">
-        <button className="btn btn-error btn-outline" type="submit">
-          <ArrowLeftOnRectangleIcon className="h-5 w-5" />
-          Sign out
-        </button>
-      </form>
+      <button
+        className="btn btn-error btn-outline"
+        type="button"
+        onClick={logout}
+      >
+        <ArrowLeftOnRectangleIcon className="h-5 w-5" />
+        Sign out
+      </button>
     </div>
   );
 

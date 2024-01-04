@@ -8,7 +8,7 @@ interface LoginFormProps {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   signInWithGoogle: () => void;
   isValid: boolean;
-  loginText?: string;
+  title?: string;
 }
 
 const LoginForm: FC<LoginFormProps> = ({
@@ -18,11 +18,11 @@ const LoginForm: FC<LoginFormProps> = ({
   onSubmit,
   isValid,
   signInWithGoogle,
-  loginText = `Welcome to ${appName}`,
+  title,
 }) => {
   return (
     <div>
-      <h2 className="font-taviraj">{loginText}</h2>
+      <h2 className="font-taviraj">{title}</h2>
       <form className="mt-4 card" onSubmit={onSubmit}>
         <label className="block mb-2" htmlFor="email"></label>
         <input

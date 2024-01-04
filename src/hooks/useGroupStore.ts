@@ -7,14 +7,12 @@ import { calculateNewBalances } from "@/utils/core";
 import TransactionService from "@/utils/core/transaction";
 
 interface State extends Group {
-  is_guest: boolean;
   preferSimplifiedBalances: boolean;
 }
 
 interface GroupAction {
   setGroup: (group: Group) => void;
-  setIsGuest: (isGuest: boolean) => void;
-  renameGroup: (name: string) => void;
+  updateGroup: (update: Partial<Group>) => void;
   reset: () => void;
 }
 
@@ -33,11 +31,9 @@ interface TransactionAction {
   removeTransaction: (id: string) => void;
 }
 
-const initialState: State = {
-  id: "",
-  name: "",
+const initialState: Omit<State, "id"> = {
+  name: "Unnamed Group",
   created_at: "",
-  is_guest: true,
   is_public: false,
   updated_at: "",
   user_id: "",
@@ -52,10 +48,14 @@ export const useGroupStore = create<
   persist(
     (set, get) => ({
       ...initialState,
+      id: uuidv4(),
       setGroup: (group) => set(group),
-      setIsGuest: (isGuest) => set({ is_guest: isGuest }),
-      renameGroup: (name) => set({ name }),
-      reset: () => set(initialState),
+      updateGroup: (update) => set((state) => ({ ...state, ...update })),
+      reset: () =>
+        set({
+          ...initialState,
+          id: uuidv4(),
+        }),
       getPerson: (id) => get().people.find((person) => person.id === id),
       addPerson: ({ id, name }) => {
         const newPerson = {

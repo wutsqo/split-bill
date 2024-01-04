@@ -2,40 +2,12 @@
 
 import { useEffect } from "react";
 import { SummaryCard } from "./summary-card";
-import {
-  ArrowDownTrayIcon,
-  ArrowLeftOnRectangleIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowDownTrayIcon, ShareIcon } from "@heroicons/react/24/outline";
 import { generatePDF } from "./actions";
 import { useFormStatus, useFormState } from "react-dom";
 import useStore from "@hooks/useStore";
 import { useAuthStore } from "@hooks/useAuthStore";
-import { useModalAction } from "@hooks/useModalAction";
 import { useGroupStore } from "@hooks/useGroupStore";
-
-function SubmitButton({ disabled }: { readonly disabled: boolean }) {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      type="submit"
-      aria-disabled={pending}
-      className="btn btn-primary glass bg-primary text-primary-content uppercase w-full"
-      disabled={disabled}
-    >
-      {pending ? (
-        <>
-          <span className="loading loading-spinner"></span> Generating PDF...
-        </>
-      ) : (
-        <>
-          <ArrowDownTrayIcon className="h-5 w-5" />
-          Download PDF
-        </>
-      )}
-    </button>
-  );
-}
 
 const initialState = {
   message: "",
@@ -50,8 +22,8 @@ export default function SummaryContainer() {
   const { setPreferSimplifiedBalances } = useGroupStore();
   const people = useStore(useGroupStore, (state) => state.people);
   const transactions = useStore(useGroupStore, (state) => state.transactions);
-  const { showAuthModal } = useModalAction();
   const user = useStore(useAuthStore, (state) => state.user);
+  const { showAuthModal } = useAuthStore();
   const [state, formAction] = useFormState(generatePDF, initialState);
   useEffect(() => {
     if (state.id) {
@@ -71,9 +43,43 @@ export default function SummaryContainer() {
       </div>
     );
   }
-
+  const onClickPDFButton = () => {
+    if (!user) {
+      showAuthModal({
+        loginTitle: "Login to Generate PDF",
+      });
+    }
+  };
+  const onClickShareButton = () => {
+    if (!user) {
+      showAuthModal({
+        loginTitle: "Login to Share",
+      });
+    }
+  };
   return (
     <div className="py-4 flex flex-col gap-4 pb-20">
+      <div className="join w-full bg-base-100">
+        <button
+          type="button"
+          className="btn btn-primary text-xs join-item w-1/2 uppercase"
+          disabled={transactions.length < 1}
+          onClick={onClickPDFButton}
+        >
+          <ArrowDownTrayIcon className="h-4 w-4" />
+          Export PDF
+        </button>
+        <div className="bg-base-200 w-0.5 shrink-0 h-12 join-item"></div>
+        <button
+          type="button"
+          className="btn btn-secondary text-xs join-item w-1/2 uppercase"
+          onClick={onClickShareButton}
+        >
+          <ShareIcon className="h-4 w-4" />
+          Share
+        </button>
+      </div>
+
       <div className="card card-compact bg-base-100 ">
         <div className="card-body">
           <div className="form-control">
@@ -94,7 +100,7 @@ export default function SummaryContainer() {
         </div>
       </div>
 
-      <div className="card card-compact bg-base-100">
+      {/* <div className="card card-compact bg-base-100">
         <div className="card-body">
           {user ? (
             <form action={formAction}>
@@ -123,7 +129,7 @@ export default function SummaryContainer() {
             </button>
           )}
         </div>
-      </div>
+      </div> */}
 
       {people.map((person) => (
         <SummaryCard
