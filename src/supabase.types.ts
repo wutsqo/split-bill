@@ -13,28 +13,31 @@ export interface Database {
         Row: {
           created_at: string
           id: string
+          is_public: boolean
           name: string
           people: Json
           transactions: Json
-          updated_at: string
+          updated_at: string | null
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
+          is_public?: boolean
           name?: string
           people: Json
           transactions: Json
-          updated_at: string
+          updated_at?: string | null
           user_id: string
         }
         Update: {
           created_at?: string
           id?: string
+          is_public?: boolean
           name?: string
           people?: Json
           transactions?: Json
-          updated_at?: string
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: [
