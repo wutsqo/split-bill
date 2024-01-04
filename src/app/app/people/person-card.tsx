@@ -65,14 +65,14 @@ const PersonCard: FC<PersonCardProps> = ({ person, onRemove }) => {
               ref={inputRef}
             />
             <button
-              className="btn btn-sm btn-error join-item uppercase"
+              className="btn btn-square btn-sm btn-error join-item uppercase"
               onClick={cancelEdit}
               type="button"
             >
               <XMarkIcon className="w-4 h-4" />
             </button>
             <button
-              className="btn btn-sm btn-primary join-item uppercase"
+              className="btn btn-square btn-sm btn-primary join-item uppercase"
               disabled={!isValid}
               type="submit"
             >
@@ -87,7 +87,7 @@ const PersonCard: FC<PersonCardProps> = ({ person, onRemove }) => {
         {editMode ? null : (
           <>
             <button
-              className="btn btn-sm btn-ghost join-item"
+              className="btn btn-square btn-sm btn-ghost join-item"
               onClick={() => {
                 setEditMode(true);
                 setTimeout(() => inputRef.current?.focus(), 0);
@@ -96,7 +96,7 @@ const PersonCard: FC<PersonCardProps> = ({ person, onRemove }) => {
               <PencilIcon className="w-4 h-4" />
             </button>
             <button
-              className="btn btn-sm btn-ghost join-item text-error"
+              className="btn btn-square btn-sm btn-ghost join-item text-error"
               onClick={() => onRemove(person.id)}
             >
               <TrashIcon className="w-4 h-4" />
