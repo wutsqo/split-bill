@@ -12,7 +12,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { required, validate } from "@/utils/forms";
 import useFormState from "@/hooks/useFormState";
-import { usePeopleStore } from "@hooks/usePeopleStore";
+import { useGroupStore } from "@hooks/useGroupStore";
 
 interface PersonCardProps {
   person: Person;
@@ -30,7 +30,7 @@ const PersonCard: FC<PersonCardProps> = ({ person, onRemove }) => {
     }
   );
   const inputRef = useRef<HTMLInputElement>(null);
-  const { editPerson } = usePeopleStore();
+  const editPerson = useGroupStore((state) => state.editPerson);
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isValid) return;

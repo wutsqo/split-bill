@@ -2,10 +2,11 @@
 
 import useFormState from "@/hooks/useFormState";
 import { required, validate } from "@/utils/forms";
-import { usePeopleStore } from "@hooks/usePeopleStore";
+import { useGroupStore } from "@hooks/useGroupStore";
+import { useState } from "react";
 
 export default function useLogic() {
-  const { data, updateData, isValid, resetData } = useFormState(
+  const personFormState = useFormState(
     {
       name: "",
     },
@@ -13,19 +14,20 @@ export default function useLogic() {
       name: validate([required]),
     }
   );
-  const { addPerson } = usePeopleStore();
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+  const [editGroupMode, setEditGroupMode] = useState<boolean>(false);
+  const addPerson = useGroupStore((state) => state.addPerson);
+  const onPersonSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addPerson({ name: data.name });
-    resetData();
+    addPerson({ name: personFormState.data.name });
+    personFormState.resetData();
   };
 
   return {
-    data,
-    updateData,
-    isValid,
-    resetData,
+    personFormState,
     addPerson,
-    onSubmit,
+    onPersonSubmit,
+    editGroupMode,
+    setEditGroupMode,
   };
 }

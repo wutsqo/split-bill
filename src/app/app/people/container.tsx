@@ -1,36 +1,32 @@
 "use client";
 
-import { TrashIcon } from "@heroicons/react/24/outline";
 import PersonForm from "./person-form";
 import PersonCard from "./person-card";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import RemoveModal from "./remove-modal";
 import ResetModal from "./reset-modal";
-import { usePeopleStore } from "@hooks/usePeopleStore";
-import { useResetEverything } from "@hooks/useResetEverything";
 import dynamic from "next/dynamic";
 import EmptyState from "./empty-state";
+import useStore from "@hooks/useStore";
+import { useGroupStore } from "@hooks/useGroupStore";
 
 const NextButton = dynamic(() => import("./next-button"), { ssr: false });
 
 export default function PeopleContainer() {
-  const { removePerson, people } = usePeopleStore();
-  const resetEverything = useResetEverything();
+  const people = useStore(useGroupStore, (state) => state.people);
+  const { removePerson, reset } = useGroupStore();
   const removeModalRef = useRef<HTMLDialogElement>(null);
   const resetModalRef = useRef<HTMLDialogElement>(null);
   const [toRemove, setToRemove] = useState<string>("");
+  if (!people) return null;
   const onRemove = (id: string) => {
     removePerson(id);
     removeModalRef.current?.close();
   };
   const onReset = () => {
-    resetEverything();
+    reset();
     resetModalRef.current?.close();
   };
-
-  useEffect(() => {
-    usePeopleStore.persist.rehydrate();
-  }, []);
 
   const onRemoveModalOpen = (id: string) => {
     setToRemove(id);
@@ -45,15 +41,7 @@ export default function PeopleContainer() {
         <div className="card-body">
           <div className="flex justify-between items-center">
             <div className="card-title text-base">People</div>
-            <div className="">
-              <button
-                className="btn btn-ghost btn-sm text-error"
-                onClick={() => resetModalRef.current?.showModal()}
-              >
-                <TrashIcon className="w-4 h-4" />
-                Reset All
-              </button>
-            </div>
+            <div className=""></div>
           </div>
 
           <div className="grid grid-cols-1 divide-y divide-base-200">

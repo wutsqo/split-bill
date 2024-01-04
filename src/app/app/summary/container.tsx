@@ -2,17 +2,16 @@
 
 import { useEffect } from "react";
 import { SummaryCard } from "./summary-card";
-import { usePeopleStore } from "@hooks/usePeopleStore";
 import {
   ArrowDownTrayIcon,
   ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/24/outline";
-import { useTransactionStore } from "@hooks/useTransactionStore";
 import { generatePDF } from "./actions";
 import { useFormStatus, useFormState } from "react-dom";
 import useStore from "@hooks/useStore";
 import { useAuthStore } from "@hooks/useAuthStore";
 import { useModalAction } from "@hooks/useModalAction";
+import { useGroupStore } from "@hooks/useGroupStore";
 
 function SubmitButton({ disabled }: { readonly disabled: boolean }) {
   const { pending } = useFormStatus();
@@ -44,23 +43,22 @@ const initialState = {
 };
 
 export default function SummaryContainer() {
-  const { people, preferSimplifiedBalances, setPreferSimplifiedBalances } =
-    usePeopleStore();
-  const { transactions } = useTransactionStore();
+  const preferSimplifiedBalances = useStore(
+    useGroupStore,
+    (state) => state.preferSimplifiedBalances
+  ) as boolean;
+  const { setPreferSimplifiedBalances } = useGroupStore();
+  const people = useStore(useGroupStore, (state) => state.people);
+  const transactions = useStore(useGroupStore, (state) => state.transactions);
   const { showAuthModal } = useModalAction();
   const user = useStore(useAuthStore, (state) => state.user);
-
-  useEffect(() => {
-    usePeopleStore.persist.rehydrate();
-  }, []);
-
   const [state, formAction] = useFormState(generatePDF, initialState);
   useEffect(() => {
     if (state.id) {
       window.open(`/api/pdf?id=${state.id}`, "_blank");
     }
   }, [state]);
-
+  if (!people || !transactions) return null;
   if (people.length <= 1) {
     return (
       <div className="min-h-[calc(100vh-14.5rem)]">

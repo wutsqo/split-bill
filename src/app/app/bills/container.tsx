@@ -1,30 +1,26 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { PlusIcon, ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import { TrxCard } from "./trx-card";
 import axios from "axios";
-import { usePeopleStore } from "@hooks/usePeopleStore";
 import RemoveModal from "./remove-modal";
 import EmptyState from "./empty-state";
 import NextButton from "./next-button";
-import { useTransactionStore } from "@hooks/useTransactionStore";
 import TrxModal from "./trx-modal";
+import useStore from "@hooks/useStore";
+import { useGroupStore } from "@hooks/useGroupStore";
 
 export default function BillsContainer() {
-  const { people } = usePeopleStore();
+  const people = useStore(useGroupStore, (state) => state.people);
   const newTrxModal = useRef<HTMLDialogElement>(null);
   const [selectedId, setSelectedId] = useState<string>("");
   const [modalAction, setModalAction] = useState<"add" | "edit">("add");
   const removeModalRef = useRef<HTMLDialogElement>(null);
-  const transactions = useTransactionStore((state) => state.transactions);
-  const removeTransaction = useTransactionStore(
-    (state) => state.removeTransaction
-  );
+  const transactions = useGroupStore((state) => state.transactions);
+  const removeTransaction = useGroupStore((state) => state.removeTransaction);
 
-  useEffect(() => {
-    usePeopleStore.persist.rehydrate();
-  }, []);
+  if (!people) return <div className="skeleton w-full h-40 mt-4"></div>;
 
   if (people.length <= 1) {
     return (

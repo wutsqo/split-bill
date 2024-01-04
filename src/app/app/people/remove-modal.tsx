@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { checkIfPersonRemovable } from "@/utils/core";
-import { usePeopleStore } from "@hooks/usePeopleStore";
-import { useTransactionStore } from "@hooks/useTransactionStore";
+import useStore from "@hooks/useStore";
+import { useGroupStore } from "@hooks/useGroupStore";
 
 interface RemoveModalProps {
   toRemove: string;
@@ -12,9 +12,11 @@ type Ref = HTMLDialogElement;
 
 const RemoveModal = forwardRef<Ref, RemoveModalProps>(
   ({ toRemove, onRemove }, ref) => {
-    const { transactions } = useTransactionStore();
-    const { people, getPerson } = usePeopleStore();
-
+    const transactions =
+      useStore(useGroupStore, (state) => state.transactions) ?? [];
+    const people = useStore(useGroupStore, (state) => state.people);
+    const getPerson = useGroupStore((state) => state.getPerson);
+    if (!people) return null;
     const result = checkIfPersonRemovable(transactions, toRemove);
 
     return (
@@ -53,13 +55,9 @@ const RemoveModal = forwardRef<Ref, RemoveModalProps>(
           <div className="modal-action">
             <form method="dialog">
               {result?.removable ? (
-                <button className="btn btn-ghost uppercase">
-                  Nevermind
-                </button>
+                <button className="btn btn-ghost uppercase">Nevermind</button>
               ) : (
-                <button className="btn btn-primary uppercase">
-                  Okay
-                </button>
+                <button className="btn btn-primary uppercase">Okay</button>
               )}
             </form>
             {result?.removable ? (

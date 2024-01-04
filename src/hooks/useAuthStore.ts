@@ -1,5 +1,4 @@
 import { User as SupabaseUser } from "@supabase/supabase-js";
-import toast from "react-hot-toast";
 import { create } from "zustand";
 
 type User = SupabaseUser | null;

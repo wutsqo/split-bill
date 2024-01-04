@@ -1,14 +1,14 @@
 import useFormState from "@hooks/useFormState";
-import { usePeopleStore } from "@hooks/usePeopleStore";
 import { SplitData, SplitType, Transaction } from "../type";
 import { isGreaterThan, isNumber, required, validate } from "@/utils/forms";
-import { useTransactionStore } from "@hooks/useTransactionStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SplitFormProps } from "./type";
 import { SplitEqualForm } from "./split-equals-form";
 import { SplitPercentForm } from "./split-percent-form";
 import { SplitExactForm } from "./split-exact-form";
 import TransactionService from "@/utils/core/transaction";
+import useStore from "@hooks/useStore";
+import { useGroupStore } from "@hooks/useGroupStore";
 
 const formInitialData = {
   name: "",
@@ -31,8 +31,9 @@ export default function useLogic({
   transaction?: Transaction;
   mode: "add" | "edit";
 }) {
-  const { people, getPerson } = usePeopleStore();
-  const { addTransaction, editTransaction } = useTransactionStore();
+  const people = useStore(useGroupStore, (state) => state.people) ?? [];
+  const getPerson = useGroupStore((state) => state.getPerson);
+  const { addTransaction, editTransaction } = useGroupStore();
   const [currentStep, setCurrentStep] = useState(0);
   const {
     data: formData,
@@ -43,13 +44,20 @@ export default function useLogic({
   } = useFormState(
     {
       ...formInitialData,
-      paidBy: people[0].id,
-      split: Object.fromEntries(
-        people.map((person) => [person.id, 0])
-      ) as Record<string, number>,
+      paidBy: "",
+      split: {} as Record<string, number>,
     },
     formValidators
   );
+  useEffect(() => {
+    if (!people.length) return;
+    updateFormData("paidBy", people[0].id);
+    updateFormData(
+      "split",
+      Object.fromEntries(people.map((person) => [person.id, 0]))
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [people.length]);
 
   const isSplitValid = () => {
     switch (formData.splitType) {

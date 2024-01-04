@@ -1,3 +1,14 @@
+import { Database } from "@/supabase.types";
+
+export interface Group
+  extends Omit<
+    Database["public"]["Tables"]["split_groups"]["Row"],
+    "people" | "transactions"
+  > {
+  people: Person[];
+  transactions: Transaction[];
+}
+
 export interface PaysToData {
   amount: number;
   id: string;

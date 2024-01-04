@@ -9,6 +9,7 @@ import { TrakteerProvider } from "./trakteer/provider";
 import TrakteerModal from "./trakteer/modal";
 import AccountModal from "./account-modal";
 import { AuthSubscriber } from "./auth-subscriber";
+import GroupSubscriber from "./group-subscriber";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -69,6 +70,7 @@ export default function RootLayout({
         </TrakteerProvider>
         <Toaster />
         <AuthSubscriber />
+        <GroupSubscriber />
         <AccountModal />
       </body>
     </html>
