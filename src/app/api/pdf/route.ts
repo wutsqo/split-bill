@@ -2,6 +2,7 @@ import { SITE_URL, appName } from "@/app/config";
 import { createClient } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
 import puppeteer, { Browser } from "puppeteer-core";
+import chrome from "@sparticuz/chromium";
 
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 const BYPASS_KEY = process.env.NEXT_PUBLIC_BYPASS_KEY;
@@ -11,10 +12,12 @@ const exePath =
     ? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     : "/usr/bin/google-chrome";
 
-const getBrowser = () =>
+const getBrowser = async () =>
   IS_PRODUCTION
-    ? puppeteer.connect({
-        browserWSEndpoint: `wss://chrome.browserless.io?token=${process.env.BROWSERLESS_TOKEN}`,
+    ? puppeteer.launch({
+        args: chrome.args,
+        executablePath: await chrome.executablePath(),
+        headless: chrome.headless,
       })
     : puppeteer.launch({
         args: [],
@@ -77,13 +80,13 @@ export async function GET(request: NextRequest) {
         upsert: true,
       });
     if (error) {
-      console.error(error);
       throw new Error(error.message);
     }
     return new Response(data.path, {
       status: 200,
     });
   } catch (error: any) {
+    console.error(error);
     return new Response(error?.message ?? "Internal server error", {
       status: 500,
     });
