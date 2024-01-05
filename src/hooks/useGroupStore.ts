@@ -1,5 +1,5 @@
 import { ZUSTAND_PERSIST_KEYS } from "@/app/app/constant";
-import { Debt, Group, Person, Transaction } from "@/app/app/type";
+import { Debt, Group, PdfQuota, Person, Transaction } from "@/app/app/type";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { v4 as uuidv4 } from "uuid";
@@ -8,11 +8,14 @@ import TransactionService from "@/utils/core/transaction";
 
 interface State extends Group {
   preferSimplifiedBalances: boolean;
+  quota: PdfQuota;
 }
 
 interface GroupAction {
   setGroup: (group: Group) => void;
+  setQuota: (quota: PdfQuota) => void;
   updateGroup: (update: Partial<Group>) => void;
+  updateQuota: (update: Partial<Omit<PdfQuota, "user_id">>) => void;
   reset: () => void;
 }
 
@@ -40,6 +43,12 @@ const initialState: Omit<State, "id"> = {
   people: [],
   transactions: [],
   preferSimplifiedBalances: false,
+  password: "",
+  quota: {
+    current: 0,
+    limit: 0,
+    user_id: "",
+  },
 };
 
 export const useGroupStore = create<
@@ -50,7 +59,10 @@ export const useGroupStore = create<
       ...initialState,
       id: uuidv4(),
       setGroup: (group) => set(group),
+      setQuota: (quota) => set({ quota }),
       updateGroup: (update) => set((state) => ({ ...state, ...update })),
+      updateQuota: (update) =>
+        set((state) => ({ quota: { ...state.quota, ...update } })),
       reset: () =>
         set({
           ...initialState,

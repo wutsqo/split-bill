@@ -51,4 +51,5 @@ export const initialGroupState: Group = {
   user_id: "",
   people: [],
   transactions: [],
+  password: null,
 };

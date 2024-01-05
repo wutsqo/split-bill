@@ -9,6 +9,8 @@ export interface Group
   transactions: Transaction[];
 }
 
+export type PdfQuota = Database["public"]["Tables"]["pdf_quota"]["Row"];
+
 export interface PaysToData {
   amount: number;
   id: string;

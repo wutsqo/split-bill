@@ -1,18 +1,19 @@
 "use server";
 
+import { SITE_URL } from "@/app/config";
 import { Database } from "@/supabase.types";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
+import axios from "axios";
 import { cookies } from "next/headers";
 
 export async function generatePDF(
   prevState: {
     message: string;
-    id: string | undefined;
+    path: string;
   },
   formData: FormData
 ) {
-  const people = formData.get("people") as string;
-  const transactions = formData.get("transactions") as string;
+  const groupId = formData.get("group_id") as string;
   const cookieStore = cookies();
   const supabase = createServerActionClient<Database>({
     cookies: () => cookieStore,
@@ -21,14 +22,26 @@ export async function generatePDF(
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) throw new Error("User not found");
-  const { data, error } = await supabase
-    .from("workspace")
-    .upsert({
-      user: user.id,
-      people: people,
-      transactions: transactions,
-    })
-    .select();
-  if (error) throw error;
-  return { message: "PDF generated successfully", id: data[0].id.toString() };
+  try {
+    const { data, status } = await axios.get(`${SITE_URL}/api/pdf`, {
+      params: {
+        user_id: user.id,
+        group_id: groupId,
+        key: process.env.NEXT_PUBLIC_BYPASS_KEY,
+      },
+    });
+    if (status !== 200) {
+      throw new Error(data?.message ?? "Internal server error");
+    } else {
+      return {
+        message: "PDF successfully generated",
+        path: data,
+      };
+    }
+  } catch (error) {
+    return {
+      message: "Internal server error",
+      path: "",
+    };
+  }
 }

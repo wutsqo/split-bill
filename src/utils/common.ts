@@ -22,7 +22,7 @@ export function isInIframe() {
   }
 }
 
-type Modal = "account_modal" | "share_modal";
+type Modal = "account_modal" | "share_modal" | "pdf_modal";
 
 export function showModal(modalId: Modal) {
   const modal = document.getElementById(modalId) as HTMLDialogElement;

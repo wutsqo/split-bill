@@ -10,7 +10,6 @@ const nextConfig = {
     config,
     { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }
   ) => {
-    config.externals.push("@sparticuz/chromium");
     return config;
   },
 };

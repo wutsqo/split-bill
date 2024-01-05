@@ -7,6 +7,7 @@ import { useAuthStore } from "@hooks/useAuthStore";
 import { useGroupStore } from "@hooks/useGroupStore";
 import ShareModal from "./share-modal";
 import { showModal } from "@/utils/common";
+import PDFModal from "./pdf-modal";
 
 export default function SummaryContainer() {
   const preferSimplifiedBalances = useStore(
@@ -38,6 +39,7 @@ export default function SummaryContainer() {
         loginTitle: "Login to Generate PDF",
       });
     } else {
+      showModal("pdf_modal");
     }
   };
   const onClickShareButton = () => {
@@ -99,7 +101,7 @@ export default function SummaryContainer() {
           preferSimplified={preferSimplifiedBalances}
         />
       ))}
-
+      <PDFModal />
       <ShareModal />
 
       {/* <input

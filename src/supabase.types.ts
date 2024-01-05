@@ -9,12 +9,39 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      pdf_quota: {
+        Row: {
+          current: number
+          limit: number
+          user_id: string
+        }
+        Insert: {
+          current?: number
+          limit?: number
+          user_id: string
+        }
+        Update: {
+          current?: number
+          limit?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pdf_quota_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       split_groups: {
         Row: {
           created_at: string
           id: string
           is_public: boolean
           name: string
+          password: string | null
           people: Json
           transactions: Json
           updated_at: string | null
@@ -25,6 +52,7 @@ export interface Database {
           id?: string
           is_public?: boolean
           name?: string
+          password?: string | null
           people: Json
           transactions: Json
           updated_at?: string | null
@@ -35,6 +63,7 @@ export interface Database {
           id?: string
           is_public?: boolean
           name?: string
+          password?: string | null
           people?: Json
           transactions?: Json
           updated_at?: string | null

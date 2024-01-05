@@ -4,18 +4,21 @@ import { Database, Json } from "@/supabase.types";
 import { useGroupStore } from "@hooks/useGroupStore";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect } from "react";
-import { Group } from "./type";
+import { Group, PdfQuota } from "./type";
 import { useAuthStore } from "@hooks/useAuthStore";
 import toast from "react-hot-toast";
 
 export default function GroupSubscriber({
   groupFromServer,
+  quota,
 }: {
   groupFromServer?: Group;
+  quota?: PdfQuota;
 }) {
   const supabase = createClientComponentClient<Database>();
   const localGroupId = useGroupStore((state) => state.id);
   const setGroup = useGroupStore((state) => state.setGroup);
+  const setQuota = useGroupStore((state) => state.setQuota);
   const transactions = useGroupStore((state) => state.transactions);
   const people = useGroupStore((state) => state.people);
   const name = useGroupStore((state) => state.name);
@@ -55,6 +58,7 @@ export default function GroupSubscriber({
       }
     } else {
       setGroup(groupFromServer);
+      setQuota(quota as PdfQuota);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localGroupId, user?.id]);
@@ -73,6 +77,8 @@ export default function GroupSubscriber({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localGroupId, people]);
+
+  useEffect(() => {}, []);
 
   return null;
 }

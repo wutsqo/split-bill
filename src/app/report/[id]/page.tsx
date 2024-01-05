@@ -154,7 +154,7 @@ export default async function Page({
         </div>
       </div>
       <div
-        className="w-full h-screen p-8 text-white place-content-center break-before-page relative hidden print:grid"
+        className="w-full h-screen p-8 text-white place-content-center break-before-page relative grid"
         style={{
           backgroundImage: "url(/back-cover.svg)",
           backgroundSize: "cover",
