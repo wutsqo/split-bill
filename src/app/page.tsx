@@ -1,4 +1,8 @@
-import { ArrowRightIcon, Bars3Icon } from "@heroicons/react/24/outline";
+import {
+  ArrowRightIcon,
+  Bars3Icon,
+  ExclamationTriangleIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import MockupBills from "@images/mockups/bills.png";
 import MockupPeople from "@images/mockups/people.png";
@@ -82,6 +86,12 @@ export default function Home() {
                 <ArrowRightIcon className="w-6 h-6 group-hover:translate-x-2 transition-all" />
               </button>
             </Link>
+            <div className="text-xs mt-4 flex gap-1.5 items-center">
+              <ExclamationTriangleIcon className="w-4 h-4 inline-block" />
+              <div>
+                App still in beta. There might be bugs and other issues.
+              </div>
+            </div>
           </div>
         </div>
       </div>
