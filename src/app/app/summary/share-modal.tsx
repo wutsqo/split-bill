@@ -1,64 +1,10 @@
 "use client";
 
-import { SITE_URL } from "@/app/config";
-import { Database } from "@/supabase.types";
-import { required, validate } from "@/utils/forms";
 import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
-import useFormState from "@hooks/useFormState";
-import { useGroupStore } from "@hooks/useGroupStore";
-import useStore from "@hooks/useStore";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { useState } from "react";
 
 export default function ShareModal() {
-  const groupId = useStore(useGroupStore, (state) => state.id);
-  const isPublic = useStore(useGroupStore, (state) => state.is_public);
-  const updateGroup = useGroupStore((state) => state.updateGroup);
-  const { data, updateData } = useFormState(
-    {
-      method: isPublic ? "public" : "private",
-    },
-    {
-      method: validate([required]),
-    }
-  );
   const [copied, setCopied] = useState(false);
-  const onCopy = () => {
-    navigator.clipboard.writeText(`${SITE_URL}/report/${groupId}`);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1000);
-  };
-  const onShare = () => {
-    navigator.share({
-      title: "Split Expenses",
-      text: "Check out this expense report",
-      url: `${SITE_URL}/report/${groupId}`,
-    });
-  };
-  const supabase = createClientComponentClient<Database>();
-  useEffect(() => {
-    if (!groupId) return;
-    supabase
-      .from("split_groups")
-      .update({ is_public: data.method === "public" })
-      .eq("id", groupId)
-      .select()
-      .then((res) => {
-        if (res.error) {
-          toast.error("Failed to update group visibility");
-          updateData("method", isPublic ? "public" : "private");
-        } else {
-          updateGroup({ is_public: data.method === "public" });
-        }
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.method, groupId]);
-  useEffect(() => {
-    if (!groupId) return;
-    updateData("method", isPublic ? "public" : "private");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [groupId]);
 
   return (
     <dialog id="share_modal" className="modal modal-bottom sm:modal-middle">
@@ -77,8 +23,6 @@ export default function ShareModal() {
           <select
             id="share-method-input"
             className="select select-bordered w-full"
-            value={data.method}
-            onChange={(e) => updateData("method", e.target.value)}
           >
             <option value="private">Only me can view</option>
             <option value="public">Anyone with the link can view</option>
@@ -95,10 +39,9 @@ export default function ShareModal() {
               id="link-input"
               placeholder="What's the password?"
               className="input input-bordered w-full join-item"
-              value={`${SITE_URL}/report/${groupId}`}
               onFocus={(e) => e.target.select()}
             />
-            <button className="btn join-item" onClick={onCopy}>
+            <button className="btn join-item">
               {copied ? (
                 <>
                   <DocumentDuplicateIcon className="w-5 h-5" />
@@ -117,7 +60,7 @@ export default function ShareModal() {
           <form method="dialog">
             <button className="btn">Close</button>
           </form>
-          <button className="btn btn-primary" type="button" onClick={onShare}>
+          <button className="btn btn-primary" type="button">
             Share
           </button>
         </div>

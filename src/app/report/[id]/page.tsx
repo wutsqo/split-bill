@@ -5,10 +5,7 @@ import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { formatMoney } from "@/utils/common";
 import { SITE_URL, appName } from "../../config";
 import { Person, Transaction } from "../../app/type";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { Database } from "@/supabase.types";
-import { notFound } from "next/navigation";
 import NoAccess from "@/app/no-access";
 
 export default async function Page({
@@ -20,21 +17,9 @@ export default async function Page({
 }) {
   const cookieStore = cookies();
   const byPass = searchParams["key"] === process.env.NEXT_PUBLIC_BYPASS_KEY;
-  const supabase = createServerComponentClient<Database>({
-    cookies: () => cookieStore,
-  });
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const { data } = await supabase
-    .from("split_groups")
-    .select("*")
-    .eq("id", params.id)
-    .single();
-  if (!data) return notFound();
-  if (!data.is_public && !user && !byPass) return <NoAccess />;
-  const people = data.people as unknown as Person[];
-  const transactions = data.transactions as unknown as Transaction[];
+  return <NoAccess />;
+  const people = [] as Person[];
+  const transactions = [] as Transaction[];
   return (
     <div className="bg-white min-h-screen relative">
       <div
@@ -50,7 +35,7 @@ export default async function Page({
       </div>
       <div className="container mx-auto max-w-screen-md px-4 py-6 z-10 relative">
         <div className="flex items-baseline justify-between mt-6 bg-[#3d3056] text-white p-6">
-          <h2 className="taviraj">{data.name}</h2>
+          <h2 className="taviraj"></h2>
           <div>{people.length} people</div>
         </div>
         <div className="p-4 mt-4 border text-sm rounded-2xl">

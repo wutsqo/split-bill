@@ -1,10 +1,6 @@
 import { FC } from "react";
-import { Person, Transaction } from "../type";
-import {
-  TrashIcon,
-  PencilIcon,
-  CalendarIcon,
-} from "@heroicons/react/24/outline";
+import { Transaction } from "../type";
+import { TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { PersonLabel } from "../person";
 import { formatMoney } from "@/utils/common";
 

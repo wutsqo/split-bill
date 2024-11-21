@@ -15,12 +15,8 @@
     "@dicebear/collection": "^7.0.1",
     "@dicebear/core": "^7.0.1",
     "@heroicons/react": "^2.0.18",
-    "@sparticuz/chromium": "^119.0.2",
-    "@supabase/auth-helpers-nextjs": "^0.8.7",
-    "@supabase/supabase-js": "^2.39.1",
     "axios": "^1.6.2",
     "next": "14.0.2",
-    "puppeteer-core": "^21.5.1",
     "react": "^18",
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",
@@ -49,7 +45,5 @@
     "ts-node": "^10.9.2",
     "typescript": "^5"
   },
-  "engines": {
-    "node": "18"
-  }
+  "packageManager": "pnpm@9.14.1+sha512.7f1de9cffea40ff4594c48a94776112a0db325e81fb18a9400362ff7b7247f4fbd76c3011611c9f8ac58743c3dc526017894e07948de9b72052f874ee2edfdcd"
 }

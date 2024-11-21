@@ -1,15 +1,11 @@
-import { Database } from "@/supabase.types";
-
-export interface Group
-  extends Omit<
-    Database["public"]["Tables"]["split_groups"]["Row"],
-    "people" | "transactions"
-  > {
+export interface Group {
   people: Person[];
   transactions: Transaction[];
+  created_at: string;
+  updated_at: string;
+  id: string;
+  name: string;
 }
-
-export type PdfQuota = Database["public"]["Tables"]["pdf_quota"]["Row"];
 
 export interface PaysToData {
   amount: number;

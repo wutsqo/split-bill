@@ -45,11 +45,8 @@ export const DELETED_USER = {
 export const initialGroupState: Group = {
   id: "default",
   name: "Unnamed Group",
-  is_public: false,
   created_at: "",
   updated_at: "",
-  user_id: "",
   people: [],
   transactions: [],
-  password: null,
 };

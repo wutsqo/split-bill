@@ -7,8 +7,6 @@ import { mergeClassname } from "@/utils/merge-classname";
 import Drawer from "./drawer";
 import { TrakteerProvider } from "./trakteer/provider";
 import TrakteerModal from "./trakteer/modal";
-import AccountModal from "./account-modal";
-import { AuthSubscriber } from "./auth-subscriber";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -68,8 +66,6 @@ export default function RootLayout({
           <TrakteerModal />
         </TrakteerProvider>
         <Toaster />
-        <AuthSubscriber />
-        <AccountModal />
       </body>
     </html>
   );

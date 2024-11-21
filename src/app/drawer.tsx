@@ -3,19 +3,14 @@
 import { ReactNode, useEffect, useRef } from "react";
 import { appName } from "./config";
 import {
-  ArrowLeftOnRectangleIcon,
   ArrowRightIcon,
   HomeIcon,
   MoonIcon,
   SunIcon,
-  UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useRouter, usePathname } from "next/navigation";
 import TrakteerButton from "./trakteer/button";
 import { themeChange } from "theme-change";
-import useStore from "@hooks/useStore";
-import { useAuthStore } from "@hooks/useAuthStore";
-import { showModal } from "@/utils/common";
 
 export default function Drawer({ children }: { readonly children: ReactNode }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -27,7 +22,6 @@ export default function Drawer({ children }: { readonly children: ReactNode }) {
     };
   }, []);
   const pathName = usePathname();
-  const user = useStore(useAuthStore, (state) => state.user);
 
   return (
     <div className="drawer">
@@ -82,21 +76,6 @@ export default function Drawer({ children }: { readonly children: ReactNode }) {
                 <MoonIcon className="w-6 h-6 shrink-0" />
                 <div className="w-full">Dark Mode</div>
               </div>
-            </button>
-          </li>
-          <li>
-            <button onClick={() => showModal("account_modal")}>
-              {user ? (
-                <>
-                  <UserCircleIcon className="h-6 w-6 shrink-0" />
-                  Account
-                </>
-              ) : (
-                <>
-                  <ArrowLeftOnRectangleIcon className="h-6 w-6 shrink-0" />
-                  Login
-                </>
-              )}
             </button>
           </li>
           <li>

@@ -1,13 +1,8 @@
 "use client";
 
 import { SummaryCard } from "./summary-card";
-import { ArrowDownTrayIcon, ShareIcon } from "@heroicons/react/24/outline";
 import useStore from "@hooks/useStore";
-import { useAuthStore } from "@hooks/useAuthStore";
 import { useGroupStore } from "@hooks/useGroupStore";
-import ShareModal from "./share-modal";
-import { showModal } from "@/utils/common";
-import PDFModal from "./pdf-modal";
 
 export default function SummaryContainer() {
   const preferSimplifiedBalances = useStore(
@@ -17,8 +12,6 @@ export default function SummaryContainer() {
   const { setPreferSimplifiedBalances } = useGroupStore();
   const people = useStore(useGroupStore, (state) => state.people);
   const transactions = useStore(useGroupStore, (state) => state.transactions);
-  const user = useStore(useAuthStore, (state) => state.user);
-  const { showAuthModal } = useAuthStore();
 
   if (!people || !transactions) return null;
   if (people.length <= 1) {
@@ -33,32 +26,14 @@ export default function SummaryContainer() {
       </div>
     );
   }
-  const onClickPDFButton = () => {
-    if (!user) {
-      showAuthModal({
-        loginTitle: "Login to Generate PDF",
-      });
-    } else {
-      showModal("pdf_modal");
-    }
-  };
-  const onClickShareButton = () => {
-    if (!user) {
-      showAuthModal({
-        loginTitle: "Login to Share",
-      });
-    } else {
-      showModal("share_modal");
-    }
-  };
+
   return (
     <div className="py-4 flex flex-col gap-4 pb-20">
-      <div className="join w-full bg-base-100">
+      {/* <div className="join w-full bg-base-100">
         <button
           type="button"
           className="btn btn-ghost text-xs join-item w-1/2 uppercase"
           disabled={transactions.length < 1}
-          onClick={onClickPDFButton}
         >
           <ArrowDownTrayIcon className="h-4 w-4" />
           Export PDF
@@ -67,12 +42,11 @@ export default function SummaryContainer() {
         <button
           type="button"
           className="btn btn-ghost text-xs join-item w-1/2 uppercase"
-          onClick={onClickShareButton}
         >
           <ShareIcon className="h-4 w-4" />
           Share
         </button>
-      </div>
+      </div> */}
 
       <div className="card card-compact bg-base-100 ">
         <div className="card-body">
@@ -101,8 +75,6 @@ export default function SummaryContainer() {
           preferSimplified={preferSimplifiedBalances}
         />
       ))}
-      <PDFModal />
-      <ShareModal />
 
       {/* <input
         type="checkbox"
